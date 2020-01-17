@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="GrizzTimeModelStoreContainer" CdmEntityContainer="GrizzTimeEntities1">
-    <EntitySetMapping Name="Tables">
-      <EntityTypeMapping TypeName="GrizzTimeModel.Table">
-        <MappingFragment StoreEntitySet="Table">
+  <EntityContainerMapping StorageEntityContainer="GrizzTimeModelStoreContainer" CdmEntityContainer="GrizzTimeEntities5">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="GrizzTimeModel.User">
+        <MappingFragment StoreEntitySet="User">
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="firstName" ColumnName="firstName" />
           <ScalarProperty Name="lastName" ColumnName="lastName" />

@@ -73,3 +73,7 @@ C:\Users\gurni\source\repos\GrizzTime\GrizzTime\obj\Release\GrizzTime.csproj.Cor
 C:\Users\gurni\source\repos\GrizzTime\GrizzTime\obj\Release\GrizzTime.csproj.CopyComplete
 C:\Users\gurni\source\repos\GrizzTime\GrizzTime\obj\Release\GrizzTime.dll
 C:\Users\gurni\source\repos\GrizzTime\GrizzTime\obj\Release\GrizzTime.pdb
+D:\Senior Capstone Project\GrizzTime-master\GrizzTime-master\GrizzTime\obj\Release\GrizzTime.csprojAssemblyReference.cache
+D:\Senior Capstone Project\GrizzTime-master\GrizzTime-master\GrizzTime\obj\Release\GrizzTime.csproj.CoreCompileInputs.cache
+D:\Senior Capstone Project\GrizzTime-master\GrizzTime-master\GrizzTime\obj\Release\GrizzTime.dll
+D:\Senior Capstone Project\GrizzTime-master\GrizzTime-master\GrizzTime\obj\Release\GrizzTime.pdb
