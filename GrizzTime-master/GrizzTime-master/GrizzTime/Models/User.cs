@@ -17,7 +17,7 @@ namespace GrizzTime.Models
 
     public partial class User
     {
-        public System.Guid UserID { get; set; }
+        public int UserID { get; set; }
         [Display(Name = "first name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "first name required")]
         public string firstName { get; set; }
