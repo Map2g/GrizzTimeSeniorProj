@@ -13,10 +13,10 @@ namespace GrizzTime.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class GrizzTimeEntities1 : DbContext
+    public partial class GrizzTimeEntities5 : DbContext
     {
-        public GrizzTimeEntities1()
-            : base("name=GrizzTimeEntities1")
+        public GrizzTimeEntities5()
+            : base("name=GrizzTimeEntities5")
         {
         }
     
@@ -25,6 +25,6 @@ namespace GrizzTime.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Table> Tables { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

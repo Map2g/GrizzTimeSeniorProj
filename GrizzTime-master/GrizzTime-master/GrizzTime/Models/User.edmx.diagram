@@ -4,8 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8e4f8c7ba39b4816a11fc0250d2b10a4" Name="Diagram1">
-        <EntityTypeShape EntityType="GrizzTimeModel.Table" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="f46714fe1eb44101ad3fb29de6a5d76a" Name="Diagram1">
+        <EntityTypeShape EntityType="GrizzTimeModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
