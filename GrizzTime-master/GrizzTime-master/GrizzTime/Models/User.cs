@@ -31,5 +31,7 @@ namespace GrizzTime.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "password required")]
         public string password { get; set; }
         public string phone { get; set; }
+        [Display(Name="Remember Me")]
+        public bool RememberMe { get; set; }
     }
 }
