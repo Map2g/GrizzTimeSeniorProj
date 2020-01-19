@@ -31,12 +31,12 @@ namespace GrizzTime.Controllers
             if (ModelState.IsValid)
             {
                 //Email already exists
-                /*var isExist = IsEmailExist(user.email);
+                var isExist = IsEmailExist(user.email);
                 if (isExist)
                 {
                     ModelState.AddModelError("EmailExist", "Email already exists");
                     return View(user);
-                }*/
+                }
                 //Save to Database
                 using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
                 {
@@ -156,6 +156,15 @@ namespace GrizzTime.Controllers
             catch
             {
                 return View();
+            }
+        }
+        [NonAction]
+        public bool IsEmailExist(string emailID)
+        {
+            using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+            {
+                var v = dc.Users.Where(a => a.email == emailID).FirstOrDefault();
+                return v != null;
             }
         }
         [NonAction]
