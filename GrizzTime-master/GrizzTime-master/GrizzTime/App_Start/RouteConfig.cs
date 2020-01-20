@@ -19,7 +19,7 @@ namespace GrizzTime
                 //defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "User", action = "Login", id = UrlParameter.Optional }
+                defaults: new { controller = "User", action = "Registration", id = UrlParameter.Optional }
 
             );
         }

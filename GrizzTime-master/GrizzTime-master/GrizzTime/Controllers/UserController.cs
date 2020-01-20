@@ -31,12 +31,12 @@ namespace GrizzTime.Controllers
             if (ModelState.IsValid)
             {
                 //Email already exists
-                /*var isExist = IsEmailExist(user.email);
+                var isExist = IsEmailExist(user.email);
                 if (isExist)
                 {
                     ModelState.AddModelError("EmailExist", "Email already exists");
                     return View(user);
-                }*/
+                }
                 //Save to Database
                 using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
                 {
@@ -44,8 +44,8 @@ namespace GrizzTime.Controllers
                     dc.SaveChanges();
 
                     //send email to User
-                    //SendVerificationEMail(user.email);
-                    //message = "Registration complete! An email has been sent to you to confirm your registration!";
+                    SendVerificationEMail(user.email);
+                    message = "Registration complete! An email has been sent to you to confirm your registration!";
                     Status = true;
                 }
             }
@@ -158,36 +158,45 @@ namespace GrizzTime.Controllers
                 return View();
             }
         }
-        //[NonAction]
-        //public void SendVerificationEMail(string email)
-        //{
-        //    var verifyUrl = "/User/VerifyAccount";
-        //    var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+        [NonAction]
+        public bool IsEmailExist(string emailID)
+        {
+            using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+            {
+                var v = dc.Users.Where(a => a.email == emailID).FirstOrDefault();
+                return v != null;
+            }
+        }
+        [NonAction]
+        public void SendVerificationEMail(string email)
+        {
+            var verifyUrl = "/User/VerifyAccount";
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
-        //    var fromEmail = new MailAddress("grizztimenotification@gmail.com", "Grizz Time Team");
-        //    var toEmail = new MailAddress(email);
-        //    var fromEmailPassword = "WinterSemester";
-        //    string subject = "Your account hase been succesfully created!";
+            var fromEmail = new MailAddress("grizztimenotification@gmail.com");
+            var toEmail = new MailAddress(email);
+            var fromEmailPassword = "WinterSemester";
+            string subject = "Your account hase been succesfully created!";
 
-        //    string body = "<br/><br/> We are excited to tell you that you're GrizzTime account has been created!...";
+            string body = "<br/><br/> We are excited to tell you that you're GrizzTime account has been created!...";
 
-        //    var smtp = new SmtpClient
-        //    {
-        //        Host = "smtp.gmail.com",
-        //    Port = 587,
-        //        EnableSsl = true,
-        //        DeliveryMethod = SmtpDeliveryMethod.Network,
-        //        UseDefaultCredentials = false,
-        //        Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
-        //    };
-        //    using (var message = new MailMessage(fromEmail, toEmail)
-        //    {
-        //        Subject = subject,
-        //        Body = body,
-        //        IsBodyHtml = true
-        //    })
-        //        smtp.Send(message);
-        //}
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
+            };
+            using (var message = new MailMessage(fromEmail, toEmail)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            })
+                smtp.Send(message);
+        }
     }
     
 }
