@@ -158,10 +158,6 @@ namespace GrizzTime.Controllers
                 return View();
             }
         }
-
-
-    
-
         //[NonAction]
         //public void SendVerificationEMail(string email)
         //{
@@ -178,7 +174,7 @@ namespace GrizzTime.Controllers
         //    var smtp = new SmtpClient
         //    {
         //        Host = "smtp.gmail.com",
-        //        Port = 587,
+        //    Port = 587,
         //        EnableSsl = true,
         //        DeliveryMethod = SmtpDeliveryMethod.Network,
         //        UseDefaultCredentials = false,
