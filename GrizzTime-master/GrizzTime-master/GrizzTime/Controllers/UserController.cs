@@ -113,8 +113,7 @@ namespace GrizzTime.Controllers
         // GET: User/Details/5
         public ActionResult Details(int id)
         {
-            using (SqlConnection con = new SqlConnection("Data Source="))
-                return View();
+            return View();
         }
 
         // GET: User/Edit/5
