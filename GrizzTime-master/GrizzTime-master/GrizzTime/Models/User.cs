@@ -18,20 +18,20 @@ namespace GrizzTime.Models
     public partial class User
     {
         public int UserID { get; set; }
-        [Display(Name = "first name")]
+        [Display(Name = "First name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "first name required")]
         public string firstName { get; set; }
-        [Display(Name = "last name")]
+        [Display(Name = "Last name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "last name required")]
         public string lastName { get; set; }
-        [Display(Name = "email")]
+        [Display(Name = "Email")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "email required")]
         public string email { get; set; }
-        [Display(Name = "password")]
+        [Display(Name = "Password")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "password required")]
         public string password { get; set; }
         public string phone { get; set; }
-        [Display(Name="Remember Me")]
+        [Display(Name = "Phone")]
         public bool RememberMe { get; set; }
     }
 }
