@@ -6,6 +6,8 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Data.SqlClient;
+using System.Data;
 using GrizzTime.Models;
 
 namespace GrizzTime.Controllers
@@ -73,7 +75,7 @@ namespace GrizzTime.Controllers
                 if (v != null)
                 {
                     if (string.Compare(user.password,v.password) == 0){
-                        int timeout = user.RememberMe ? 52600 : 20; // Remember's for one year
+                        int timeout = user.RememberMe ? 52600 : 20; // Remembers for one year
                         var ticket = new FormsAuthenticationTicket(user.email, user.RememberMe, timeout);
                         string encrypted = FormsAuthentication.Encrypt(ticket);
                         var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
@@ -108,11 +110,11 @@ namespace GrizzTime.Controllers
             return RedirectToAction("Login", "User");
         }
 
-
         // GET: User/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            using (SqlConnection con = new SqlConnection("Data Source="))
+                return View();
         }
 
         // GET: User/Edit/5
