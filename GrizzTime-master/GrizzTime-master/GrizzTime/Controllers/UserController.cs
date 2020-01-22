@@ -89,7 +89,7 @@ namespace GrizzTime.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Edit", "User");
                         }
                     }
                 }
@@ -117,25 +117,39 @@ namespace GrizzTime.Controllers
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? UserID)
         {
+            using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+            {
+                if (UserID == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                User user = dc.Users.Find(UserID);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+            }
             return View();
+            
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit([Bind(Include ="UserID,firstName,lastName,email,password,phone")]User user)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+                {
+                    dc.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    dc.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
+            
         }
 
         // GET: User/Delete/5
