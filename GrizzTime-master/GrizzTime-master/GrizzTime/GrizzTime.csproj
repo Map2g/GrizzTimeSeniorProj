@@ -257,6 +257,7 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\User\CreateBusiness.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Details\" />
