@@ -129,9 +129,33 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Project.Context.cs" />
+    <Compile Include="Models\Project.Context1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Project.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PROJECT.cs">
+      <DependentUpon>Project.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Project.Designer.cs">
+      <DependentUpon>PROJECT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Project1.cs" />
+    <Compile Include="Models\Project1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Project.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Project2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Project.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.Context.cs">
       <AutoGen>True</AutoGen>
@@ -166,6 +190,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\Project.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Project.Context1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Project.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Project2.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\User.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>User.edmx</DependentUpon>
@@ -184,6 +216,13 @@
     </EntityDeploy>
     <Content Include="Models\User.edmx.diagram">
       <DependentUpon>User.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\Project.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Project1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Project.edmx.diagram">
+      <DependentUpon>Project.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\GrizzTime - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -217,6 +256,8 @@
     <Content Include="Views\User\Registration.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\User\CreateBusiness.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Details\" />

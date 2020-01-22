@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Project" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="PROJECT">
+    <Key>
+      <PropertyRef Name="projId" />
+    </Key>
+    <Property Name="projId" Type="Int32" Nullable="false" />
+    <Property Name="projName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="projDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="projPayRate" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="projStartDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="projEndDate" Type="DateTime" Precision="0" />
+    <Property Name="projIsComplete" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PROJECTs" EntityType="Self.PROJECT" />
+  </EntityContainer>
+</Schema>
