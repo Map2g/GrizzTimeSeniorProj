@@ -1,0 +1,1 @@
+This is the folder where we will keep artifacts mentioned in our Efforts Logbooks that are not a part of the project code.
