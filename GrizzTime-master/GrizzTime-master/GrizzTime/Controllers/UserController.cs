@@ -197,40 +197,6 @@ namespace GrizzTime.Controllers
             })
                 smtp.Send(message);
         }
-        //brainstoriming on how to reset password
-        //thinking of having an option where you can receive the current password via email.
-
-
-
-        //public void RecievePassword(User user,string email)
-        //{
-        //    var verifyUrl = "/User/VerifyAccount";
-        //    var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
-
-        //    var fromEmail = new MailAddress("grizztimenotification@gmail.com");
-        //    var toEmail = new MailAddress(email);
-        //    var fromEmailPassword = "WinterSemester";
-        //    string subject = "Your account hase been succesfully created!";
-
-        //    string body = "Your current password is" +user.password;
-
-        //    var smtp = new SmtpClient
-        //    {
-        //        Host = "smtp.gmail.com",
-        //        Port = 587,
-        //        EnableSsl = true,
-        //        DeliveryMethod = SmtpDeliveryMethod.Network,
-        //        UseDefaultCredentials = false,
-        //        Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
-        //    };
-        //    using (var message = new MailMessage(fromEmail, toEmail)
-        //    {
-        //        Subject = subject,
-        //        Body = body,
-        //        IsBodyHtml = true
-        //    })
-        //        smtp.Send(message);
-        //}
     }
     
 }
