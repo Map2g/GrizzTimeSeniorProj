@@ -6,6 +6,8 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Data.SqlClient;
+using System.Data;
 using GrizzTime.Models;
 
 namespace GrizzTime.Controllers
@@ -73,7 +75,7 @@ namespace GrizzTime.Controllers
                 if (v != null)
                 {
                     if (string.Compare(user.password,v.password) == 0){
-                        int timeout = user.RememberMe ? 52600 : 20; // Remember's for one year
+                        int timeout = user.RememberMe ? 52600 : 20; // Remembers for one year
                         var ticket = new FormsAuthenticationTicket(user.email, user.RememberMe, timeout);
                         string encrypted = FormsAuthentication.Encrypt(ticket);
                         var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
@@ -87,7 +89,7 @@ namespace GrizzTime.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Edit", "User");
                         }
                     }
                 }
@@ -108,7 +110,6 @@ namespace GrizzTime.Controllers
             return RedirectToAction("Login", "User");
         }
 
-
         // GET: User/Details/5
         public ActionResult Details(int id)
         {
@@ -116,25 +117,39 @@ namespace GrizzTime.Controllers
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? UserID)
         {
+            using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+            {
+                if (UserID == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                User user = dc.Users.Find(UserID);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+            }
             return View();
+            
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit([Bind(Include ="UserID,firstName,lastName,email,password,phone")]User user)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+                {
+                    dc.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    dc.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
+            
         }
 
         // GET: User/Delete/5
