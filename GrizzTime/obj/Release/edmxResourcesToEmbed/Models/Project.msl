@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ProjectStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="PROJECTs">
+      <EntityTypeMapping TypeName="Project.PROJECT">
+        <MappingFragment StoreEntitySet="PROJECT">
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="projName" ColumnName="projName" />
+          <ScalarProperty Name="projDesc" ColumnName="projDesc" />
+          <ScalarProperty Name="projPayRate" ColumnName="projPayRate" />
+          <ScalarProperty Name="projStartDate" ColumnName="projStartDate" />
+          <ScalarProperty Name="projEndDate" ColumnName="projEndDate" />
+          <ScalarProperty Name="projIsComplete" ColumnName="projIsComplete" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
