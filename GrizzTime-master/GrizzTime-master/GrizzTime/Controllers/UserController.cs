@@ -17,7 +17,7 @@ namespace GrizzTime.Controllers
         //GrizzTimeEntities db = new GrizzTimeEntities();
         // GET: User
         public ActionResult Index()
-        {
+        { 
             return View();
         }
         public ActionResult Registration()
@@ -62,8 +62,7 @@ namespace GrizzTime.Controllers
 
         public ActionResult Login()
         {
-            
-                return View();
+            return View();
         }
         [HttpPost]
         public ActionResult Login(User user, String ReturnUrl)
