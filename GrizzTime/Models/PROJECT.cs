@@ -12,14 +12,24 @@ namespace GrizzTime.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PROJECT
+    public partial class project
     {
-        public int projId { get; set; }
-        public string projName { get; set; }
-        public string projDesc { get; set; }
-        public decimal projPayRate { get; set; }
-        public System.DateTime projStartDate { get; set; }
-        public Nullable<System.DateTime> projEndDate { get; set; }
-        public bool projIsComplete { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public project()
+        {
+            this.employee_project = new HashSet<employee_project>();
+        }
+    
+        public int ProjID { get; set; }
+        public string ProjName { get; set; }
+        public string ProjDesc { get; set; }
+        public System.DateTime ProjStartDate { get; set; }
+        public string ProjStatus { get; set; }
+        public Nullable<System.DateTime> ProjEndDate { get; set; }
+        public Nullable<int> ProjManagerID { get; set; }
+    
+        public virtual employee employee { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<employee_project> employee_project { get; set; }
     }
 }
