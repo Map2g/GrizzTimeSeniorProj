@@ -251,13 +251,15 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Employee\Registration.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Employee\Login.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Employee\CreateBusiness.cshtml" />
     <Content Include="Views\Employee\Details.cshtml" />
     <Content Include="Views\Business\Registration.cshtml" />
-    <Content Include="Views\Home\ChooseAccountType.cshtml" />
+    <Content Include="Views\Business\Login.cshtml" />
+    <Content Include="Views\Business\Details.cshtml" />
+    <Content Include="Views\Business\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

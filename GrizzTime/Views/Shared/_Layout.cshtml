@@ -23,7 +23,21 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li class="dropdown">
+                        <div class="nav navbar-text dropdown-toggle" data-toggle="dropdown">Register Now</div>
+                        <ul class="nav dropdown-menu">
+                            <li>@Html.ActionLink("Business", "Registration", "Business")</li>
+                            <li>@Html.ActionLink("Employee", "Registration", "Employee")</li>
+                        </ul>
+                    </li>
                 </ul>
+                <div class="nav navbar-right">
+                    <div class="nav navbar-text dropdown-toggle" data-toggle="dropdown">Login</div>
+                    <ul class="nav dropdown-menu">
+                        <li>@Html.ActionLink("Business", "Login", "Business")</li>
+                        <li>@Html.ActionLink("Employee", "Login", "Employee")</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
