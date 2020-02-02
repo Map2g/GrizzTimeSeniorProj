@@ -12,10 +12,10 @@ using GrizzTime.Models;
 
 namespace GrizzTime.Controllers
 {
-    public class UserController : Controller
+    public class EmployeeController : Controller
     {
         //GrizzTimeEntities db = new GrizzTimeEntities();
-        // GET: User
+        // GET: Employee
         public ActionResult Index()
         {
             return View();
@@ -25,7 +25,7 @@ namespace GrizzTime.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Registration([Bind(Exclude ="IsEmailVerified,ActivationCode")] User user)
+        public ActionResult Registration([Bind(Exclude ="IsEmailVerified,ActivationCode")] employee employee)
         {
             bool Status = false;
             string message = "";
@@ -33,20 +33,20 @@ namespace GrizzTime.Controllers
             if (ModelState.IsValid)
             {
                 //Email already exists
-                var isExist = IsEmailExist(user.email);
+                var isExist = IsEmailExist(employee.UserEmail);
                 if (isExist)
                 {
                     ModelState.AddModelError("EmailExist", "Email already exists");
-                    return View(user);
+                    return View(employee);
                 }
                 //Save to Database
-                using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+                using (Entities dc = new Entities())
                 {
-                    dc.Users.Add(user);
+                    dc.employees.Add(employee);
                     dc.SaveChanges();
 
                     //send email to User
-                    SendVerificationEMail(user.email);
+                    SendVerificationEMail(employee.UserEmail);
                     message = "Registration complete! An email has been sent to you to confirm your registration!";
                     Status = true;
                 }
@@ -66,17 +66,18 @@ namespace GrizzTime.Controllers
                 return View();
         }
         [HttpPost]
-        public ActionResult Login(User user, String ReturnUrl)
+        public ActionResult Login(employee employee, String ReturnUrl)
         {
             string message = "";
-            using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+            using (Entities dc = new Entities())
             {
-                var v = dc.Users.Where(a => a.email == user.email).FirstOrDefault();
+                var v = dc.Users.Where(a => a.email == employee.UserEmail).FirstOrDefault();
                 if (v != null)
                 {
-                    if (string.Compare(user.password,v.password) == 0){
-                        int timeout = user.RememberMe ? 52600 : 20; // Remembers for one year
-                        var ticket = new FormsAuthenticationTicket(user.email, user.RememberMe, timeout);
+                    if (string.Compare(employee.UserPW,v.password) == 0){
+                        bool LRememberMe = employee.RememberMe.First() == Byte.Parse("1");
+                        int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
+                        var ticket = new FormsAuthenticationTicket(employee.UserEmail, LRememberMe, timeout);
                         string encrypted = FormsAuthentication.Encrypt(ticket);
                         var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
                         cookie.Expires = DateTime.Now.AddMinutes(timeout);
@@ -113,9 +114,9 @@ namespace GrizzTime.Controllers
         // GET: User/Details/5
         public ActionResult Details(int? id)
         {
-            var Details = new List<User>()
+            var Details = new List<employee>()
             {
-                new User()
+                new employee()
                 {
                     UserID=1
                 }
@@ -126,14 +127,14 @@ namespace GrizzTime.Controllers
         // GET: User/Edit/5
         public ActionResult Edit(int? UserID)
         {
-            using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+            using (Entities dc = new Entities())
             {
                 if (UserID == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                User user = dc.Users.Find(UserID);
-                if (user == null)
+                employee employee = dc.employees.Find(UserID);
+                if (employee == null)
                 {
                     return HttpNotFound();
                 }
@@ -144,13 +145,13 @@ namespace GrizzTime.Controllers
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit([Bind(Include ="UserID,firstName,lastName,email,password,phone")]User user)
+        public ActionResult Edit([Bind(Include ="UserID,EmpFName,EmpLName,UserEmail,UserPW, EmpType, EmpPhone")]employee employee)
         {
             if (ModelState.IsValid)
             {
-                using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+                using (Entities dc = new Entities())
                 {
-                    dc.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    dc.Entry(employee).State = System.Data.Entity.EntityState.Modified;
                     dc.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -183,9 +184,9 @@ namespace GrizzTime.Controllers
         [NonAction]
         public bool IsEmailExist(string emailID)
         {
-            using (GrizzTimeEntities5 dc = new GrizzTimeEntities5())
+            using (Entities dc = new Entities())
             {
-                var v = dc.Users.Where(a => a.email == emailID).FirstOrDefault();
+                var v = dc.employees.Where(a => a.UserEmail == emailID).FirstOrDefault();
                 return v != null;
             }
         }

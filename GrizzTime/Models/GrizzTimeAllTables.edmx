@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="GrizzTime_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="GrizzTime_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="business">
           <Key>
             <PropertyRef Name="UserID" />
@@ -13,10 +13,10 @@
           <Property Name="UserEmail" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="UserPW" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UserStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
-          <Property Name="BusCode" Type="int" Nullable="false" />
           <Property Name="BusName" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="BusDesc" Type="nvarchar" MaxLength="200" />
           <Property Name="BusAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RememberMe" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="employee">
           <Key>
@@ -31,6 +31,8 @@
           <Property Name="EmpType" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="BusCode" Type="int" Nullable="false" />
           <Property Name="EmpPayRate" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="EmpPhone" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="RememberMe" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="employee_project">
           <Key>
@@ -161,9 +163,6 @@
           <Property Name="WorkType" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="TimeSheetID" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'employee$BusCode' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="employee$BusCode" />-->
         <Association Name="employee_project$EmpID">
           <End Role="employee" Type="Self.employee" Multiplicity="1" />
           <End Role="employee_project" Type="Self.employee_project" Multiplicity="*" />
@@ -245,6 +244,18 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
             </Principal>
             <Dependent Role="expensesheet">
               <PropertyRef Name="PayrollCycleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__employee__BusCod__55F4C372">
+          <End Role="business" Type="Self.business" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="business">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="BusCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -363,6 +374,10 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
             <End Role="payrollcycle" EntitySet="payrollcycle" />
             <End Role="expensesheet" EntitySet="expensesheet" />
           </AssociationSet>
+          <AssociationSet Name="FK__employee__BusCod__55F4C372" Association="Self.FK__employee__BusCod__55F4C372">
+            <End Role="business" EntitySet="business" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
           <AssociationSet Name="project$ProjManagerID" Association="Self.project$ProjManagerID">
             <End Role="employee" EntitySet="employee" />
             <End Role="project" EntitySet="project" />
@@ -388,8 +403,7 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
             <End Role="workentry" EntitySet="workentry" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GrizzTime_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -401,10 +415,11 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
           <Property Name="UserEmail" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BusCode" Type="Int32" Nullable="false" />
           <Property Name="BusName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BusDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="BusAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK__employee__BusCod__55F4C372" FromRole="business" ToRole="employee" />
+          <Property Name="RememberMe" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="employee">
           <Key>
@@ -419,6 +434,8 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
           <Property Name="EmpType" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BusCode" Type="Int32" Nullable="false" />
           <Property Name="EmpPayRate" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="EmpPhone" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="business" Relationship="Self.FK__employee__BusCod__55F4C372" FromRole="employee" ToRole="business" />
           <NavigationProperty Name="employee_project" Relationship="Self.employee_project_EmpID" FromRole="employee" ToRole="employee_project" />
           <NavigationProperty Name="emppayrate_history" Relationship="Self.emppayrate_history_FK_PayHist_UserID" FromRole="employee" ToRole="emppayrate_history" />
           <NavigationProperty Name="emptype_history" Relationship="Self.emptype_history_UserID" FromRole="employee" ToRole="emptype_history" />
@@ -426,6 +443,7 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
           <NavigationProperty Name="projects" Relationship="Self.project_ProjManagerID" FromRole="employee" ToRole="project" />
           <NavigationProperty Name="ptorequests" Relationship="Self.ptorequest_FK_PTO_EmpID" FromRole="employee" ToRole="ptorequest" />
           <NavigationProperty Name="timesheets" Relationship="Self.timesheet_FK_TimeSheet_EmpID" FromRole="employee" ToRole="timesheet" />
+          <Property Name="RememberMe" Type="Binary" Nullable="false" />
         </EntityType>
         <EntityType Name="employee_project">
           <Key>
@@ -575,6 +593,18 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
           <Property Name="TimeSheetID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="timesheet" Relationship="Self.workentry_TimeSheetID" FromRole="workentry" ToRole="timesheet" />
         </EntityType>
+        <Association Name="FK__employee__BusCod__55F4C372">
+          <End Role="business" Type="Self.business" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="business">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="BusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="employee_project_EmpID">
           <End Role="employee" Type="Self.employee" Multiplicity="1" />
           <End Role="employee_project" Type="Self.employee_project" Multiplicity="*" />
@@ -731,7 +761,7 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="GrizzTimeEntities5" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="businesses" EntityType="Self.business" />
           <EntitySet Name="employees" EntityType="Self.employee" />
           <EntitySet Name="employee_project" EntityType="Self.employee_project" />
@@ -746,6 +776,10 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
           <EntitySet Name="timesheets" EntityType="Self.timesheet" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="workentries" EntityType="Self.workentry" />
+          <AssociationSet Name="FK__employee__BusCod__55F4C372" Association="Self.FK__employee__BusCod__55F4C372">
+            <End Role="business" EntitySet="businesses" />
+            <End Role="employee" EntitySet="employees" />
+          </AssociationSet>
           <AssociationSet Name="employee_project_EmpID" Association="Self.employee_project_EmpID">
             <End Role="employee" EntitySet="employees" />
             <End Role="employee_project" EntitySet="employee_project" />
@@ -804,15 +838,15 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="GrizzTime_dbModelStoreContainer" CdmEntityContainer="GrizzTimeEntities5">
+        <EntityContainerMapping StorageEntityContainer="GrizzTime_dbModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="businesses">
             <EntityTypeMapping TypeName="GrizzTime_dbModel.business">
               <MappingFragment StoreEntitySet="business">
+                <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserPW" ColumnName="UserPW" />
                 <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
-                <ScalarProperty Name="BusCode" ColumnName="BusCode" />
                 <ScalarProperty Name="BusName" ColumnName="BusName" />
                 <ScalarProperty Name="BusDesc" ColumnName="BusDesc" />
                 <ScalarProperty Name="BusAddress" ColumnName="BusAddress" />
@@ -822,6 +856,7 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
           <EntitySetMapping Name="employees">
             <EntityTypeMapping TypeName="GrizzTime_dbModel.employee">
               <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserPW" ColumnName="UserPW" />
@@ -831,6 +866,7 @@ warning 6035: The relationship 'employee$BusCode' has columns that are not part 
                 <ScalarProperty Name="EmpType" ColumnName="EmpType" />
                 <ScalarProperty Name="BusCode" ColumnName="BusCode" />
                 <ScalarProperty Name="EmpPayRate" ColumnName="EmpPayRate" />
+                <ScalarProperty Name="EmpPhone" ColumnName="EmpPhone" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
