@@ -20,13 +20,25 @@ namespace GrizzTime.Controllers
         {
             return View();
         }
+
+        [HttpGet]
         public ActionResult Registration()
         {
+            //Dictionary<int, string> myJobList = new Dictionary<int, string>();
+            //myJobList.Add(0, "President"); myJobList.Add(1, "CEO"); myJobList.Add(2, "CTO"); myJobList.Add(3, "CIO"); myJobList.Add(4, "Director"); myJobList.Add(5, "Projecy Manager"); myJobList.Add(6, "Technology Lead"); myJobList.Add(7, "Software Engineer"); myJobList.Add(8, "Intern");
+            //ViewBag.JobList = myJobList.GetEnumerator();
+
+            //model.CategoryList = new SelectList(db.Categories, "ID", "Name");
+            //List<string> JobNames = new List<string> { "President", "CEO", "CFO", "CTO", "CIO", "Director", "Project Manager", "Technology Lead", "Software Engineer", "Intern" };
+            //ViewBag.JobList = new SelectList(JobNames);
             return View();
         }
+
+
         [HttpPost]
         public ActionResult Registration([Bind(Exclude ="IsEmailVerified,ActivationCode")] employee employee)
         {
+            
             bool Status = false;
             string message = "";
             //ensure that the model exists
@@ -39,14 +51,48 @@ namespace GrizzTime.Controllers
                     ModelState.AddModelError("EmailExist", "Email already exists");
                     return View(employee);
                 }
+
+                //Check validity of business code
+                Entities dc = new Entities();
+                var validBusiness = from business in dc.businesses
+                                      where business.UserID == employee.BusCode
+                                      select business;
+                if (validBusiness.Count() != 1 )
+                {
+                    ModelState.AddModelError("InvalidBusinesscode", "That business code does not exist");
+                    return View(employee);
+                }
+
                 //Save to Database
-                using (Entities dc = new Entities())
+                using (dc)
                 {
                     dc.employees.Add(employee);
-                    dc.SaveChanges();
+                    try
+                    {
+                        dc.SaveChanges();
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        Exception exception = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
 
-                    //send email to User
-                    SendVerificationEMail(employee.UserEmail);
+                                //create a new exception inserting the current one
+                                //as the InnerException
+                                exception = new InvalidOperationException(message1, exception);
+                            }
+                        }
+                        throw exception;
+                    }
+                
+
+                //send email to User
+                SendVerificationEMail(employee.UserEmail);
                     message = "Registration complete! An email has been sent to you to confirm your registration!";
                     Status = true;
                 }
@@ -65,6 +111,7 @@ namespace GrizzTime.Controllers
             
                 return View();
         }
+
         [HttpPost]
         public ActionResult Login(employee employee, String ReturnUrl)
         {
@@ -75,7 +122,7 @@ namespace GrizzTime.Controllers
                 if (v != null)
                 {
                     if (string.Compare(employee.UserPW,v.password) == 0){
-                        bool LRememberMe = employee.RememberMe.First() == Byte.Parse("1");
+                        bool LRememberMe = employee.RememberMe;
                         int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
                         var ticket = new FormsAuthenticationTicket(employee.UserEmail, LRememberMe, timeout);
                         string encrypted = FormsAuthentication.Encrypt(ticket);
@@ -114,32 +161,26 @@ namespace GrizzTime.Controllers
         // GET: User/Details/5
         public ActionResult Details(int? id)
         {
-            var Details = new List<employee>()
-            {
-                new employee()
-                {
-                    UserID=1
-                }
-            };
-            return View(Details);
+            Entities db = new Entities();
+            return View(from employee in db.employees select employee);
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int? UserID)
+        public ActionResult Edit(int? id)
         {
-            using (Entities dc = new Entities())
-            {
-                if (UserID == null)
+            Entities dc = new Entities();
+            
+                if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                employee employee = dc.employees.Find(UserID);
-                if (employee == null)
+                employee _employee = dc.employees.Find(id);
+                if (_employee == null)
                 {
                     return HttpNotFound();
                 }
-            }
-            return View();
+
+            return View(_employee);
             
         }
 

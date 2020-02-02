@@ -12,7 +12,6 @@ namespace GrizzTime.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -32,40 +31,5 @@ namespace GrizzTime.Controllers
             return View();
         }
 
-        public ActionResult ChooseAccountType()
-        {
-            ViewBag.Message = "Your pre-registration page.";
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult ChooseAccountType(String ReturnUrl)
-        {
-            string accountType = Request.Form["accountType"];
-            switch (accountType) 
-            {
-                case "business":
-                    RedirectToAction("Registration", "Business");
-                    break;
-                case "employee":
-                    RedirectToAction("Registration", "Employee");
-                    break;
-                default:
-                    Console.WriteLine("Default case");
-                    Redirect(ReturnUrl);
-                    break;
-            }
-            return View();
-
-            //if (Url.IsLocalUrl(ReturnUrl))
-            //{
-            //    return Redirect(ReturnUrl);
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
-        }
     }
 }

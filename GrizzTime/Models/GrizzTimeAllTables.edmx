@@ -31,7 +31,7 @@
           <Property Name="EmpType" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="BusCode" Type="int" Nullable="false" />
           <Property Name="EmpPayRate" Type="decimal" Precision="13" Scale="2" Nullable="false" />
-          <Property Name="EmpPhone" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="EmpPhone" Type="nvarchar" MaxLength="10" />
           <Property Name="RememberMe" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="employee_project">
@@ -434,7 +434,7 @@
           <Property Name="EmpType" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BusCode" Type="Int32" Nullable="false" />
           <Property Name="EmpPayRate" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
-          <Property Name="EmpPhone" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpPhone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="business" Relationship="Self.FK__employee__BusCod__55F4C372" FromRole="employee" ToRole="business" />
           <NavigationProperty Name="employee_project" Relationship="Self.employee_project_EmpID" FromRole="employee" ToRole="employee_project" />
           <NavigationProperty Name="emppayrate_history" Relationship="Self.emppayrate_history_FK_PayHist_UserID" FromRole="employee" ToRole="emppayrate_history" />
@@ -443,7 +443,7 @@
           <NavigationProperty Name="projects" Relationship="Self.project_ProjManagerID" FromRole="employee" ToRole="project" />
           <NavigationProperty Name="ptorequests" Relationship="Self.ptorequest_FK_PTO_EmpID" FromRole="employee" ToRole="ptorequest" />
           <NavigationProperty Name="timesheets" Relationship="Self.timesheet_FK_TimeSheet_EmpID" FromRole="employee" ToRole="timesheet" />
-          <Property Name="RememberMe" Type="Binary" Nullable="false" />
+          <Property Name="RememberMe" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="employee_project">
           <Key>

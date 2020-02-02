@@ -109,55 +109,57 @@ namespace GrizzTime.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Login", "Business");
         }
 
         // GET: User/Details/5
         public ActionResult Details(int? id)
         {
-            var Details = new List<business>()
-            {
-                new business()
-                {
-                    UserID=1
-                }
-            };
-            return View(Details);
+            Entities db = new Entities();
+            return View(from business in db.businesses select business);
+            //var Details = new List<business>()
+            //{
+            //    new business()
+            //    {
+            //        UserID=1
+            //    }
+            //};
         }
 
         // GET: User/Edit/5
+        [HttpGet]
         public ActionResult Edit(int? UserID)
         {
-            using (Entities dc = new Entities())
+            Entities dc = new Entities();
+
+            if (UserID == null)
             {
-                if (UserID == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                business business = dc.businesses.Find(UserID);
-                if (business == null)
-                {
-                    return HttpNotFound();
-                }
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            return View();
+            business business1 = dc.businesses.Find(UserID);
+            if (business1 == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(business1);
 
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit([Bind(Include = "UserID,EmpFName,EmpLName,UserEmail,UserPW, EmpType, EmpPhone")]business business)
+        public ActionResult Edit([Bind(Include = "UserID, BusName,BusAddress,BusDesc,UserPW, UserEmail")]business business1)
         {
             if (ModelState.IsValid)
             {
                 using (Entities dc = new Entities())
                 {
-                    dc.Entry(business).State = System.Data.Entity.EntityState.Modified;
+                    dc.Entry(business1).State = System.Data.Entity.EntityState.Modified;
                     dc.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
-            return RedirectToAction("Index");
+            return View(business1);
 
         }
 

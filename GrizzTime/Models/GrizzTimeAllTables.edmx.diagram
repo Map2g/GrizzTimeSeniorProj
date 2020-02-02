@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fe2d771841424411aed2176da0ac33ae" Name="Diagram1" ZoomLevel="94">
+      <Diagram DiagramId="fe2d771841424411aed2176da0ac33ae" Name="Diagram1" ZoomLevel="81">
         <EntityTypeShape EntityType="GrizzTime_dbModel.business" Width="1.5" PointX="2.5" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.employee" Width="1.5" PointX="5.125" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.employee_project" Width="1.5" PointX="10.375" PointY="6.75" IsExpanded="true" />

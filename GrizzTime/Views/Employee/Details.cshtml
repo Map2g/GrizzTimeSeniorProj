@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GrizzTime.Models.User>
+﻿@model IEnumerable<GrizzTime.Models.employee>
 
 @{
     ViewBag.Title = "Details";
@@ -6,25 +6,28 @@
 
 <h2>Details</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.firstName)
+            @Html.DisplayName("UserEmail")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.lastName)
+            @Html.DisplayName("UserPW")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.email)
+            @Html.DisplayName("EmpFName")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.password)
+            @Html.DisplayName("EmpLName")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.phone)
+            @Html.DisplayName("EmpPhone")
+        </th>
+        <th>
+            @Html.DisplayName("Business")
+        </th>
+        <th>
+            @Html.DisplayName("EmpType")
         </th>
         <th></th>
     </tr>
@@ -32,22 +35,28 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.firstName)
+            @Html.DisplayFor(modelItem => item.UserEmail)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.lastName)
+            @Html.DisplayFor(modelItem => item.UserPW)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.email)
+            @Html.DisplayFor(modelItem => item.EmpFName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.password)
+            @Html.DisplayFor(modelItem => item.EmpLName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.phone)
+            @Html.DisplayFor(modelItem => item.EmpPhone)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", item) |
+            @Html.DisplayFor(modelItem => item.BusCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpType)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserID }) |
             @Html.ActionLink("Details", "Details", new { id=item.UserID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.UserID })
         </td>

@@ -1,21 +1,21 @@
-﻿@using GrizzTime.Models
-@model business
+﻿@model GrizzTime.Models.business
 
 @{
-    ViewBag.Title = "Registration";
+    ViewBag.Title = "Edit business";
 }
 
-<h2>Register your Business Account</h2>
-
+<h2>Edit</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    
 <div class="form-horizontal">
-    <h4>Create Business Account</h4>
+    <h4>Edit Business</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.UserID)
+
     <div class="form-group">
         @Html.Label("Email Address:", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -28,7 +28,7 @@
     <div class="form-group">
         @Html.Label("Password:", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @class = "form-control", @type="password" } })
+            @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
             @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -57,20 +57,14 @@
         </div>
     </div>
 
-    @Html.HiddenFor(model => model.UserStatus, new {Value = "Registered" })
-
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
 </div>
 }
 
 <div>
-    <p><a href="/home/index">Back to Home &raquo;</a></p>
+    @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
