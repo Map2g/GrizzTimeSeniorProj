@@ -13,10 +13,10 @@ namespace GrizzTime.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class GrizzTimeEntities5 : DbContext
+    public partial class Entities : DbContext
     {
-        public GrizzTimeEntities5()
-            : base("name=GrizzTimeEntities5")
+        public Entities()
+            : base("name=Entities")
         {
         }
     
