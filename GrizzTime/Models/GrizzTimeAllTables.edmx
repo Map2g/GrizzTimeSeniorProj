@@ -1,0 +1,1035 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GrizzTime_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="business">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="UserPW" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="BusName" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="BusDesc" Type="nvarchar" MaxLength="200" />
+          <Property Name="BusAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RememberMe" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="UserPW" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="EmpFName" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="EmpLName" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="EmpType" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="BusCode" Type="int" Nullable="false" />
+          <Property Name="EmpPayRate" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="EmpPhone" Type="nvarchar" MaxLength="10" />
+          <Property Name="RememberMe" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employee_project">
+          <Key>
+            <PropertyRef Name="ContProjID" />
+          </Key>
+          <Property Name="ContProjID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+          <Property Name="ProjID" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" />
+        </EntityType>
+        <EntityType Name="emppayrate_history">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="PayStartDate" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PayStartDate" Type="date" Nullable="false" />
+          <Property Name="EmpPayRate" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="ChangedBy" Type="nvarchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="emptype_history">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="TypeStartDate" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="TypeStartDate" Type="date" Nullable="false" />
+          <Property Name="EmpType" Type="nvarchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="expenseentry">
+          <Key>
+            <PropertyRef Name="ExpEntryID" />
+          </Key>
+          <Property Name="ExpEntryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+          <Property Name="ProjID" Type="int" Nullable="false" />
+          <Property Name="ExpDate" Type="date" Nullable="false" />
+          <Property Name="ExpDollarAmt" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="ExpType" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="ExpSheetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="expensesheet">
+          <Key>
+            <PropertyRef Name="ExpSheetID" />
+          </Key>
+          <Property Name="ExpSheetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PayrollCycleID" Type="int" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+          <Property Name="ExpSheetStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="ExpSheetTotalAmt" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="ExpSheetSubmitTime" Type="datetime" />
+          <Property Name="ExpSheetApproveTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="payrollcycle">
+          <Key>
+            <PropertyRef Name="PayrollCycleID" />
+          </Key>
+          <Property Name="PayrollCycleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PayrollCycleYear" Type="smallint" Nullable="false" />
+          <Property Name="PayrollCycleStart" Type="date" Nullable="false" />
+          <Property Name="PayrollCycleEnd" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="ProjID" />
+          </Key>
+          <Property Name="ProjID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjName" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="ProjDesc" Type="nvarchar" MaxLength="200" />
+          <Property Name="ProjStartDate" Type="date" Nullable="false" />
+          <Property Name="ProjStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="ProjEndDate" Type="date" />
+          <Property Name="ProjManagerID" Type="int" />
+        </EntityType>
+        <EntityType Name="ptorequest">
+          <Key>
+            <PropertyRef Name="PTORequestID" />
+          </Key>
+          <Property Name="PTORequestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PTORequestStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="PTORequestHrTot" Type="decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="PTORequestSubmitDate" Type="date" />
+          <Property Name="PTORequestApproveDate" Type="nvarchar" MaxLength="45" />
+          <Property Name="PTORequestReason" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ptorequestdays">
+          <Key>
+            <PropertyRef Name="PTORequestDaysID" />
+          </Key>
+          <Property Name="PTORequestDaysID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PTORequestID" Type="int" Nullable="false" />
+          <Property Name="PTORequestDay" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="timesheet">
+          <Key>
+            <PropertyRef Name="TimeSheetID" />
+          </Key>
+          <Property Name="TimeSheetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PayrollCycleID" Type="int" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+          <Property Name="TimeSheetStatus" Type="nvarchar" MaxLength="45" />
+          <Property Name="TimeSheetTotalHr" Type="decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="TimeSheetSubmitTime" Type="datetime" />
+          <Property Name="TimeSheetApproveTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="workentry">
+          <Key>
+            <PropertyRef Name="WorkEntryID" />
+          </Key>
+          <Property Name="WorkEntryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+          <Property Name="ProjID" Type="int" Nullable="false" />
+          <Property Name="WorkDate" Type="date" Nullable="false" />
+          <Property Name="WorkHours" Type="decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="WorkType" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="TimeSheetID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="employee_project$EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employee_project" Type="Self.employee_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee_project">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="employee_project$ProjID">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="employee_project" Type="Self.employee_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="ProjID" />
+            </Principal>
+            <Dependent Role="employee_project">
+              <PropertyRef Name="ProjID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="emppayrate_history$FK_PayHist_UserID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="emppayrate_history" Type="Self.emppayrate_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="emppayrate_history">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="emptype_history$UserID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="emptype_history" Type="Self.emptype_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="emptype_history">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="expenseentry$ExpSheetID">
+          <End Role="expensesheet" Type="Self.expensesheet" Multiplicity="1" />
+          <End Role="expenseentry" Type="Self.expenseentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="expensesheet">
+              <PropertyRef Name="ExpSheetID" />
+            </Principal>
+            <Dependent Role="expenseentry">
+              <PropertyRef Name="ExpSheetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="expensesheet$FK_ExpSheet_EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="expensesheet" Type="Self.expensesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="expensesheet">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="expensesheet$PayrollCycleID">
+          <End Role="payrollcycle" Type="Self.payrollcycle" Multiplicity="1" />
+          <End Role="expensesheet" Type="Self.expensesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="payrollcycle">
+              <PropertyRef Name="PayrollCycleID" />
+            </Principal>
+            <Dependent Role="expensesheet">
+              <PropertyRef Name="PayrollCycleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__employee__BusCod__55F4C372">
+          <End Role="business" Type="Self.business" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="business">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="BusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="project$ProjManagerID">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="ProjManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ptorequest$FK_PTO_EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="ptorequest" Type="Self.ptorequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ptorequest">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ptorequestdays$PTORequestID">
+          <End Role="ptorequest" Type="Self.ptorequest" Multiplicity="1" />
+          <End Role="ptorequestdays" Type="Self.ptorequestdays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ptorequest">
+              <PropertyRef Name="PTORequestID" />
+            </Principal>
+            <Dependent Role="ptorequestdays">
+              <PropertyRef Name="PTORequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="timesheet$FK_Time_PayrollCycleID">
+          <End Role="payrollcycle" Type="Self.payrollcycle" Multiplicity="1" />
+          <End Role="timesheet" Type="Self.timesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="payrollcycle">
+              <PropertyRef Name="PayrollCycleID" />
+            </Principal>
+            <Dependent Role="timesheet">
+              <PropertyRef Name="PayrollCycleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="timesheet$FK_TimeSheet_EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="timesheet" Type="Self.timesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="timesheet">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="workentry$TimeSheetID">
+          <End Role="timesheet" Type="Self.timesheet" Multiplicity="1" />
+          <End Role="workentry" Type="Self.workentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="timesheet">
+              <PropertyRef Name="TimeSheetID" />
+            </Principal>
+            <Dependent Role="workentry">
+              <PropertyRef Name="TimeSheetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GrizzTime_dbModelStoreContainer">
+          <EntitySet Name="business" EntityType="Self.business" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="employee_project" EntityType="Self.employee_project" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="emppayrate_history" EntityType="Self.emppayrate_history" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="emptype_history" EntityType="Self.emptype_history" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="expenseentry" EntityType="Self.expenseentry" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="expensesheet" EntityType="Self.expensesheet" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="payrollcycle" EntityType="Self.payrollcycle" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="project" EntityType="Self.project" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="ptorequest" EntityType="Self.ptorequest" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="ptorequestdays" EntityType="Self.ptorequestdays" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="timesheet" EntityType="Self.timesheet" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="grizztime" store:Type="Tables" />
+          <EntitySet Name="workentry" EntityType="Self.workentry" Schema="grizztime" store:Type="Tables" />
+          <AssociationSet Name="employee_project$EmpID" Association="Self.employee_project$EmpID">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employee_project" EntitySet="employee_project" />
+          </AssociationSet>
+          <AssociationSet Name="employee_project$ProjID" Association="Self.employee_project$ProjID">
+            <End Role="project" EntitySet="project" />
+            <End Role="employee_project" EntitySet="employee_project" />
+          </AssociationSet>
+          <AssociationSet Name="emppayrate_history$FK_PayHist_UserID" Association="Self.emppayrate_history$FK_PayHist_UserID">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="emppayrate_history" EntitySet="emppayrate_history" />
+          </AssociationSet>
+          <AssociationSet Name="emptype_history$UserID" Association="Self.emptype_history$UserID">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="emptype_history" EntitySet="emptype_history" />
+          </AssociationSet>
+          <AssociationSet Name="expenseentry$ExpSheetID" Association="Self.expenseentry$ExpSheetID">
+            <End Role="expensesheet" EntitySet="expensesheet" />
+            <End Role="expenseentry" EntitySet="expenseentry" />
+          </AssociationSet>
+          <AssociationSet Name="expensesheet$FK_ExpSheet_EmpID" Association="Self.expensesheet$FK_ExpSheet_EmpID">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="expensesheet" EntitySet="expensesheet" />
+          </AssociationSet>
+          <AssociationSet Name="expensesheet$PayrollCycleID" Association="Self.expensesheet$PayrollCycleID">
+            <End Role="payrollcycle" EntitySet="payrollcycle" />
+            <End Role="expensesheet" EntitySet="expensesheet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__employee__BusCod__55F4C372" Association="Self.FK__employee__BusCod__55F4C372">
+            <End Role="business" EntitySet="business" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="project$ProjManagerID" Association="Self.project$ProjManagerID">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="ptorequest$FK_PTO_EmpID" Association="Self.ptorequest$FK_PTO_EmpID">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="ptorequest" EntitySet="ptorequest" />
+          </AssociationSet>
+          <AssociationSet Name="ptorequestdays$PTORequestID" Association="Self.ptorequestdays$PTORequestID">
+            <End Role="ptorequest" EntitySet="ptorequest" />
+            <End Role="ptorequestdays" EntitySet="ptorequestdays" />
+          </AssociationSet>
+          <AssociationSet Name="timesheet$FK_Time_PayrollCycleID" Association="Self.timesheet$FK_Time_PayrollCycleID">
+            <End Role="payrollcycle" EntitySet="payrollcycle" />
+            <End Role="timesheet" EntitySet="timesheet" />
+          </AssociationSet>
+          <AssociationSet Name="timesheet$FK_TimeSheet_EmpID" Association="Self.timesheet$FK_TimeSheet_EmpID">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="timesheet" EntitySet="timesheet" />
+          </AssociationSet>
+          <AssociationSet Name="workentry$TimeSheetID" Association="Self.workentry$TimeSheetID">
+            <End Role="timesheet" EntitySet="timesheet" />
+            <End Role="workentry" EntitySet="workentry" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GrizzTime_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="business">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserEmail" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BusName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BusDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BusAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK__employee__BusCod__55F4C372" FromRole="business" ToRole="employee" />
+          <Property Name="RememberMe" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserEmail" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpFName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpLName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpType" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BusCode" Type="Int32" Nullable="false" />
+          <Property Name="EmpPayRate" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="EmpPhone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="business" Relationship="Self.FK__employee__BusCod__55F4C372" FromRole="employee" ToRole="business" />
+          <NavigationProperty Name="employee_project" Relationship="Self.employee_project_EmpID" FromRole="employee" ToRole="employee_project" />
+          <NavigationProperty Name="emppayrate_history" Relationship="Self.emppayrate_history_FK_PayHist_UserID" FromRole="employee" ToRole="emppayrate_history" />
+          <NavigationProperty Name="emptype_history" Relationship="Self.emptype_history_UserID" FromRole="employee" ToRole="emptype_history" />
+          <NavigationProperty Name="expensesheets" Relationship="Self.expensesheet_FK_ExpSheet_EmpID" FromRole="employee" ToRole="expensesheet" />
+          <NavigationProperty Name="projects" Relationship="Self.project_ProjManagerID" FromRole="employee" ToRole="project" />
+          <NavigationProperty Name="ptorequests" Relationship="Self.ptorequest_FK_PTO_EmpID" FromRole="employee" ToRole="ptorequest" />
+          <NavigationProperty Name="timesheets" Relationship="Self.timesheet_FK_TimeSheet_EmpID" FromRole="employee" ToRole="timesheet" />
+          <Property Name="RememberMe" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employee_project">
+          <Key>
+            <PropertyRef Name="ContProjID" />
+          </Key>
+          <Property Name="ContProjID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <Property Name="ProjID" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="employee" Relationship="Self.employee_project_EmpID" FromRole="employee_project" ToRole="employee" />
+          <NavigationProperty Name="project" Relationship="Self.employee_project_ProjID" FromRole="employee_project" ToRole="project" />
+        </EntityType>
+        <EntityType Name="emppayrate_history">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="PayStartDate" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PayStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EmpPayRate" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="ChangedBy" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="employee" Relationship="Self.emppayrate_history_FK_PayHist_UserID" FromRole="emppayrate_history" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="emptype_history">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="TypeStartDate" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="TypeStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EmpType" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="employee" Relationship="Self.emptype_history_UserID" FromRole="emptype_history" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="expenseentry">
+          <Key>
+            <PropertyRef Name="ExpEntryID" />
+          </Key>
+          <Property Name="ExpEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <Property Name="ProjID" Type="Int32" Nullable="false" />
+          <Property Name="ExpDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ExpDollarAmt" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="ExpType" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ExpSheetID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="expensesheet" Relationship="Self.expenseentry_ExpSheetID" FromRole="expenseentry" ToRole="expensesheet" />
+        </EntityType>
+        <EntityType Name="expensesheet">
+          <Key>
+            <PropertyRef Name="ExpSheetID" />
+          </Key>
+          <Property Name="ExpSheetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PayrollCycleID" Type="Int32" Nullable="false" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <Property Name="ExpSheetStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ExpSheetTotalAmt" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="ExpSheetSubmitTime" Type="DateTime" Precision="3" />
+          <Property Name="ExpSheetApproveTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="employee" Relationship="Self.expensesheet_FK_ExpSheet_EmpID" FromRole="expensesheet" ToRole="employee" />
+          <NavigationProperty Name="expenseentries" Relationship="Self.expenseentry_ExpSheetID" FromRole="expensesheet" ToRole="expenseentry" />
+          <NavigationProperty Name="payrollcycle" Relationship="Self.expensesheet_PayrollCycleID" FromRole="expensesheet" ToRole="payrollcycle" />
+        </EntityType>
+        <EntityType Name="payrollcycle">
+          <Key>
+            <PropertyRef Name="PayrollCycleID" />
+          </Key>
+          <Property Name="PayrollCycleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PayrollCycleYear" Type="Int16" Nullable="false" />
+          <Property Name="PayrollCycleStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PayrollCycleEnd" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="expensesheets" Relationship="Self.expensesheet_PayrollCycleID" FromRole="payrollcycle" ToRole="expensesheet" />
+          <NavigationProperty Name="timesheets" Relationship="Self.timesheet_FK_Time_PayrollCycleID" FromRole="payrollcycle" ToRole="timesheet" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="ProjID" />
+          </Key>
+          <Property Name="ProjID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProjDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProjStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ProjStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProjEndDate" Type="DateTime" Precision="0" />
+          <Property Name="ProjManagerID" Type="Int32" />
+          <NavigationProperty Name="employee" Relationship="Self.project_ProjManagerID" FromRole="project" ToRole="employee" />
+          <NavigationProperty Name="employee_project" Relationship="Self.employee_project_ProjID" FromRole="project" ToRole="employee_project" />
+        </EntityType>
+        <EntityType Name="ptorequest">
+          <Key>
+            <PropertyRef Name="PTORequestID" />
+          </Key>
+          <Property Name="PTORequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PTORequestStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PTORequestHrTot" Type="Decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="PTORequestSubmitDate" Type="DateTime" Precision="0" />
+          <Property Name="PTORequestApproveDate" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="PTORequestReason" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="employee" Relationship="Self.ptorequest_FK_PTO_EmpID" FromRole="ptorequest" ToRole="employee" />
+          <NavigationProperty Name="ptorequestdays" Relationship="Self.ptorequestdays_PTORequestID" FromRole="ptorequest" ToRole="ptorequestdays" />
+        </EntityType>
+        <EntityType Name="ptorequestday">
+          <Key>
+            <PropertyRef Name="PTORequestDaysID" />
+          </Key>
+          <Property Name="PTORequestDaysID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PTORequestID" Type="Int32" Nullable="false" />
+          <Property Name="PTORequestDay1" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="ptorequest" Relationship="Self.ptorequestdays_PTORequestID" FromRole="ptorequestdays" ToRole="ptorequest" />
+        </EntityType>
+        <EntityType Name="timesheet">
+          <Key>
+            <PropertyRef Name="TimeSheetID" />
+          </Key>
+          <Property Name="TimeSheetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PayrollCycleID" Type="Int32" Nullable="false" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <Property Name="TimeSheetStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TimeSheetTotalHr" Type="Decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="TimeSheetSubmitTime" Type="DateTime" Precision="3" />
+          <Property Name="TimeSheetApproveTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="employee" Relationship="Self.timesheet_FK_TimeSheet_EmpID" FromRole="timesheet" ToRole="employee" />
+          <NavigationProperty Name="payrollcycle" Relationship="Self.timesheet_FK_Time_PayrollCycleID" FromRole="timesheet" ToRole="payrollcycle" />
+          <NavigationProperty Name="workentries" Relationship="Self.workentry_TimeSheetID" FromRole="timesheet" ToRole="workentry" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="workentry">
+          <Key>
+            <PropertyRef Name="WorkEntryID" />
+          </Key>
+          <Property Name="WorkEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <Property Name="ProjID" Type="Int32" Nullable="false" />
+          <Property Name="WorkDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="WorkHours" Type="Decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="WorkType" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TimeSheetID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="timesheet" Relationship="Self.workentry_TimeSheetID" FromRole="workentry" ToRole="timesheet" />
+        </EntityType>
+        <Association Name="FK__employee__BusCod__55F4C372">
+          <End Role="business" Type="Self.business" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="business">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="BusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="employee_project_EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employee_project" Type="Self.employee_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee_project">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="emppayrate_history_FK_PayHist_UserID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="emppayrate_history" Type="Self.emppayrate_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="emppayrate_history">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="emptype_history_UserID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="emptype_history" Type="Self.emptype_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="emptype_history">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="expensesheet_FK_ExpSheet_EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="expensesheet" Type="Self.expensesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="expensesheet">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="project_ProjManagerID">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="ProjManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ptorequest_FK_PTO_EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="ptorequest" Type="Self.ptorequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ptorequest">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="timesheet_FK_TimeSheet_EmpID">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="timesheet" Type="Self.timesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="timesheet">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="employee_project_ProjID">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="employee_project" Type="Self.employee_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="ProjID" />
+            </Principal>
+            <Dependent Role="employee_project">
+              <PropertyRef Name="ProjID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="expenseentry_ExpSheetID">
+          <End Role="expensesheet" Type="Self.expensesheet" Multiplicity="1" />
+          <End Role="expenseentry" Type="Self.expenseentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="expensesheet">
+              <PropertyRef Name="ExpSheetID" />
+            </Principal>
+            <Dependent Role="expenseentry">
+              <PropertyRef Name="ExpSheetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="expensesheet_PayrollCycleID">
+          <End Role="payrollcycle" Type="Self.payrollcycle" Multiplicity="1" />
+          <End Role="expensesheet" Type="Self.expensesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="payrollcycle">
+              <PropertyRef Name="PayrollCycleID" />
+            </Principal>
+            <Dependent Role="expensesheet">
+              <PropertyRef Name="PayrollCycleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="timesheet_FK_Time_PayrollCycleID">
+          <End Role="payrollcycle" Type="Self.payrollcycle" Multiplicity="1" />
+          <End Role="timesheet" Type="Self.timesheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="payrollcycle">
+              <PropertyRef Name="PayrollCycleID" />
+            </Principal>
+            <Dependent Role="timesheet">
+              <PropertyRef Name="PayrollCycleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ptorequestdays_PTORequestID">
+          <End Role="ptorequest" Type="Self.ptorequest" Multiplicity="1" />
+          <End Role="ptorequestdays" Type="Self.ptorequestday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ptorequest">
+              <PropertyRef Name="PTORequestID" />
+            </Principal>
+            <Dependent Role="ptorequestdays">
+              <PropertyRef Name="PTORequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="workentry_TimeSheetID">
+          <End Role="timesheet" Type="Self.timesheet" Multiplicity="1" />
+          <End Role="workentry" Type="Self.workentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="timesheet">
+              <PropertyRef Name="TimeSheetID" />
+            </Principal>
+            <Dependent Role="workentry">
+              <PropertyRef Name="TimeSheetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="businesses" EntityType="Self.business" />
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="employee_project" EntityType="Self.employee_project" />
+          <EntitySet Name="emppayrate_history" EntityType="Self.emppayrate_history" />
+          <EntitySet Name="emptype_history" EntityType="Self.emptype_history" />
+          <EntitySet Name="expenseentries" EntityType="Self.expenseentry" />
+          <EntitySet Name="expensesheets" EntityType="Self.expensesheet" />
+          <EntitySet Name="payrollcycles" EntityType="Self.payrollcycle" />
+          <EntitySet Name="projects" EntityType="Self.project" />
+          <EntitySet Name="ptorequests" EntityType="Self.ptorequest" />
+          <EntitySet Name="ptorequestdays" EntityType="Self.ptorequestday" />
+          <EntitySet Name="timesheets" EntityType="Self.timesheet" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="workentries" EntityType="Self.workentry" />
+          <AssociationSet Name="FK__employee__BusCod__55F4C372" Association="Self.FK__employee__BusCod__55F4C372">
+            <End Role="business" EntitySet="businesses" />
+            <End Role="employee" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="employee_project_EmpID" Association="Self.employee_project_EmpID">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="employee_project" EntitySet="employee_project" />
+          </AssociationSet>
+          <AssociationSet Name="emppayrate_history_FK_PayHist_UserID" Association="Self.emppayrate_history_FK_PayHist_UserID">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="emppayrate_history" EntitySet="emppayrate_history" />
+          </AssociationSet>
+          <AssociationSet Name="emptype_history_UserID" Association="Self.emptype_history_UserID">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="emptype_history" EntitySet="emptype_history" />
+          </AssociationSet>
+          <AssociationSet Name="expensesheet_FK_ExpSheet_EmpID" Association="Self.expensesheet_FK_ExpSheet_EmpID">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="expensesheet" EntitySet="expensesheets" />
+          </AssociationSet>
+          <AssociationSet Name="project_ProjManagerID" Association="Self.project_ProjManagerID">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="project" EntitySet="projects" />
+          </AssociationSet>
+          <AssociationSet Name="ptorequest_FK_PTO_EmpID" Association="Self.ptorequest_FK_PTO_EmpID">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="ptorequest" EntitySet="ptorequests" />
+          </AssociationSet>
+          <AssociationSet Name="timesheet_FK_TimeSheet_EmpID" Association="Self.timesheet_FK_TimeSheet_EmpID">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="timesheet" EntitySet="timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="employee_project_ProjID" Association="Self.employee_project_ProjID">
+            <End Role="project" EntitySet="projects" />
+            <End Role="employee_project" EntitySet="employee_project" />
+          </AssociationSet>
+          <AssociationSet Name="expenseentry_ExpSheetID" Association="Self.expenseentry_ExpSheetID">
+            <End Role="expensesheet" EntitySet="expensesheets" />
+            <End Role="expenseentry" EntitySet="expenseentries" />
+          </AssociationSet>
+          <AssociationSet Name="expensesheet_PayrollCycleID" Association="Self.expensesheet_PayrollCycleID">
+            <End Role="payrollcycle" EntitySet="payrollcycles" />
+            <End Role="expensesheet" EntitySet="expensesheets" />
+          </AssociationSet>
+          <AssociationSet Name="timesheet_FK_Time_PayrollCycleID" Association="Self.timesheet_FK_Time_PayrollCycleID">
+            <End Role="payrollcycle" EntitySet="payrollcycles" />
+            <End Role="timesheet" EntitySet="timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="ptorequestdays_PTORequestID" Association="Self.ptorequestdays_PTORequestID">
+            <End Role="ptorequest" EntitySet="ptorequests" />
+            <End Role="ptorequestdays" EntitySet="ptorequestdays" />
+          </AssociationSet>
+          <AssociationSet Name="workentry_TimeSheetID" Association="Self.workentry_TimeSheetID">
+            <End Role="timesheet" EntitySet="timesheets" />
+            <End Role="workentry" EntitySet="workentries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GrizzTime_dbModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="businesses">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.business">
+              <MappingFragment StoreEntitySet="business">
+                <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserPW" ColumnName="UserPW" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="BusName" ColumnName="BusName" />
+                <ScalarProperty Name="BusDesc" ColumnName="BusDesc" />
+                <ScalarProperty Name="BusAddress" ColumnName="BusAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserPW" ColumnName="UserPW" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="EmpFName" ColumnName="EmpFName" />
+                <ScalarProperty Name="EmpLName" ColumnName="EmpLName" />
+                <ScalarProperty Name="EmpType" ColumnName="EmpType" />
+                <ScalarProperty Name="BusCode" ColumnName="BusCode" />
+                <ScalarProperty Name="EmpPayRate" ColumnName="EmpPayRate" />
+                <ScalarProperty Name="EmpPhone" ColumnName="EmpPhone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employee_project">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.employee_project">
+              <MappingFragment StoreEntitySet="employee_project">
+                <ScalarProperty Name="ContProjID" ColumnName="ContProjID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="ProjID" ColumnName="ProjID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="emppayrate_history">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.emppayrate_history">
+              <MappingFragment StoreEntitySet="emppayrate_history">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PayStartDate" ColumnName="PayStartDate" />
+                <ScalarProperty Name="EmpPayRate" ColumnName="EmpPayRate" />
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="emptype_history">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.emptype_history">
+              <MappingFragment StoreEntitySet="emptype_history">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TypeStartDate" ColumnName="TypeStartDate" />
+                <ScalarProperty Name="EmpType" ColumnName="EmpType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="expenseentries">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.expenseentry">
+              <MappingFragment StoreEntitySet="expenseentry">
+                <ScalarProperty Name="ExpEntryID" ColumnName="ExpEntryID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="ProjID" ColumnName="ProjID" />
+                <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+                <ScalarProperty Name="ExpDollarAmt" ColumnName="ExpDollarAmt" />
+                <ScalarProperty Name="ExpType" ColumnName="ExpType" />
+                <ScalarProperty Name="ExpSheetID" ColumnName="ExpSheetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="expensesheets">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.expensesheet">
+              <MappingFragment StoreEntitySet="expensesheet">
+                <ScalarProperty Name="ExpSheetID" ColumnName="ExpSheetID" />
+                <ScalarProperty Name="PayrollCycleID" ColumnName="PayrollCycleID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="ExpSheetStatus" ColumnName="ExpSheetStatus" />
+                <ScalarProperty Name="ExpSheetTotalAmt" ColumnName="ExpSheetTotalAmt" />
+                <ScalarProperty Name="ExpSheetSubmitTime" ColumnName="ExpSheetSubmitTime" />
+                <ScalarProperty Name="ExpSheetApproveTime" ColumnName="ExpSheetApproveTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="payrollcycles">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.payrollcycle">
+              <MappingFragment StoreEntitySet="payrollcycle">
+                <ScalarProperty Name="PayrollCycleID" ColumnName="PayrollCycleID" />
+                <ScalarProperty Name="PayrollCycleYear" ColumnName="PayrollCycleYear" />
+                <ScalarProperty Name="PayrollCycleStart" ColumnName="PayrollCycleStart" />
+                <ScalarProperty Name="PayrollCycleEnd" ColumnName="PayrollCycleEnd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="projects">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.project">
+              <MappingFragment StoreEntitySet="project">
+                <ScalarProperty Name="ProjID" ColumnName="ProjID" />
+                <ScalarProperty Name="ProjName" ColumnName="ProjName" />
+                <ScalarProperty Name="ProjDesc" ColumnName="ProjDesc" />
+                <ScalarProperty Name="ProjStartDate" ColumnName="ProjStartDate" />
+                <ScalarProperty Name="ProjStatus" ColumnName="ProjStatus" />
+                <ScalarProperty Name="ProjEndDate" ColumnName="ProjEndDate" />
+                <ScalarProperty Name="ProjManagerID" ColumnName="ProjManagerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ptorequests">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.ptorequest">
+              <MappingFragment StoreEntitySet="ptorequest">
+                <ScalarProperty Name="PTORequestID" ColumnName="PTORequestID" />
+                <ScalarProperty Name="PTORequestStatus" ColumnName="PTORequestStatus" />
+                <ScalarProperty Name="PTORequestHrTot" ColumnName="PTORequestHrTot" />
+                <ScalarProperty Name="PTORequestSubmitDate" ColumnName="PTORequestSubmitDate" />
+                <ScalarProperty Name="PTORequestApproveDate" ColumnName="PTORequestApproveDate" />
+                <ScalarProperty Name="PTORequestReason" ColumnName="PTORequestReason" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ptorequestdays">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.ptorequestday">
+              <MappingFragment StoreEntitySet="ptorequestdays">
+                <ScalarProperty Name="PTORequestDaysID" ColumnName="PTORequestDaysID" />
+                <ScalarProperty Name="PTORequestID" ColumnName="PTORequestID" />
+                <ScalarProperty Name="PTORequestDay1" ColumnName="PTORequestDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="timesheets">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.timesheet">
+              <MappingFragment StoreEntitySet="timesheet">
+                <ScalarProperty Name="TimeSheetID" ColumnName="TimeSheetID" />
+                <ScalarProperty Name="PayrollCycleID" ColumnName="PayrollCycleID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="TimeSheetStatus" ColumnName="TimeSheetStatus" />
+                <ScalarProperty Name="TimeSheetTotalHr" ColumnName="TimeSheetTotalHr" />
+                <ScalarProperty Name="TimeSheetSubmitTime" ColumnName="TimeSheetSubmitTime" />
+                <ScalarProperty Name="TimeSheetApproveTime" ColumnName="TimeSheetApproveTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="workentries">
+            <EntityTypeMapping TypeName="GrizzTime_dbModel.workentry">
+              <MappingFragment StoreEntitySet="workentry">
+                <ScalarProperty Name="WorkEntryID" ColumnName="WorkEntryID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="ProjID" ColumnName="ProjID" />
+                <ScalarProperty Name="WorkDate" ColumnName="WorkDate" />
+                <ScalarProperty Name="WorkHours" ColumnName="WorkHours" />
+                <ScalarProperty Name="WorkType" ColumnName="WorkType" />
+                <ScalarProperty Name="TimeSheetID" ColumnName="TimeSheetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
