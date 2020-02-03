@@ -9,6 +9,7 @@ using System.Web.Security;
 using System.Data.SqlClient;
 using System.Data;
 using GrizzTime.Models;
+using System.Text;
 
 namespace GrizzTime.Controllers
 {
@@ -66,6 +67,7 @@ namespace GrizzTime.Controllers
                 //Save to Database
                 using (dc)
                 {
+                    employee.UserPW = Hash(employee.UserPW);
                     dc.employees.Add(employee);
                     try
                     {
@@ -260,6 +262,12 @@ namespace GrizzTime.Controllers
                 IsBodyHtml = true
             })
                 smtp.Send(message);
+        }
+        public static  string Hash(string value)
+        {
+            return Convert.ToBase64String(
+            System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(value))
+                );
         }
     }
     
