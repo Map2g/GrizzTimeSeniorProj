@@ -14,13 +14,22 @@ namespace GrizzTime.Models
     
     public partial class business
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public business()
+        {
+            this.employees = new HashSet<employee>();
+        }
+    
         public int UserID { get; set; }
         public string UserEmail { get; set; }
         public string UserPW { get; set; }
         public string UserStatus { get; set; }
-        public int BusCode { get; set; }
         public string BusName { get; set; }
         public string BusDesc { get; set; }
         public string BusAddress { get; set; }
+        public bool RememberMe { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<employee> employees { get; set; }
     }
 }

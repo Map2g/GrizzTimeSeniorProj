@@ -1,0 +1,66 @@
+﻿@model IEnumerable<GrizzTime.Models.employee>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("UserEmail")
+        </th>
+        <th>
+            @Html.DisplayName("UserPW")
+        </th>
+        <th>
+            @Html.DisplayName("EmpFName")
+        </th>
+        <th>
+            @Html.DisplayName("EmpLName")
+        </th>
+        <th>
+            @Html.DisplayName("EmpPhone")
+        </th>
+        <th>
+            @Html.DisplayName("Business")
+        </th>
+        <th>
+            @Html.DisplayName("EmpType")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserPW)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpFName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpLName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BusCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpType)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.UserID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.UserID })
+        </td>
+    </tr>
+}
+
+</table>

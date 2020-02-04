@@ -128,68 +128,69 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\business.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\employee.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\employee_project.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\emppayrate_history.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\emptype_history.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\expenseentry.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\expensesheet.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.Context.cs">
+    <Compile Include="Models\GrizzTimeAllTables.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.cs">
+    <Compile Include="Models\GrizzTimeAllTables.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
+    <Compile Include="Models\GrizzTimeAllTables.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\payrollcycle.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\project.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ptorequest.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ptorequestday.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\timesheet.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\workentry.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -202,24 +203,24 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Model1.Context.tt">
+    <Content Include="Models\GrizzTimeAllTables.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+      <DependentUpon>GrizzTimeAllTables.edmx</DependentUpon>
+      <LastGenOutput>GrizzTimeAllTables.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Model1.tt">
+    <Content Include="Models\GrizzTimeAllTables.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
+      <DependentUpon>GrizzTimeAllTables.edmx</DependentUpon>
+      <LastGenOutput>GrizzTimeAllTables.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\Model1.edmx">
+    <EntityDeploy Include="Models\GrizzTimeAllTables.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>GrizzTimeAllTables.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
+    <Content Include="Models\GrizzTimeAllTables.edmx.diagram">
+      <DependentUpon>GrizzTimeAllTables.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\GrizzTime - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -249,16 +250,19 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\User\Registration.cshtml" />
-    <Content Include="Views\User\Login.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Employee\Registration.cshtml" />
+    <Content Include="Views\Employee\Login.cshtml" />
+    <Content Include="Views\Employee\Edit.cshtml" />
+    <Content Include="Views\Employee\CreateBusiness.cshtml" />
+    <Content Include="Views\Employee\Details.cshtml" />
+    <Content Include="Views\Business\Registration.cshtml" />
+    <Content Include="Views\Business\Login.cshtml" />
+    <Content Include="Views\Business\Details.cshtml" />
+    <Content Include="Views\Business\Edit.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
-    <Content Include="Views\User\CreateBusiness.cshtml" />
-    <Content Include="Views\User\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Details\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

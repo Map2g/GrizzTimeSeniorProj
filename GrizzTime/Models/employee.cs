@@ -11,7 +11,8 @@ namespace GrizzTime.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class employee
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,7 +26,31 @@ namespace GrizzTime.Models
             this.ptorequests = new HashSet<ptorequest>();
             this.timesheets = new HashSet<timesheet>();
         }
-    
+
+        public enum JobType
+        {
+            [Description("President")]
+            President,
+            [Description("CEO")]
+            CEO,
+            [Description("CTO")]
+            CTO,
+            [Description("CIO")]
+            CIO,
+            [Description("CFO")]
+            CFO,
+            [Description("Director")]
+            Director,
+            [Description("Project Manager")]
+            ProjectManager,
+            [Description("Technology Lead")]
+            TechnologyLead,
+            [Description("Software Engineer")]
+            SoftwareEngineer,
+            [Description("Intern")]
+            Intern
+        }
+
         public int UserID { get; set; }
         public string UserEmail { get; set; }
         public string UserPW { get; set; }
@@ -35,7 +60,10 @@ namespace GrizzTime.Models
         public string EmpType { get; set; }
         public int BusCode { get; set; }
         public decimal EmpPayRate { get; set; }
+        public string EmpPhone { get; set; }
+        public bool RememberMe { get; set; }
     
+        public virtual business business { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<employee_project> employee_project { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

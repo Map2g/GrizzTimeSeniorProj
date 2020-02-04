@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using GrizzTime.Models;
 
 namespace GrizzTime.Controllers
 {
@@ -28,18 +29,50 @@ namespace GrizzTime.Controllers
 
         // POST: Project/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(project project)
         {
-            try
+            bool Status = false;
+            string message = "";
+            //ensure that the model exists
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                //Check validity of business code
+                Entities dc = new Entities();
+                //Save to Database
+                using (dc)
+                {
+                    dc.projects.Add(project);
+                    try
+                    {
+                        dc.SaveChanges();
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        Exception exception = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
 
-                return RedirectToAction("Index");
+                                //create a new exception inserting the current one
+                                //as the InnerException
+                                exception = new InvalidOperationException(message1, exception);
+                            }
+                        }
+                        throw exception;
+                    }
+                }
             }
-            catch
+            else
             {
-                return View();
+                message = "Invalid Request";
             }
+            ViewBag.Message = message;
+            ViewBag.Status = Status;
+            return View();
         }
 
         // GET: Project/Edit/5

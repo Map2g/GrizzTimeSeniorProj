@@ -11,27 +11,14 @@ namespace GrizzTime.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Web;
-
+    
     public partial class User
     {
         public int UserID { get; set; }
         public string firstName { get; set; }
-        [Display(Name = "First name")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "first name required")]
         public string lastName { get; set; }
-        [Display(Name = "Last name")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "last name required")]
         public string email { get; set; }
-        [Display(Name = "Email")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "email required")]
         public string password { get; set; }
-        [Display(Name = "Password")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "password required")]
         public string phone { get; set; }
-        [Display(Name = "Phone")]
-        public bool RememberMe { get; set; }
     }
 }
