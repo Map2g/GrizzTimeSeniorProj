@@ -20,6 +20,13 @@ namespace GrizzTime.Controllers
         {
             return View();
         }
+
+        public ActionResult Dashboard(business business)
+        {
+            var thisBusiness = Session["id_test"];
+            return View();
+        }
+
         public ActionResult Registration()
         {
             return View();
@@ -66,15 +73,16 @@ namespace GrizzTime.Controllers
             return View();
         }
         [HttpPost]
+
         public ActionResult Login(business business, String ReturnUrl)
         {
             string message = "";
             using (Entities dc = new Entities())
             {
-                var v = dc.Users.Where(a => a.email == business.UserEmail).FirstOrDefault();
+                var v = dc.businesses.Where(a => a.UserEmail == business.UserEmail).FirstOrDefault();
                 if (v != null)
                 {
-                    if (string.Compare(business.UserPW, v.password) == 0)
+                    if (string.Compare(business.UserPW, v.UserPW) == 0)
                     {
                         bool LRememberMe = business.RememberMe;
                         int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
@@ -84,6 +92,9 @@ namespace GrizzTime.Controllers
                         cookie.Expires = DateTime.Now.AddMinutes(timeout);
                         cookie.HttpOnly = true;
                         Response.Cookies.Add(cookie);
+                        var id_test = business.UserID;
+                        Session["id_test"] = id_test;
+
 
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
@@ -91,7 +102,7 @@ namespace GrizzTime.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Dashboard", "Business", Session);
                         }
                     }
                 }

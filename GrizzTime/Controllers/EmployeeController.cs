@@ -120,10 +120,10 @@ namespace GrizzTime.Controllers
             string message = "";
             using (Entities dc = new Entities())
             {
-                var v = dc.Users.Where(a => a.email == employee.UserEmail).FirstOrDefault();
+                var v = dc.employees.Where(a => a.UserEmail == employee.UserEmail).FirstOrDefault();
                 if (v != null)
                 {
-                    if (string.Compare(employee.UserPW,v.password) == 0){
+                    if (string.Compare(employee.UserPW,v.UserPW) == 0){
                         bool LRememberMe = employee.RememberMe;
                         int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
                         var ticket = new FormsAuthenticationTicket(employee.UserEmail, LRememberMe, timeout);
@@ -157,7 +157,7 @@ namespace GrizzTime.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Login", "Employee");
         }
 
         // GET: User/Details/5

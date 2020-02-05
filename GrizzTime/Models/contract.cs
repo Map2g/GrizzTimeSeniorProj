@@ -15,41 +15,33 @@ namespace GrizzTime.Models
 using System;
     using System.Collections.Generic;
     
-public partial class project
+public partial class contract
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public project()
+    public contract()
     {
 
-        this.employee_project = new HashSet<employee_project>();
+        this.projects = new HashSet<project>();
 
     }
 
 
-    public int ProjID { get; set; }
-
-    public string ProjName { get; set; }
-
-    public string ProjDesc { get; set; }
-
-    public System.DateTime ProjStartDate { get; set; }
-
-    public string ProjStatus { get; set; }
-
-    public Nullable<System.DateTime> ProjEndDate { get; set; }
-
-    public Nullable<int> ProjManagerID { get; set; }
-
     public int ConID { get; set; }
 
+    public string ConName { get; set; }
 
+    public decimal ConAllottedHours { get; set; }
+
+    public int BusID { get; set; }
+
+
+
+    public virtual business business { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<employee_project> employee_project { get; set; }
-
-    public virtual contract contract { get; set; }
+    public virtual ICollection<project> projects { get; set; }
 
 }
 

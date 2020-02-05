@@ -138,6 +138,9 @@
     <Compile Include="Models\business.cs">
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\contract.cs">
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\employee.cs">
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
@@ -184,9 +187,6 @@
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\timesheet.cs">
-      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\User.cs">
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\workentry.cs">
@@ -260,6 +260,7 @@
     <Content Include="Views\Business\Details.cshtml" />
     <Content Include="Views\Business\Edit.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\Business\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,48 @@
+﻿@using GrizzTime.Models
+@model business
+
+@{
+    ViewBag.Title = "Dashboard";
+    var thisBusiness = Session["id_test"];
+}
+
+<h2>Business Dashboard</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Business Login - @thisBusiness</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Add an employee", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("userEmail", new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Job Title", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("jobTitle", new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        @Html.Hidden("businessID", new { thisBusiness })
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Login" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <p><a href="/home/index">Back to Home &raquo;</a></p>
+</div>
