@@ -39,9 +39,9 @@ public partial class project
 
     public Nullable<System.DateTime> ProjEndDate { get; set; }
 
-    public Nullable<int> ProjManagerID { get; set; }
-
     public int ConID { get; set; }
+
+    public int ProjManID { get; set; }
 
 
 
@@ -50,6 +50,8 @@ public partial class project
     public virtual ICollection<employee_project> employee_project { get; set; }
 
     public virtual contract contract { get; set; }
+
+    public virtual employee employee { get; set; }
 
 }
 

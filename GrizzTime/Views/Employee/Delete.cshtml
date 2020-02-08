@@ -1,0 +1,55 @@
+﻿@model GrizzTime.Models.employee
+
+<div>
+    <fieldset>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <div class="modal fade" tabindex="-1" id="loginModal"
+                         data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Confirmation</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    Are you sure you want to delete @Model.EmpFName @Model.EmpLName?
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    @using (Html.BeginForm())
+                                    {
+                                        <input name="confirmButton" type="submit" value="Delete" class="btn btn-primary button button4" />
+                                    }
+                                    <a href="/employee/details" type="button" class="btn btn-primary button button4">
+                                        Cancel
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+
+</script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //Always show modal when this page is called
+        $("#loginModal").modal('show');
+    });
+</script>
+

@@ -35,6 +35,7 @@
         <EntityTypeShape EntityType="GrizzTime_dbModel.contract" Width="1.5" PointX="0.875" PointY="4.375" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_Contract_Business" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_project_contract" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_projman_project" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

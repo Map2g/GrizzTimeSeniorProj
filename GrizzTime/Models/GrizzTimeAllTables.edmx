@@ -26,6 +26,7 @@
           <Property Name="ConName" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="ConAllottedHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="BusID" Type="int" Nullable="false" />
+          <Property Name="ConHoursRemaining" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="employee">
           <Key>
@@ -116,6 +117,7 @@
           <Property Name="ProjStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="ProjEndDate" Type="date" />
           <Property Name="ConID" Type="int" Nullable="false" />
+          <Property Name="ProjManID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ptorequest">
           <Key>
@@ -281,6 +283,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_projman_project">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="ProjManID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ptorequest$FK_PTO_EmpID">
           <End Role="employee" Type="Self.employee" Multiplicity="1" />
           <End Role="ptorequest" Type="Self.ptorequest" Multiplicity="*" />
@@ -396,6 +410,10 @@
             <End Role="contract" EntitySet="contract" />
             <End Role="project" EntitySet="project" />
           </AssociationSet>
+          <AssociationSet Name="FK_projman_project" Association="Self.FK_projman_project">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
           <AssociationSet Name="ptorequest$FK_PTO_EmpID" Association="Self.ptorequest$FK_PTO_EmpID">
             <End Role="employee" EntitySet="employee" />
             <End Role="ptorequest" EntitySet="ptorequest" />
@@ -458,6 +476,7 @@
           <NavigationProperty Name="ptorequests" Relationship="Self.ptorequest_FK_PTO_EmpID" FromRole="employee" ToRole="ptorequest" />
           <NavigationProperty Name="timesheets" Relationship="Self.timesheet_FK_TimeSheet_EmpID" FromRole="employee" ToRole="timesheet" />
           <Property Name="RememberMe" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="projects" Relationship="GrizzTime_dbModel.FK_projman_project" FromRole="employee" ToRole="project" />
         </EntityType>
         <EntityType Name="employee_project">
           <Key>
@@ -545,6 +564,8 @@
           <NavigationProperty Name="employee_project" Relationship="Self.employee_project_ProjID" FromRole="project" ToRole="employee_project" />
           
           <NavigationProperty Name="contract" Relationship="GrizzTime_dbModel.FK_project_contract" FromRole="project" ToRole="contract" />
+          <Property Name="ProjManID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="employee" Relationship="GrizzTime_dbModel.FK_projman_project" FromRole="project" ToRole="employee" />
         </EntityType>
         <EntityType Name="ptorequest">
           <Key>
@@ -828,6 +849,10 @@
             <End Role="contract" EntitySet="contracts" />
             <End Role="project" EntitySet="projects" />
           </AssociationSet>
+          <AssociationSet Name="FK_projman_project" Association="GrizzTime_dbModel.FK_projman_project">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="project" EntitySet="projects" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="contract">
           <Key>
@@ -839,6 +864,7 @@
           <Property Name="BusID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="business" Relationship="GrizzTime_dbModel.FK_Contract_Business" FromRole="contract" ToRole="business" />
           <NavigationProperty Name="projects" Relationship="GrizzTime_dbModel.FK_project_contract" FromRole="contract" ToRole="project" />
+          <Property Name="ConHoursRemaining" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
         </EntityType>
         <Association Name="FK_Contract_Business">
           <End Type="GrizzTime_dbModel.business" Role="business" Multiplicity="1" />
@@ -861,6 +887,18 @@
             </Principal>
             <Dependent Role="project">
               <PropertyRef Name="ConID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_projman_project">
+          <End Type="GrizzTime_dbModel.employee" Role="employee" Multiplicity="1" />
+          <End Type="GrizzTime_dbModel.project" Role="project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="ProjManID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -970,6 +1008,7 @@
           <EntitySetMapping Name="projects">
             <EntityTypeMapping TypeName="GrizzTime_dbModel.project">
               <MappingFragment StoreEntitySet="project">
+                <ScalarProperty Name="ProjManID" ColumnName="ProjManID" />
                 <ScalarProperty Name="ConID" ColumnName="ConID" />
                 <ScalarProperty Name="ProjID" ColumnName="ProjID" />
                 <ScalarProperty Name="ProjName" ColumnName="ProjName" />
@@ -1031,6 +1070,7 @@
           <EntitySetMapping Name="contracts">
             <EntityTypeMapping TypeName="GrizzTime_dbModel.contract">
               <MappingFragment StoreEntitySet="contract">
+                <ScalarProperty Name="ConHoursRemaining" ColumnName="ConHoursRemaining" />
                 <ScalarProperty Name="BusID" ColumnName="BusID" />
                 <ScalarProperty Name="ConAllottedHours" ColumnName="ConAllottedHours" />
                 <ScalarProperty Name="ConName" ColumnName="ConName" />

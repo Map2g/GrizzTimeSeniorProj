@@ -35,6 +35,8 @@ public partial class contract
 
     public int BusID { get; set; }
 
+    public decimal ConHoursRemaining { get; set; }
+
 
 
     public virtual business business { get; set; }
