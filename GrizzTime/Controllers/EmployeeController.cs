@@ -21,7 +21,10 @@ namespace GrizzTime.Controllers
         {
             return View();
         }
-
+        public ActionResult Test()
+        {
+            return View();
+        }
         [HttpGet]
         public ActionResult Registration()
         {
