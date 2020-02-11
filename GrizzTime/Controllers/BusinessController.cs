@@ -15,7 +15,6 @@ namespace GrizzTime.Controllers
 {
     public class BusinessController : Controller
     {
-        //GrizzTimeEntities db = new GrizzTimeEntities();
         // GET: Business
         public ActionResult Index()
         {
@@ -24,6 +23,17 @@ namespace GrizzTime.Controllers
 
         public ActionResult Dashboard()
         {
+            try
+            {
+                ViewBag.BusinessName = Request.Cookies["BusinessName"].Value;
+                ViewBag.BusinessID = Request.Cookies["UserID"].Value;
+            }
+            catch (NullReferenceException e)
+            { //Redirect to login if it can't find business name
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n" + e.Message);
+                return RedirectToAction("Login", "Business");
+            }
+
             return View();
         }
 

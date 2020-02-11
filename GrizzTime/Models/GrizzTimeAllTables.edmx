@@ -11,7 +11,7 @@
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserEmail" Type="nvarchar" MaxLength="45" Nullable="false" />
-          <Property Name="UserPW" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserPW" Type="nvarchar" MaxLength="100" />
           <Property Name="UserStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="BusName" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="BusDesc" Type="nvarchar" MaxLength="200" />
@@ -34,7 +34,7 @@
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserEmail" Type="nvarchar" MaxLength="45" Nullable="false" />
-          <Property Name="UserPW" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserPW" Type="nvarchar" MaxLength="100" />
           <Property Name="UserStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="EmpFName" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="EmpLName" Type="nvarchar" MaxLength="45" Nullable="false" />
@@ -445,7 +445,7 @@
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserEmail" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UserStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BusName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BusDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -460,7 +460,7 @@
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserEmail" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UserStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmpFName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmpLName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />

@@ -3,15 +3,14 @@
 
 @{
     ViewBag.Title = "Dashboard";
-    var thisBusinessName = Request.Cookies["BusinessName"].Value;
-    var thisBusinessID = Request.Cookies["UserID"].Value;
+
 }
 
 <h2>Business Dashboard</h2>
 
 
     <div class="form-horizontal">
-        <h4>Business Login - @thisBusinessName</h4>
+        <h4>Business Login - @ViewBag.BusinessName </h4>
         <hr />
 
             @Html.AntiForgeryToken()
