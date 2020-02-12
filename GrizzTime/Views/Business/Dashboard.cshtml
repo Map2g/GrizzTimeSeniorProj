@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿@using GrizzTime.Models
 @model business
 
@@ -25,3 +26,32 @@
 <div>
     <p><a href="/home/index">Back to Home &raquo;</a></p>
 </div>
+=======
+﻿@using GrizzTime.Models
+@model business
+
+@{
+    ViewBag.Title = "Dashboard";
+
+}
+
+<h2>Business Dashboard</h2>
+
+
+    <div class="form-horizontal">
+        <h4>Business Login - @ViewBag.BusinessName </h4>
+        <hr />
+
+            @Html.AntiForgeryToken()
+            @using (Html.BeginForm())
+            {
+
+                @Html.Action("AddEmployeePopUp")
+            }
+
+    </div>
+
+<div>
+    <p><a href="/home/index">Back to Home &raquo;</a></p>
+</div>
+>>>>>>> GSBranch

@@ -356,9 +356,18 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+<<<<<<< HEAD
 
 GrizzTime/obj/Debug/GrizzTime.csprojAssemblyReference.cache
 
 GrizzTime/bin/GrizzTime.dll
 
 GrizzTime/bin/GrizzTime.dll.config
+=======
+
+GrizzTime/obj/Debug/GrizzTime.csprojAssemblyReference.cache
+
+GrizzTime/bin/GrizzTime.dll
+
+GrizzTime/bin/GrizzTime.dll.config
+>>>>>>> GSBranch
