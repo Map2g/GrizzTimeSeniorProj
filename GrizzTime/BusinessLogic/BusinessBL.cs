@@ -11,28 +11,28 @@ namespace GrizzTime.BusinessLogic
     public class Business
     {
         [Display(Name = "Email Address")]
-        [Required(ErrorMessage = "The email address is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email address")]
+        [Required(ErrorMessage = "The email address is required. ")]
+        [EmailAddress(ErrorMessage = "Invalid email address. ")]
         public string UserEmail { get; set; }
 
         [Display(Name = "Password")]
         [MembershipPassword(
         MinRequiredNonAlphanumericCharacters = 1,
-        MinNonAlphanumericCharactersError = "Your password needs to contain at least one symbol (!, @, #, etc).",
         MinRequiredPasswordLength = 8,
-        MinPasswordLengthError = "Your password must be at least 8 characters long."
+        ErrorMessage = "Your password must be at least 8 characters long and must contain at least one symbol (!, @, #, etc). "
         )]
         [DataType(DataType.Password)]
         public string UserPW { get; set; }
 
         [Display(Name = "Business Name")]
-        [Required(ErrorMessage = "Business name is required.")]
+        [Required(ErrorMessage = "Business name is required. ")]
         public string BusName { get; set; }
 
         [Display(Name = "Description")]
         public string BusDesc { get; set; }
 
         [Display(Name = "Address")]
+        [Required(ErrorMessage = "Address is required. ")]
         public string BusAddress { get; set; }
 
         public string UserStatus { get; set; }
