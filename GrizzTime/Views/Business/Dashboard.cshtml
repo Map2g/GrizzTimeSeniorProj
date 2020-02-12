@@ -8,15 +8,14 @@
 
 <h2>Business Dashboard</h2>
 
-
     <div class="form-horizontal">
         <h4>Business Login - @ViewBag.BusinessName </h4>
         <hr />
 
-            @Html.AntiForgeryToken()
+            
             @using (Html.BeginForm())
             {
-
+                @Html.AntiForgeryToken()
                 @Html.Action("AddEmployeePopUp")
             }
 

@@ -14,7 +14,6 @@ namespace GrizzTime.Models
 
 using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
 
     public partial class employee
 {
@@ -37,36 +36,12 @@ using System;
 
         this.projects = new HashSet<project>();
 
-    }
-
-    public enum JobType
-    {
-        [Description("President")]
-        President,
-        [Description("CEO")]
-        CEO,
-        [Description("CTO")]
-        CTO,
-        [Description("CIO")]
-        CIO,
-        [Description("CFO")]
-        CFO,
-        [Description("Director")]
-        Director,
-        [Description("Project Manager")]
-        ProjectManager,
-        [Description("Technology Lead")]
-        TechnologyLead,
-        [Description("Software Engineer")]
-        SoftwareEngineer,
-        [Description("Intern")]
-        Intern
-    }    
-
+    }   
+    
     public int UserID { get; set; }
 
     public string UserEmail { get; set; }
-
+    
     public string UserPW { get; set; }
 
     public string UserStatus { get; set; }
@@ -80,11 +55,10 @@ using System;
     public int BusCode { get; set; }
 
     public decimal EmpPayRate { get; set; }
-
+    
     public string EmpPhone { get; set; }
 
     public bool RememberMe { get; set; }
-
 
 
     public virtual business business { get; set; }

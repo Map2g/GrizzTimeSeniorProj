@@ -9,7 +9,9 @@ using System.Web.Security;
 using System.Data.SqlClient;
 using System.Data;
 using GrizzTime.Models;
+using GrizzTime.BusinessLogic;
 using System.Text;
+using GrizzTime.ViewModels;
 
 namespace GrizzTime.Controllers
 {
@@ -46,7 +48,7 @@ namespace GrizzTime.Controllers
         public ActionResult AddEmployeePopUp([Bind(Exclude = "IsEmailVerified,ActivationCode")] employee employee)
         {
             bool Status = false;
-            string message = "";
+            string message;
             //ensure that the model exists
             if (ModelState.IsValid)
             {
@@ -57,23 +59,13 @@ namespace GrizzTime.Controllers
                     ModelState.AddModelError("EmailExist", "An employee with this email address already exists.");
                     return View(employee);
                 }
-
-                ////Check validity of business code
-                //Entities dc = new Entities();
-                //var validBusiness = from business in dc.businesses
-                //                    where business.UserID == employee.BusCode
-                //                    select business;
-                //if (validBusiness.Count() != 1)
-                //{
-                //    ModelState.AddModelError("InvalidBusinesscode", "That business code does not exist");
-                //    return View(employee);
-                //}
+                
 
                 Entities dc = new Entities();
                 //Save to Database
                 using (dc)
                 {
-                    employee.UserPW = Hash(employee.UserPW);
+                    //employee.UserPW = Hash(employee.UserPW);
                     dc.employees.Add(employee);
                     try
                     {
@@ -101,18 +93,19 @@ namespace GrizzTime.Controllers
 
                     //send email to User
                     SendRegistrationEMail(employee.UserEmail, employee.UserID);
-                    message = "A link to finish registration was sent to the employee.";
-                    Status = true;
                 }
+                message = "A link to finish registration was sent to the employee.";
+                Status = true;
             }
             else
             {
                 message = "Invalid Request";
             }
+
             ViewBag.Message = message;
             ViewBag.Status = Status;
 
-            return View();
+            return View(employee);
         }
 
         public ActionResult Registration()
@@ -121,7 +114,7 @@ namespace GrizzTime.Controllers
         }
 
         [HttpPost]
-        public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] business business)
+        public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] Business business)
         {
             bool Status = false;
             string message = "";
@@ -132,20 +125,32 @@ namespace GrizzTime.Controllers
                 var isExist = IsEmailExist(business.UserEmail);
                 if (isExist)
                 {
-                    ModelState.AddModelError("EmailExist", "Email already exists");
+                    ModelState.AddModelError("EmailExist", "Email already exists.");
                     return View(business);
                 }
                 //Save to Database
-                using (Entities dc = new Entities())
+                try
                 {
-                    dc.businesses.Add(business);
-                    dc.SaveChanges();
+                    business.SaveNew();
 
-                    //send email to User
                     SendVerificationEMail(business.UserEmail);
                     message = "Registration complete! An email has been sent to you to confirm your registration!";
                     Status = true;
+
+                    return RedirectToAction("Details");
                 }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return View(new ViewModelBusinessCreate() { bus = business });
+                }
+                //using (Entities dc = new Entities())
+                //{
+                //    dc.businesses.Add(business);
+                //    dc.SaveChanges();
+
+                //    send email to User
+                //}
             }
             else
             {
@@ -374,7 +379,7 @@ namespace GrizzTime.Controllers
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
             var toEmail = new MailAddress(email);
             var fromEmailPassword = "WinterSemester";
-            string subject = "Your account hase been succesfully created!";
+            string subject = "Your account has been succesfully created!";
 
             string body = "You have been registered as an employee of " + Request.Cookies["BusinessName"].Value + ". To finish setting up your account, click here: <a href='" + link + "'>link</a>";
 

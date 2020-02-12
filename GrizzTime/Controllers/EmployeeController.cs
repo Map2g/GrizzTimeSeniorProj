@@ -62,8 +62,9 @@ namespace GrizzTime.Controllers
                         return HttpNotFound();
 
                     thisEmp.UserPW = Hash(employee.UserPW);
+
                     thisEmp.UserStatus = employee.UserStatus;
-                    //dc.Entry(employee).State = System.Data.Entity.EntityState.Modified;
+                    dc.Entry(employee).State = System.Data.Entity.EntityState.Modified;
                     try
                     {
                         dc.SaveChanges();
@@ -101,53 +102,6 @@ namespace GrizzTime.Controllers
             return View();
         }
 
-
-        //    //ensure that the model exists
-        //    if (ModelState.IsValid)
-        //    {
-
-        //        //Save to Database
-        //        using (Entities dc = new Entities())
-        //        {
-        //            dc.Entry(employee).State = System.Data.Entity.EntityState.Modified;
-        //            employee.UserPW = Hash(employee.UserPW);
-        //            try
-        //            {
-        //                dc.SaveChanges();
-        //            }
-        //            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-        //            {
-        //                Exception exception = dbEx;
-        //                foreach (var validationErrors in dbEx.EntityValidationErrors)
-        //                {
-        //                    foreach (var validationError in validationErrors.ValidationErrors)
-        //                    {
-        //                        string message1 = string.Format("{0}:{1}",
-        //                            validationErrors.Entry.Entity.ToString(),
-        //                            validationError.ErrorMessage);
-
-        //                        //create a new exception inserting the current one
-        //                        //as the InnerException
-        //                        exception = new InvalidOperationException(message1, exception);
-        //                    }
-        //                }
-        //                throw exception;
-        //            }
-
-        //            //send email to employee
-        //            SendVerificationEMail(employee.UserEmail);
-        //            message = "Registration complete! An email has been sent to you to confirm your registration!";
-        //            Status = true;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        message = "Invalid Request";
-        //    }
-        //    ViewBag.Message = message;
-        //    ViewBag.Status = Status;
-        //    return View();
-        //}
 
         public ActionResult Login()
         {
@@ -192,7 +146,7 @@ namespace GrizzTime.Controllers
             }
 
             ViewBag.Message = message;
-            return View();
+            return RedirectToAction("Details", "Employee");
         }
 
         [Authorize]
@@ -288,6 +242,7 @@ namespace GrizzTime.Controllers
         [HttpPost]
         public ActionResult Delete(int id, string confirmButton)
         {
+            
             using (Entities dc = new Entities())
             {
                 employee employee = dc.employees.Find(id);
@@ -320,9 +275,9 @@ namespace GrizzTime.Controllers
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
             var toEmail = new MailAddress(email);
             var fromEmailPassword = "WinterSemester";
-            string subject = "Your account hase been succesfully created!";
+            string subject = "Your account has been succesfully created!";
 
-            string body = "<br/><br/> We are excited to tell you that you're GrizzTime account has been created!...";
+            string body = "<br/><br/> We are excited to tell you that you're GrizzTime account has been created!";
 
             var smtp = new SmtpClient
             {
@@ -348,6 +303,7 @@ namespace GrizzTime.Controllers
             System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(value))
                 );
         }
+
     }
 
 }
