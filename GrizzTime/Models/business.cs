@@ -12,8 +12,13 @@
 namespace GrizzTime.Models
 {
 
+<<<<<<< HEAD
 using System;
     using System.Collections.Generic;
+=======
+using System;
+    using System.Collections.Generic;
+>>>>>>> GSBranch
     
 public partial class business
 {
