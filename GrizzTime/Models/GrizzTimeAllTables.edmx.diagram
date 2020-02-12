@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="fe2d771841424411aed2176da0ac33ae" Name="Diagram1" ZoomLevel="81">
-        <EntityTypeShape EntityType="GrizzTime_dbModel.business" Width="1.5" PointX="2.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrizzTime_dbModel.business" Width="1.5" PointX="3.125" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.employee" Width="1.5" PointX="5.125" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="GrizzTime_dbModel.employee_project" Width="1.5" PointX="10.375" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrizzTime_dbModel.employee_project" Width="1.5" PointX="10.25" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.emppayrate_history" Width="1.5" PointX="7.375" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.emptype_history" Width="1.5" PointX="7.375" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.expenseentry" Width="1.5" PointX="9.25" PointY="9.5" IsExpanded="true" />
@@ -17,14 +17,13 @@
         <EntityTypeShape EntityType="GrizzTime_dbModel.ptorequest" Width="1.5" PointX="5.25" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.ptorequestday" Width="1.5" PointX="3.25" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="GrizzTime_dbModel.timesheet" Width="1.5" PointX="2.75" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GrizzTime_dbModel.User" Width="1.5" PointX="12.125" PointY="0.875" IsExpanded="true" />
+       
         <EntityTypeShape EntityType="GrizzTime_dbModel.workentry" Width="1.5" PointX="0.5" PointY="9.25" IsExpanded="true" />
         <AssociationConnector Association="GrizzTime_dbModel.FK__employee__BusCod__55F4C372" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.employee_project_EmpID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.emppayrate_history_FK_PayHist_UserID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.emptype_history_UserID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.expensesheet_FK_ExpSheet_EmpID" ManuallyRouted="false" />
-        <AssociationConnector Association="GrizzTime_dbModel.project_ProjManagerID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.ptorequest_FK_PTO_EmpID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.timesheet_FK_TimeSheet_EmpID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.employee_project_ProjID" ManuallyRouted="false" />
@@ -33,6 +32,10 @@
         <AssociationConnector Association="GrizzTime_dbModel.timesheet_FK_Time_PayrollCycleID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.ptorequestdays_PTORequestID" ManuallyRouted="false" />
         <AssociationConnector Association="GrizzTime_dbModel.workentry_TimeSheetID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GrizzTime_dbModel.contract" Width="1.5" PointX="0.875" PointY="4.375" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_Contract_Business" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_project_contract" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_projman_project" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
