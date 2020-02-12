@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
 	background-color: #505050;
 	body:100%;
@@ -190,3 +191,197 @@ label {
 .Form-Two-Rows:after{
   display:table;
 } */
+=======
+body {
+	background-color: #505050;
+	body:100%;
+}
+
+.Button-Box{
+  height: 200px;
+  width: 400px;
+  background-color: #D3BD09;
+  padding: 20px;
+  margin: auto;
+  margin-top: 5%;
+  border-radius: 1px;
+}
+
+.Button-Box:hover{
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.Column-Button-Box{
+  flex: 50%;
+  padding: 10px;
+  height: 500px;
+}
+
+.Row-Button-Box{
+  display:flex;
+}
+
+.Login-Box-Container{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Login-Box-Top{
+	width: 1000px;
+	height: 80px;
+	border-radius: 25px 25px 0px 0px;
+	background-color: black;
+	position: relative;
+}
+
+.Login-Box{
+  width: 1000px;
+  height: auto;
+  position: absolute;
+  top: 15%;
+  border-radius: 25px 25px 25px 25px;
+  background-color: white;
+}
+
+.Column-1{
+  padding:20px;
+}
+.Form-Titles{
+  padding: 20px;
+  color:white;
+  font-size: 40px;
+  font-family: Noto Sans, sans-serif;
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 10px;
+  margin: 15px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+input[type=password] {
+	font: small-caption;
+	width: 100%;
+	padding: 12px 10px;
+	margin: 15px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 15px;
+	box-sizing: border-box
+}
+
+input[type=submit]{
+  width: 100%;
+  background-color: #D3BD09;
+  color: white;
+  padding: 14px 20px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 25px;
+}
+
+input[type=submit]:hover, input[type=submit]:active{
+  //font-size: 150%;
+  background-color: blue;
+  color: white;
+}
+
+label {
+	color: black;
+	font-size: 20px;
+	font-family: Noto Sans, sans-serif;
+}
+
+.label {
+	color: white;
+	font-size: 20px;
+	font-family: Noto Sans, sans-serif;
+}
+
+.Navbar {
+  overflow: hidden;
+  background-color: #333;
+  border-radius: 1px;
+}
+
+.Navbar a {
+  float: left;
+  font-size: 25px;
+  color: white;
+  text-align: center;
+  padding: 14px 35px;
+  text-decoration: none;
+}
+
+.Navbar-dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.Navbar-dropdown .dropbtn {
+  font-size: 25px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.Navbar a:hover, .Navbar-dropdown:hover .dropbtn {
+  background-color: #D3BD09;
+}
+
+.Navbar-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 187px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.Navbar-dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.Navbar-dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.Navbar-dropdown:hover .Navbar-dropdown-content {
+  display: block;
+}
+/* .Half-Box{
+  width:45%;
+}
+
+*{
+  box-sizing: border-box;
+}
+.Form-Columns{
+  float:left;
+}
+
+.Form-Two-Columns{
+  50%;
+}
+
+.Form-Two-Rows:after{
+  display:table;
+} */
+>>>>>>> GSBranch
