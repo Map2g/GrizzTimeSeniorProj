@@ -8,10 +8,9 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Data.SqlClient;
 using System.Data;
+using System.Text;
 using GrizzTime.Models;
 using GrizzTime.BusinessLogic;
-using System.Text;
-using GrizzTime.ViewModels;
 
 namespace GrizzTime.Controllers
 {
@@ -27,7 +26,11 @@ namespace GrizzTime.Controllers
         {
             try
             {
-                ViewBag.BusinessName = Request.Cookies["BusinessName"].Value;
+                Entities dc = new Entities();
+                int id = Int32.Parse(Request.Cookies["UserID"].Value);
+                var v = dc.businesses.Where(a => a.UserID == id).FirstOrDefault();
+                ViewBag.BusinessName = v.BusName;
+
                 ViewBag.BusinessID = Request.Cookies["UserID"].Value;
             }
             catch (NullReferenceException e)
@@ -39,82 +42,13 @@ namespace GrizzTime.Controllers
             return View();
         }
 
-        public ActionResult AddEmployeePopUp()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult AddEmployeePopUp([Bind(Exclude = "IsEmailVerified,ActivationCode")] employee employee)
-        {
-            bool Status = false;
-            string message;
-            //ensure that the model exists
-            if (ModelState.IsValid)
-            {
-                //Email already exists
-                var isExist = IsEmailExist(employee.UserEmail);
-                if (isExist)
-                {
-                    ModelState.AddModelError("EmailExist", "An employee with this email address already exists.");
-                    return View(employee);
-                }
-                
-
-                Entities dc = new Entities();
-                //Save to Database
-                using (dc)
-                {
-                    //employee.UserPW = Hash(employee.UserPW);
-                    dc.employees.Add(employee);
-                    try
-                    {
-                        dc.SaveChanges();
-                    }
-                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                    {
-                        Exception exception = dbEx;
-                        foreach (var validationErrors in dbEx.EntityValidationErrors)
-                        {
-                            foreach (var validationError in validationErrors.ValidationErrors)
-                            {
-                                string message1 = string.Format("{0}:{1}",
-                                    validationErrors.Entry.Entity.ToString(),
-                                    validationError.ErrorMessage);
-
-                                //create a new exception inserting the current one
-                                //as the InnerException
-                                exception = new InvalidOperationException(message1, exception);
-                            }
-                        }
-                        throw exception;
-                    }
-
-
-                    //send email to User
-                    SendRegistrationEMail(employee.UserEmail, employee.UserID);
-                }
-                message = "A link to finish registration was sent to the employee.";
-                Status = true;
-            }
-            else
-            {
-                message = "Invalid Request";
-            }
-
-            ViewBag.Message = message;
-            ViewBag.Status = Status;
-
-            return View(employee);
-        }
-
         public ActionResult Registration()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] Business business)
+        public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] Business thisBus)
         {
             bool Status = false;
             string message = "";
@@ -122,18 +56,31 @@ namespace GrizzTime.Controllers
             if (ModelState.IsValid)
             {
                 //Email already exists
-                var isExist = IsEmailExist(business.UserEmail);
+                var isExist = IsEmailExist(thisBus.UserEmail);
                 if (isExist)
                 {
                     ModelState.AddModelError("EmailExist", "Email already exists.");
-                    return View(business);
+                    return View(thisBus);
                 }
                 //Save to Database
                 try
                 {
-                    business.SaveNew();
+                    using (Entities dc = new Entities())
+                    {
+                        GrizzTime.Models.business bus = new GrizzTime.Models.business();
+                        bus.UserEmail = thisBus.UserEmail;
+                        bus.UserPW = thisBus.UserPW;
+                        bus.BusName = thisBus.BusName;
+                        bus.BusDesc = thisBus.BusDesc;
+                        bus.BusAddress = thisBus.BusAddress;
+                        
+                        bus.UserStatus = "Registered";
 
-                    SendVerificationEMail(business.UserEmail);
+                        dc.businesses.Add(bus);
+                        dc.SaveChanges();
+                    }
+
+                    SendVerificationEMail(thisBus.UserEmail);
                     message = "Registration complete! An email has been sent to you to confirm your registration!";
                     Status = true;
 
@@ -142,7 +89,7 @@ namespace GrizzTime.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", ex.Message);
-                    return View(new ViewModelBusinessCreate() { bus = business });
+                    return View(thisBus);
                 }
                 //using (Entities dc = new Entities())
                 //{
@@ -189,7 +136,7 @@ namespace GrizzTime.Controllers
 
 
                         Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString() ) );
-                        Response.Cookies.Add(new HttpCookie("BusinessName", v.BusName ));
+                        //Response.Cookies.Add(new HttpCookie("BusinessName", v.BusName ));
 
 
 
@@ -225,89 +172,141 @@ namespace GrizzTime.Controllers
         {
             Entities db = new Entities();
             return View(from business in db.businesses select business);
-            //var Details = new List<business>()
-            //{
-            //    new business()
-            //    {
-            //        UserID=1
-            //    }
-            //};
         }
 
         // GET: User/Edit/5
         [HttpGet]
         public ActionResult Edit(int? id)
         {
-            Entities dc = new Entities();
 
-            if (id == null)
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+            using (Entities dc = new Entities())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            business business1 = dc.businesses.Find(id);
-            if (business1 == null)
-            {
-                return HttpNotFound();
-            }
 
-            return View(business1);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                business bus = dc.businesses.Find(id);
+                Business viewBus = new Business()
+                {
+                    BusName = bus.BusName,
+                    BusAddress = bus.BusAddress,
+                    BusDesc = bus.BusDesc,
+                    UserEmail = bus.UserEmail,
+                    UserPW = bus.UserPW,
+                    UserStatus = bus.UserStatus,
+                };
+
+                if (bus == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(viewBus);
+            }
 
         }
 
         // POST: User/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID, UserStatus, RememberMe, UserEmail, UserPW, BusName, BusAddress, BusDesc")]business business)
+        public ActionResult Edit(int? id, Business thisBus)
         {
-            try
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+
+            if (id == null)
             {
-                if (ModelState.IsValid)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            bool Status = false;
+            string message = "";
+
+            //Don't check include in validation check
+            //ModelState.Remove("UserEmail");
+            //ModelState.Remove("EmpFName");
+            //ModelState.Remove("EmpLName");
+            //ModelState.Remove("EmpPhone");
+            //ModelState.Remove("EmpType");
+
+            if (ModelState.IsValid)
+            {
+
+                using (Entities dc = new Entities())
                 {
-                    using (Entities dc = new Entities())
+                    GrizzTime.Models.business bus = dc.businesses.FirstOrDefault(p => p.UserID == id);
+                    if (thisBus == null)
+                        return HttpNotFound();
+
+                    bus.BusName = thisBus.BusName;
+                    bus.BusAddress = thisBus.BusAddress;
+                    bus.BusDesc = thisBus.BusDesc;
+                    bus.UserEmail = thisBus.UserEmail;
+                    bus.UserStatus = thisBus.UserStatus;
+                    bus.UserPW = Hash(thisBus.UserPW);
+
+                    dc.Entry(bus).State = System.Data.Entity.EntityState.Modified;
+                    try
                     {
-                    
-                        dc.Entry(business).State = System.Data.Entity.EntityState.Modified;
                         dc.SaveChanges();
-                        return RedirectToAction("Details");
+                        message = "Business updated successfully.";
+                        Status = true;
+                        ViewBag.Message = message;
+                        ViewBag.Status = Status;
+                        return RedirectToAction("Dashboard");
                     }
-                }
-            }
-            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-            {
-                //more descriptive error for validation problems
-                Exception exception = dbEx;
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
                     {
-                        string message1 = string.Format("{0}:{1}",
-                            validationErrors.Entry.Entity.ToString(),
-                            validationError.ErrorMessage);
+                        //more descriptive error for validation problems
+                        Exception exception = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
 
-                        //create a new exception inserting the current one
-                        //as the InnerException
-                        exception = new InvalidOperationException(message1, exception);
+                                //create a new exception inserting the current one
+                                //as the InnerException
+                                exception = new InvalidOperationException(message1, exception);
+                            }
+                        }
+                        //error for UI
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                        throw exception;
+
+
                     }
                 }
-                //error for UI
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                throw exception;
+            }
+            else
+            {
+                message = "Invalid Request";
             }
 
-            return View(business);
-
+            ViewBag.Message = message;
+            ViewBag.Status = Status;
+            return View(thisBus);
         }
 
         // GET: User/Delete/5
         public ActionResult Delete(int id)
         {
+            string message = "";
             using (Entities dc = new Entities())
             {
                 business business = dc.businesses.Find(id);
 
                 if (business == null)
-                    return View("NotFound");
-
+                {
+                    message = "Business does not exist.";
+                    ViewBag.message = message;
+                    return View("Details");
+                }
+                ViewBag.message = message;
                 return View(business);
             }
         }
@@ -315,17 +314,61 @@ namespace GrizzTime.Controllers
         [HttpPost]
         public ActionResult Delete(int id, string confirmButton)
         {
+            string message;
             using (Entities dc = new Entities())
             {
                 business business = dc.businesses.Find(id);
 
-            if (business == null)
-                    return View("NotFound");
+                if (business == null)
+                {
+                    message = "Business not found.";
+                    ViewBag.message = message;
+                    return RedirectToAction("Details");
+                }
 
                 dc.businesses.Remove(business);
                 dc.SaveChanges();
+                message = "Business successfully deleted.";
             }
-            return View("Deleted");
+            ViewBag.message = message;
+            return View("Details");
+        }
+
+        public ActionResult MyContracts()
+        {
+            var id = Request.Cookies["UserID"].Value;
+            string query = "SELECT * FROM grizztime.contract WHERE BusID = @id";
+            Entities dc = new Entities();
+
+            IEnumerable<contract> thisBusinessContract = dc.contracts.SqlQuery(query, new SqlParameter("@id", id));
+            return View(thisBusinessContract);
+        }
+
+        public ActionResult MyEmployees()
+        {
+            var id = Request.Cookies["UserID"].Value;
+            string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
+            Entities dc = new Entities();
+
+            IEnumerable<employee> thisBusinessEmployee = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
+
+            return View(thisBusinessEmployee);
+        }
+
+        public ActionResult MyProjects()
+        {
+            int id = Int32.Parse(Request.Cookies["UserID"].Value);
+            List<Project> theseProjects = Project.BusProjList(id);
+
+            //string query = "SELECT * FROM grizztime.project " +
+            //                "INNER JOIN grizztime.employee ON grizztime.project.ProjManID = grizztime.employee.UserID " +
+            //                    "WHERE ConID = (SELECT ConID FROM grizztime.contract WHERE BusID = @id)";
+            //Entities dc = new Entities();
+
+            //IEnumerable<project> thisBusinessProject = dc.Database.SqlQuery<project>.(query, new SqlParameter("@id", id));
+
+            return View(theseProjects);
+
         }
 
         [NonAction]
@@ -373,8 +416,8 @@ namespace GrizzTime.Controllers
         [NonAction]
         public void SendRegistrationEMail(string email, int employeeId)
         {
-            var verifyUrl = "/employee/registration/" + employeeId.ToString();
-            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+            var completeRegister = "/employee/registration/" + employeeId.ToString();
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, completeRegister);
 
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
             var toEmail = new MailAddress(email);

@@ -51,7 +51,7 @@
                 @Html.DisplayFor(modelItem => item.BusDesc)
             </td>
             <td>
-                
+
                 @Html.ActionLink("Edit", "Edit", new { id = item.UserID }) |
                 @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.UserID })
@@ -60,3 +60,12 @@
     }
 
 </table>
+
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}

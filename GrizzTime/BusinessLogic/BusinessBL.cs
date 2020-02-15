@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Security;
 
 namespace GrizzTime.BusinessLogic
 {
     public class Business
     {
+        public int UserID { get; }
+
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "The email address is required. ")]
         [EmailAddress(ErrorMessage = "Invalid email address. ")]
@@ -51,12 +54,11 @@ namespace GrizzTime.BusinessLogic
                 bus.BusAddress = this.BusAddress;
                 bus.UserStatus = this.UserStatus;
 
-                //TODO : what if dept. deleted ?
-
                 dc.businesses.Add(bus);
                 dc.SaveChanges();
             }
         }
+
 
         public class BusinessList : List<business>
         {
@@ -72,6 +74,7 @@ namespace GrizzTime.BusinessLogic
                     }
                 }
             }
+
         }
 
     }

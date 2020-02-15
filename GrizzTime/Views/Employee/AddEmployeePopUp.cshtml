@@ -1,5 +1,5 @@
-﻿@using GrizzTime.Models
-@model employee
+﻿@using GrizzTime.BusinessLogic
+@model Employee
 
 @{
     ViewBag.Title = "Add new employee";
@@ -73,16 +73,10 @@
                                         <div class="form-group">
                                             @Html.Label("Job Title:", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.EmpType, EnumHelper.GetSelectList(typeof(employee.JobType)), "--Select--", new { @class = "form-control" })
+                                                @Html.DropDownListFor(model => model.EmpType, Employee.JobTypes, "--Select--", new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.EmpType, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>
-
-                                        @Html.HiddenFor(model => model.BusCode, new { Value = Request.Cookies["UserID"].Value })
-
-                                        @Html.HiddenFor(model => model.UserStatus, new { Value = "Registered" })
-
-
+                                        </div>                                      
 
                                     </div>
                                     <div class="modal-footer">

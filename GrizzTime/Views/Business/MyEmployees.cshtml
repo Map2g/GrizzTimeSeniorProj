@@ -1,0 +1,62 @@
+﻿@model IEnumerable<GrizzTime.Models.employee>
+@using GrizzTime.BusinessLogic
+
+@{
+    ViewBag.Title = "My Employees";
+}
+
+<h2>Details</h2>
+
+@Html.Action("AddEmployeePopUp", "Employee")
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Email")
+        </th>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Phone Number")
+        </th>
+        <th>
+            @Html.DisplayName("Title")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpFName) @Html.DisplayFor(modelItem => item.EmpLName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpType)
+            </td>
+            <td>
+                @*Link name, controller name, action method, route argument, html details*@
+                @Html.ActionLink("Edit", "Edit", "Employee", new { id = item.UserID }, null) |
+                @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
+                @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.UserID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}

@@ -1,26 +1,32 @@
-﻿@using GrizzTime.Models
-@model business
-
-@{
+﻿@{
     ViewBag.Title = "Dashboard";
 
 }
 
 <h2>Business Dashboard</h2>
 
-    <div class="form-horizontal">
-        <h4>Business Login - @ViewBag.BusinessName </h4>
-        <hr />
+<div class="form-horizontal">
+    <h4>Business Login - @ViewBag.BusinessName </h4>
+    <hr />
 
-            
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                @Html.Action("AddEmployeePopUp")
-            }
+    <p><a href="/business/myprojects">See my projects</a></p>
+    <p><a href="/business/mycontracts">See my contracts</a></p>
+    <p><a href="/business/myemployees">See my employees</a></p>
+    <p><a href="/business/edit/@Request.Cookies["UserID"].Value">See business details</a></p>
 
-    </div>
+
+</div>
 
 <div>
     <p><a href="/home/index">Back to Home &raquo;</a></p>
 </div>
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}

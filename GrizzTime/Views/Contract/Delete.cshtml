@@ -1,4 +1,4 @@
-﻿@model GrizzTime.Models.business
+﻿@model GrizzTime.Models.contract
 
 <div>
     <fieldset>
@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="modal-body">
 
-                                    Are you sure you want to delete @Model.BusName?
+                                    Are you sure you want to delete @Model.ConName?
 
                                 </div>
 
@@ -44,15 +44,6 @@
 
 </script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
-
-@if (ViewBag.message != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewBag.message");
-        };
-    </script>
-}
 
 <script type="text/javascript">
 

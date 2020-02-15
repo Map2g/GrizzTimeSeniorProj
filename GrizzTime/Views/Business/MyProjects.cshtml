@@ -1,0 +1,82 @@
+﻿@using GrizzTime.BusinessLogic
+@model List<Project>
+
+@{
+    ViewBag.Title = "My Projects";
+}
+
+<h2>Details</h2>
+
+@*Link name, controller name, action method, route argument, html details*@
+@Html.ActionLink("Add a new project", "Create", "Project", null, null)
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Contract")
+        </th>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Description")
+        </th>
+        <th>
+            @Html.DisplayName("Project Manager")
+        </th>
+        <th>
+            @Html.DisplayName("Start Date")
+        </th>
+        <th>
+            @Html.DisplayName("End Date")
+        </th>
+        <th>
+            @Html.DisplayName("Status")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContractName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjDesc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjManName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjStatus)
+            </td>
+            <td>
+                @*Link name, controller name, action method, route argument, html details*@
+                @Html.ActionLink("Edit", "Edit", "Project", new { id = item.ProjID }, null) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProjID }) |
+                @*TO DO: Change this to "Mark project as ended"*@
+                @Html.ActionLink("Delete", "Delete", "Project", new { id = item.ProjID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}
