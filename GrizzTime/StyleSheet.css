@@ -172,21 +172,48 @@ label {
 .Navbar-dropdown:hover .Navbar-dropdown-content {
   display: block;
 }
-/* .Half-Box{
-  width:45%;
-}
 
-*{
-  box-sizing: border-box;
+.Landing-Page-Box {
+    background-color: #333;
+    width: 800px;
+    height: 500px;
+    border-radius: 25px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
-.Form-Columns{
-  float:left;
+.Landing-Page-Buttons {
+    position: absolute;
+    height: 200px;
+    width: 250px;
+    background-color: #D3BD09;
+    /*padding: 50px;*/
+    margin-left: 75px;
+    margin-top: 120px;
+    border-radius: 25px;
+    transition: all 0.2s ease-in-out;
 }
+.Landing-Page-Buttons h2{
+    margin-left:37px;
+    margin-top: 90px;
+    color: #333;
+    font-family: Noto, sans-serif;
+    font-size: 23px;
+}
+    .Landing-Page-Buttons:hover {
+        color: rgba(255, 255, 255, 1);
+        box-shadow: 0 5px 15px #D3BD09;
+    }
+    .transition-swipe{
+        transition: 500ms;
+        /*transform: translateY(0);*/
+    }
 
-.Form-Two-Columns{
-  50%;
-}
+    html.is-animating .transition-swipe{
+        transform: translateY(100%);
+    }
 
-.Form-Two-Rows:after{
-  display:table;
-} */
+    html.is-leaving .transition-swipe{
+        transform: translateX(0);
+    }
