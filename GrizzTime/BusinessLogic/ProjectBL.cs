@@ -26,6 +26,7 @@ namespace GrizzTime.BusinessLogic
 
         public string ProjStatus { get; set; }
 
+        [Display(Name = "End Date: ")]
         public DateTime? ProjEndDate { get; set; }
 
         //Contract this project belongs to. 

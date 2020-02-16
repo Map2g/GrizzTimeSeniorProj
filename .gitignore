@@ -370,3 +370,7 @@ GrizzTime/bin/GrizzTime.dll
 GrizzTime/bin/GrizzTime.dll.config
 
 GrizzTime/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+
+GrizzTime/obj/Release/GrizzTime.csprojAssemblyReference.cache
+
+GrizzTime/obj/Debug/GrizzTime.dll
