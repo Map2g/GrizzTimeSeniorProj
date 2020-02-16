@@ -159,7 +159,7 @@ namespace GrizzTime.Controllers
         public ActionResult Login()
         {
 
-            return View();
+            return PartialView();
         }
         
         [HttpPost]
@@ -205,7 +205,7 @@ namespace GrizzTime.Controllers
             }
 
             ViewBag.Message = message;
-            return View();
+            return PartialView();
         }
 
         [Authorize]
