@@ -276,6 +276,7 @@
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\Fontes.css" />
     <Content Include="assets\css\please-wait.css" />
+    <Content Include="assets\css\skin-blue.css" />
     <Content Include="assets\css\skin-blue.min.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\img\logo.jpg" />
@@ -587,6 +588,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
+    <Content Include="StyleSheet.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -615,7 +617,6 @@
     <Content Include="Views\Business\Dashboard.cshtml" />
     <Content Include="Views\Shared\Profile.cshtml" />
     <Content Include="Views\Shared\Menus.cshtml" />
-    <Content Include="Views\Shared\Erro.cshtml" />
     <Content Include="Views\Employee\AddEmployeePopUp.cshtml" />
     <Content Include="Views\Business\Delete.cshtml" />
     <Content Include="Views\Business\Deleted.cshtml" />

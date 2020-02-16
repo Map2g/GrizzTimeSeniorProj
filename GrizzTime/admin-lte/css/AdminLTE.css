@@ -199,6 +199,7 @@ a:focus {
   border: none;
   min-height: 50px;
   border-radius: 0;
+  /*background-color: black;*/
 }
 .layout-top-nav .main-header .navbar {
   margin-left: 0;
@@ -420,6 +421,7 @@ a:focus {
   -moz-transition: -moz-transform 0.3s ease-in-out, width 0.3s ease-in-out;
   -o-transition: -o-transform 0.3s ease-in-out, width 0.3s ease-in-out;
   transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  //background-color: black;
 }
 @media (max-width: 767px) {
   .main-sidebar {

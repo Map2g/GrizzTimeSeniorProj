@@ -57,7 +57,7 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Job Title:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.EmpType, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.EmpType, Employee.JobTypes, "--Select--", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.EmpType, "", new { @class = "text-danger" })
