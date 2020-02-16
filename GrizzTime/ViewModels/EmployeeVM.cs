@@ -1,3 +1,4 @@
+
 ﻿//using GrizzTime.BusinessLogic;
 //using System.Collections.Generic;
 //using System.Web.Mvc;
@@ -30,8 +31,6 @@ namespace GrizzTime.ViewModels
         }
     }
 }
-
-
 
 
 //    public class EmployeeVM
