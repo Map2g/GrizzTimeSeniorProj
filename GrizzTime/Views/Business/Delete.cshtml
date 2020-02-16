@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿@model GrizzTime.Models.business
 
 <div>
@@ -21,10 +20,10 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                    
-                                    @using (Html.BeginForm()) 
+
+                                    @using (Html.BeginForm())
                                     {
-                                        <input name="confirmButton" type="submit" value="Delete" class="btn btn-primary button button4"/>
+                                        <input name="confirmButton" type="submit" value="Delete" class="btn btn-primary button button4" />
                                     }
                                     <a href="/business/details" type="button" class="btn btn-primary button button4">
                                         Cancel
@@ -46,6 +45,15 @@
 </script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -54,8 +62,6 @@
     });
 </script>
 
-=======
-﻿@model GrizzTime.Models.business
 
 <div>
     <fieldset>

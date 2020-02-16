@@ -4,12 +4,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Security;
 
 namespace GrizzTime.BusinessLogic
 {
     public class Business
     {
+        public int UserID { get; }
+
+        [Display(Name = "Email Address")]
+        [Required(ErrorMessage = "The email address is required. ")]
+        [EmailAddress(ErrorMessage = "Invalid email address. ")]
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "The email address is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
@@ -18,6 +24,8 @@ namespace GrizzTime.BusinessLogic
         [Display(Name = "Password")]
         [MembershipPassword(
         MinRequiredNonAlphanumericCharacters = 1,
+        MinRequiredPasswordLength = 8,
+        ErrorMessage = "Your password must be at least 8 characters long and must contain at least one symbol (!, @, #, etc). "
         MinNonAlphanumericCharactersError = "Your password needs to contain at least one symbol (!, @, #, etc).",
         MinRequiredPasswordLength = 8,
         MinPasswordLengthError = "Your password must be at least 8 characters long."
@@ -26,6 +34,7 @@ namespace GrizzTime.BusinessLogic
         public string UserPW { get; set; }
 
         [Display(Name = "Business Name")]
+        [Required(ErrorMessage = "Business name is required. ")]
         [Required(ErrorMessage = "Business name is required.")]
         public string BusName { get; set; }
 
@@ -33,6 +42,7 @@ namespace GrizzTime.BusinessLogic
         public string BusDesc { get; set; }
 
         [Display(Name = "Address")]
+        [Required(ErrorMessage = "Address is required. ")]
         public string BusAddress { get; set; }
 
         public string UserStatus { get; set; }

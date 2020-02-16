@@ -129,7 +129,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BusinessLogic\BusinessBL.cs" />
+    <Compile Include="BusinessLogic\ContractBL.cs" />
+    <Compile Include="BusinessLogic\ProjectBL.cs" />
+    <Compile Include="BusinessLogic\EmployeeBL.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
+    <Compile Include="Controllers\ContractController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -272,10 +276,7 @@
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\Fontes.css" />
     <Content Include="assets\css\please-wait.css" />
-<<<<<<< HEAD
-=======
     <Content Include="assets\css\skin-blue.css" />
->>>>>>> GSBranch
     <Content Include="assets\css\skin-blue.min.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\img\logo.jpg" />
@@ -587,10 +588,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
-<<<<<<< HEAD
-=======
     <Content Include="StyleSheet.css" />
->>>>>>> GSBranch
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -610,8 +608,7 @@
     <Content Include="Views\Employee\Registration.cshtml" />
     <Content Include="Views\Employee\Login.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
-    <Content Include="Views\Employee\CreateBusiness.cshtml" />
-    <Content Include="Views\Employee\Details.cshtml" />
+    <Content Include="Views\Employee\AllEmployees.cshtml" />
     <Content Include="Views\Business\Registration.cshtml" />
     <Content Include="Views\Business\Login.cshtml" />
     <Content Include="Views\Business\Details.cshtml" />
@@ -621,10 +618,25 @@
     <Content Include="Views\Shared\Profile.cshtml" />
     <Content Include="Views\Shared\Menus.cshtml" />
     <Content Include="Views\Shared\Erro.cshtml" />
-    <Content Include="Views\Business\AddEmployeePopUp.cshtml" />
+    <Content Include="Views\Employee\AddEmployeePopUp.cshtml" />
     <Content Include="Views\Business\Delete.cshtml" />
     <Content Include="Views\Business\Deleted.cshtml" />
     <Content Include="Views\Business\NotFound.cshtml" />
+    <Content Include="Views\Contract\Create.cshtml" />
+    <Content Include="Views\Business\MyContracts.cshtml" />
+    <Content Include="Views\Business\MyEmployees.cshtml" />
+    <Content Include="Views\Business\MyProjects.cshtml" />
+    <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Project\Delete.cshtml" />
+    <Content Include="Views\Contract\Edit.cshtml" />
+    <Content Include="Views\Contract\Delete.cshtml" />
+    <Content Include="Views\Project\Details.cshtml" />
+    <Content Include="Views\Employee\EditPayRate.cshtml" />
+    <Content Include="Views\Employee\Details.cshtml" />
+    <Content Include="Views\Project\AddEmpToProject.cshtml" />
+    <Content Include="Views\Home\LandingPage.cshtml" />
+    <Content Include="Views\Shared\Menus.cshtml" />
+    <Content Include="Views\Shared\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

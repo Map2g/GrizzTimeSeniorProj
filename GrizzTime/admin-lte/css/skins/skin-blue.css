@@ -3,19 +3,12 @@
  * ----------
  */
 .skin-blue .main-header .navbar {
-<<<<<<< HEAD
-  background-color: #3c8dbc;
-}
-.skin-blue .main-header .navbar .nav > li > a {
-  color: #ffffff;
-=======
   /*background-color: #3c8dbc;*/
   background-color: deeppink;
 }
 .skin-blue .main-header .navbar .nav > li > a {
   /*color: #ffffff;*/
   color: pink;
->>>>>>> GSBranch
 }
 .skin-blue .main-header .navbar .nav > li > a:hover,
 .skin-blue .main-header .navbar .nav > li > a:active,
@@ -28,20 +21,6 @@
   color: #f6f6f6;
 }
 .skin-blue .main-header .navbar .sidebar-toggle {
-<<<<<<< HEAD
-  color: #ffffff;
-}
-.skin-blue .main-header .navbar .sidebar-toggle:hover {
-  color: #f6f6f6;
-  background: rgba(0, 0, 0, 0.1);
-}
-.skin-blue .main-header .navbar .sidebar-toggle {
-  color: #fff;
-}
-.skin-blue .main-header .navbar .sidebar-toggle:hover {
-  background-color: #367fa9;
-}
-=======
   /*color: #ffffff;*/
   color:deeppink;
 }
@@ -57,7 +36,6 @@
         /*background-color: #367fa9;*/
         background-color: deeppink;
     }
->>>>>>> GSBranch
 @media (max-width: 767px) {
   .skin-blue .main-header .navbar .dropdown-menu li.divider {
     background-color: rgba(255, 255, 255, 0.1);
@@ -93,15 +71,10 @@
   color: #fff;
 }
 .skin-blue .sidebar-menu > li.header {
-<<<<<<< HEAD
-  color: #4b646f;
-  background: #1a2226;
-=======
   /*color: #4b646f;
   background: #1a2226;*/
   color: pink;
   background: pink;
->>>>>>> GSBranch
 }
 .skin-blue .sidebar-menu > li > a {
   border-left: 3px solid transparent;
@@ -109,15 +82,10 @@
 .skin-blue .sidebar-menu > li:hover > a,
 .skin-blue .sidebar-menu > li.active > a,
 .skin-blue .sidebar-menu > li.menu-open > a {
-<<<<<<< HEAD
-  color: #ffffff;
-  background: #1e282c;
-=======
     /*color: #ffffff;
   background: #1e282c;*/
     color: pink;
     background: pink;
->>>>>>> GSBranch
 }
 .skin-blue .sidebar-menu > li.active > a {
   border-left-color: #3c8dbc;
