@@ -238,11 +238,41 @@ namespace GrizzTime.Controllers
             return RedirectToAction("Login", "Employee");
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult AllEmployees()
         {
             Entities db = new Entities();
             return View(from employee in db.employees select employee);
+        }
+
+        public ActionResult Details(int? id)
+        {
+            using (Entities dc = new Entities())
+            {
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                employee emp = dc.employees.Find(id);
+                Employee viewEmp = new Employee()
+                {
+                    EmpFName = emp.EmpFName,
+                    EmpLName = emp.EmpLName,
+                    EmpType = emp.EmpType,
+                    UserEmail = emp.UserEmail,
+                    EmpPayRate = emp.EmpPayRate,
+                    EmpPhone = emp.EmpPhone,
+                    UserID = emp.UserID,
+                };
+
+                if (emp == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(viewEmp);
+            }
         }
 
         // GET: User/Edit/5
@@ -308,7 +338,7 @@ namespace GrizzTime.Controllers
                         return HttpNotFound();
 
                     emp.UserEmail = thisEmp.UserEmail;
-                    emp.UserPW = thisEmp.UserPW;
+                    emp.UserPW = Hash(thisEmp.UserPW);
                     emp.EmpFName = thisEmp.EmpFName;
                     emp.EmpLName = thisEmp.EmpLName;
                     emp.EmpPhone = thisEmp.EmpPhone;
@@ -339,6 +369,105 @@ namespace GrizzTime.Controllers
                     }
                 }
                 message = "Employee updated successfully.";
+                Status = true;
+                ViewBag.Message = message;
+                ViewBag.Status = Status;
+                return RedirectToAction("MyEmployees", "Business");
+            }
+            else
+            {
+                message = "Invalid Request";
+            }
+
+            ViewBag.Message = message;
+            ViewBag.Status = Status;
+            return View(thisEmp);
+        }
+
+        [HttpGet]
+        public ActionResult EditPayRate(int? id)
+        {
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+            using (Entities dc = new Entities())
+            {
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                employee emp = dc.employees.Find(id);
+                Employee viewEmp = new Employee()
+                {
+                    EmpPayRate = emp.EmpPayRate,
+                };
+
+                if (emp == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(viewEmp);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditPayRate(int? id, Employee thisEmp)
+        {
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            bool Status = false;
+            string message = "";
+
+            //Don't check include in validation check
+            ModelState.Remove("UserEmail");
+            ModelState.Remove("EmpFName");
+            ModelState.Remove("EmpLName");
+            ModelState.Remove("EmpPhone");
+            ModelState.Remove("UserPW");
+            ModelState.Remove("EmpType");
+            ModelState.Remove("ConfirmPassword");
+
+            if (ModelState.IsValid)
+            {
+                using (Entities dc = new Entities())
+                {
+                    GrizzTime.Models.employee emp = dc.employees.FirstOrDefault(p => p.UserID == id);
+                    if (thisEmp == null)
+                        return HttpNotFound();
+
+                    emp.EmpPayRate = thisEmp.EmpPayRate;
+
+                    dc.Entry(emp).State = System.Data.Entity.EntityState.Modified;
+                    try
+                    {
+                        dc.SaveChanges();
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        Exception exception = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
+
+                                //create a new exception inserting the current one
+                                //as the InnerException
+                                exception = new InvalidOperationException(message1, exception);
+                            }
+                        }
+                        throw exception;
+                    }
+                }
+                message = "Pay rate updated successfully.";
                 Status = true;
                 ViewBag.Message = message;
                 ViewBag.Status = Status;

@@ -44,9 +44,17 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.ProjEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProjEndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.ConID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ConID, Contract.ContractList(ViewBag.UserID) as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control"} })
+                @Html.DropDownListFor(model => model.ConID, Contract.ContractList(ViewBag.UserID) as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ConID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -60,12 +68,19 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.IsEnded, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.CheckBoxFor(model => model.IsEnded)
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
+
+@Html.ActionLink("Assign employees to this project", "AddEmpToProject", new { id = Model.ProjID })
 
 @*Displays alert message telling user how the operation went.*@
 @if (ViewBag.message != null)

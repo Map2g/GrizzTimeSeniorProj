@@ -23,6 +23,9 @@
         <th>
             @Html.DisplayName("Title")
         </th>
+        <th>
+            @Html.DisplayName("Pay Rate")
+        </th>
         <th></th>
     </tr>
 
@@ -42,9 +45,13 @@
                 @Html.DisplayFor(modelItem => item.EmpType)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.EmpPayRate)
+            </td>
+            <td>
                 @*Link name, controller name, action method, route argument, html details*@
                 @Html.ActionLink("Edit", "Edit", "Employee", new { id = item.UserID }, null) |
-                @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
+                @Html.ActionLink("Edit Pay Rate", "EditPayRate", "Employee", new { id = item.UserID }, null) |
+                @Html.ActionLink("Details", "Details", "Employee", new { id = item.UserID }, null) |
                 @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.UserID }, null)
             </td>
         </tr>

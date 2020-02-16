@@ -15,6 +15,8 @@ namespace GrizzTime.BusinessLogic
     public class Employee
     {
 
+        public int UserID { get; set;  }
+
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "This field is required. ")]
         [EmailAddress(ErrorMessage = "Invalid email address. ")]
@@ -46,6 +48,7 @@ namespace GrizzTime.BusinessLogic
 
         public string BusinessName { get; }
 
+        [Display(Name = "Pay rate: ")]
         public decimal EmpPayRate { get; set; }
 
         [Display(Name = "Phone Number")]
@@ -92,6 +95,34 @@ namespace GrizzTime.BusinessLogic
             };
 
             return AllEmployees;
+        }
+
+        public static List<Project> GetProjects(int id)
+        {
+            using (Entities dc = new Entities())
+            {
+                //get projects for this employee
+                var thisPMProjects = (from e in dc.employees
+                                      join p in dc.employee_project                                     
+                                      on e.UserID equals p.EmpID
+                                      join q in dc.projects
+                                      on p.ProjID equals q.ProjID
+                                      where e.UserID == id
+                                      select new { q.ProjName, q.ProjID }
+                            ).ToList();
+
+                List<Project> tryIt = new List<Project>();
+
+                foreach (var item in thisPMProjects)
+                {
+                    tryIt.Add(new Project()
+                    {
+                        ProjName = item.ProjName,
+                        ProjID = item.ProjID,
+                    });
+                }
+                return tryIt;
+            }
         }
 
     }

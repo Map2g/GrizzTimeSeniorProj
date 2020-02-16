@@ -63,7 +63,7 @@
             <td>
                 @*Link name, controller name, action method, route argument, html details*@
                 @Html.ActionLink("Edit", "Edit", "Project", new { id = item.ProjID }, null) |
-                @Html.ActionLink("Details", "Details", new { id = item.ProjID }) |
+                @Html.ActionLink("Details", "Details", "Project", new { id = item.ProjID }, null) |
                 @*TO DO: Change this to "Mark project as ended"*@
                 @Html.ActionLink("Delete", "Delete", "Project", new { id = item.ProjID }, null)
             </td>
