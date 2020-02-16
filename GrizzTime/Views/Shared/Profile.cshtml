@@ -1,15 +1,19 @@
 ﻿<li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <img src="~/assets/img/logo.jpg" class="user-image" alt="User Image">
+<<<<<<< HEAD
         <span class="hidden-xs">Erikson Melgarejo</span>
+=======
+        <span class="hidden-xs">Profile</span>
+>>>>>>> GSBranch
     </a>
     <ul class="dropdown-menu">
         <!-- User image -->
         <li class="user-header">
             <img src="~/assets/img/logo.jpg" class="img-circle" alt="User Image">
             <p>
-                Erikson Melgarejo
-                <small>eriksonlove@gmail.com</small>
+                User Name
+                <small>useremail@email.com</small>
             </p>
         </li>
         <!-- Menu Body -->
@@ -29,13 +33,13 @@
         <!-- Menu Footer-->
         <li class="user-footer">
             <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Perfil</a>
+                <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
             </div>
             <div class="pull-right">
                 @using (Html.BeginForm("LogOff", "Conta",new{Area =""}))
                 {
                     @Html.AntiForgeryToken()
-                    <button class="btn btn-default btn-flat" type="submit"><i class="fa fa-sign-out"></i>&nbsp;Sair</button>
+                    <button class="btn btn-default btn-flat" type="submit"><i class="fa fa-sign-out"></i>&nbsp;Logout</button>
                 }
             </div>
         </li>
