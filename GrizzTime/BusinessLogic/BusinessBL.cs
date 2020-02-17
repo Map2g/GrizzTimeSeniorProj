@@ -37,6 +37,27 @@ namespace GrizzTime.BusinessLogic
 
         public string UserStatus { get; set; }
 
+        public void SaveExist() {
+             using (Entities dc = new Entities()) {
+            GrizzTime.Models.business businessToUpdate = new GrizzTime.Models.business();
+            foreach (var business in dc.businesses) {
+                var BusUpdate = dc.businesses.Where(a => a.UserID == business.UserID).FirstOrDefault();
+                if (BusUpdate != default(business)) {
+                    BusUpdate.UserEmail = business.UserEmail;
+                    BusUpdate.UserPW = business.UserPW;
+                    BusUpdate.BusName = business.BusName;
+                    BusUpdate.BusAddress = business.BusAddress;
+                    BusUpdate.UserStatus = business.UserStatus;
+                }
+                
+              }
+            dc.businesses.Add(businessToUpdate);
+            dc.SaveChanges();
+            }
+        }
+
+
+
         public void SaveNew()
         {
             //TODO : validate before save

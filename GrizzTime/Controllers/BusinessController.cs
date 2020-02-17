@@ -263,13 +263,15 @@ namespace GrizzTime.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (Entities dc = new Entities())
-                    {
+                    business.SaveExist();
+                   // using (Entities dc = new Entities())
+                    //{
                     
-                        dc.Entry(business).State = System.Data.Entity.EntityState.Modified;
-                        dc.SaveChanges();
-                        return RedirectToAction("Details");
-                    }
+                        //dc.Entry(business).State = System.Data.Entity.EntityState.Modified;
+                        //dc.SaveChanges();
+                        //return RedirectToAction("Details");
+                        
+                    //}
                 }
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
