@@ -142,22 +142,24 @@ namespace GrizzTime.Controllers
 
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
-                            return Redirect(ReturnUrl);
+                            //return Redirect(ReturnUrl);
+                            return RedirectToAction("Dashboard");
                         }
                         else
                         {
-                            return Redirect("Dashboard");
+                            return RedirectToAction("Dashboard");
                         }
                     }
                 }
                 else
                 {
                     message = "Invalid Credentials";
+                    return View();
                 }
             }
 
             ViewBag.Message = message;
-            return View();
+            return RedirectToAction("Dashboard");
         }
 
         [HttpPost]
