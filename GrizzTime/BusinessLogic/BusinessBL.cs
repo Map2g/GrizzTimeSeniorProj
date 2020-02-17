@@ -16,9 +16,6 @@ namespace GrizzTime.BusinessLogic
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "The email address is required. ")]
         [EmailAddress(ErrorMessage = "Invalid email address. ")]
-        [Display(Name = "Email Address")]
-        [Required(ErrorMessage = "The email address is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string UserEmail { get; set; }
 
         [Display(Name = "Password")]
@@ -26,16 +23,12 @@ namespace GrizzTime.BusinessLogic
         MinRequiredNonAlphanumericCharacters = 1,
         MinRequiredPasswordLength = 8,
         ErrorMessage = "Your password must be at least 8 characters long and must contain at least one symbol (!, @, #, etc). "
-        MinNonAlphanumericCharactersError = "Your password needs to contain at least one symbol (!, @, #, etc).",
-        MinRequiredPasswordLength = 8,
-        MinPasswordLengthError = "Your password must be at least 8 characters long."
         )]
         [DataType(DataType.Password)]
         public string UserPW { get; set; }
 
         [Display(Name = "Business Name")]
         [Required(ErrorMessage = "Business name is required. ")]
-        [Required(ErrorMessage = "Business name is required.")]
         public string BusName { get; set; }
 
         [Display(Name = "Description")]
@@ -61,12 +54,11 @@ namespace GrizzTime.BusinessLogic
                 bus.BusAddress = this.BusAddress;
                 bus.UserStatus = this.UserStatus;
 
-                //TODO : what if dept. deleted ?
-
                 dc.businesses.Add(bus);
                 dc.SaveChanges();
             }
         }
+
 
         public class BusinessList : List<business>
         {
@@ -82,6 +74,7 @@ namespace GrizzTime.BusinessLogic
                     }
                 }
             }
+
         }
 
     }

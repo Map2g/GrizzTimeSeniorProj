@@ -160,9 +160,12 @@ namespace GrizzTime.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize]
         public ActionResult Logout()
         {
+            Request.Cookies.Clear();
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Business");
         }

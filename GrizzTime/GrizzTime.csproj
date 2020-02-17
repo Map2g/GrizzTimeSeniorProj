@@ -279,7 +279,7 @@
     <Content Include="assets\css\skin-blue.css" />
     <Content Include="assets\css\skin-blue.min.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\img\logo.jpg" />
+    <Content Include="assets\img\defaultuser.jpg" />
     <Content Include="assets\js\AdminLTE.js" />
     <Content Include="assets\js\app.min.js" />
     <Content Include="assets\js\bootstrap.min.js" />
@@ -619,8 +619,6 @@
     <Content Include="Views\Shared\Menus.cshtml" />
     <Content Include="Views\Employee\AddEmployeePopUp.cshtml" />
     <Content Include="Views\Business\Delete.cshtml" />
-    <Content Include="Views\Business\Deleted.cshtml" />
-    <Content Include="Views\Business\NotFound.cshtml" />
     <Content Include="Views\Contract\Create.cshtml" />
     <Content Include="Views\Business\MyContracts.cshtml" />
     <Content Include="Views\Business\MyEmployees.cshtml" />

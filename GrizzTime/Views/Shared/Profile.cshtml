@@ -1,15 +1,37 @@
-﻿<li class="dropdown user user-menu">
+﻿@{ 
+    GrizzTime.Models.Entities dc = new GrizzTime.Models.Entities();
+    int id = Int32.Parse(Request.Cookies["UserID"].Value);
+    if (dc.businesses.Find(id) != null)
+    {
+        var v = dc.businesses.Where(a => a.UserID == id).FirstOrDefault();
+        ViewBag.Name = v.BusName;
+        ViewBag.Email = v.UserEmail;
+        ViewBag.Type = "business";
+    }
+    else
+    {
+        var v = dc.employees.Where(a => a.UserID == id).FirstOrDefault();
+        ViewBag.Name = v.EmpFName + " " + v.EmpLName;
+        ViewBag.Email = v.UserEmail;
+        ViewBag.Type = "employee";
+    }
+
+    string type = ViewBag.Type;
+
+}
+
+<li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <img src="~/assets/img/logo.jpg" class="user-image" alt="User Image">
+        <img src="~/assets/img/defaultuser.jpg" class="user-image" alt="User Image">
         <span class="hidden-xs">Profile</span>
     </a>
     <ul class="dropdown-menu">
         <!-- User image -->
         <li class="user-header">
-            <img src="~/assets/img/logo.jpg" class="img-circle" alt="User Image">
+            <img src="~/assets/img/defaultuser.jpg" class="img-circle" alt="User Image">
             <p>
-                User Name
-                <small>useremail@email.com</small>
+                @ViewBag.Name
+                <small>@ViewBag.Email</small>
             </p>
         </li>
         <!-- Menu Body -->
@@ -32,10 +54,11 @@
                 <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
             </div>
             <div class="pull-right">
-                @using (Html.BeginForm("LogOff", "Conta",new{Area =""}))
+                @using (Html.BeginForm("Logout", type, FormMethod.Post))
                 {
-                    @Html.AntiForgeryToken()
-                    <button class="btn btn-default btn-flat" type="submit"><i class="fa fa-sign-out"></i>&nbsp;Logout</button>
+                @Html.AntiForgeryToken() 
+                @*@Html.ActionLink("Logout", "Logout", type, new {htmlAttributes = new {@class="btn btn-default btn-flat", @type="submit"} }, null) *@
+                <button class="btn btn-default btn-flat" type="submit" value="Logout"><i class="fa fa-sign-out"></i>&nbsp;Logout</button>
                 }
             </div>
         </li>
