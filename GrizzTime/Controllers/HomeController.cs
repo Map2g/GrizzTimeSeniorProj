@@ -19,6 +19,7 @@ namespace GrizzTime.Controllers
 
         public ActionResult LandingPage()
         {
+
             return PartialView();
         }
 
