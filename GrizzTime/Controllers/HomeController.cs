@@ -17,6 +17,12 @@ namespace GrizzTime.Controllers
             return View();
         }
 
+        public ActionResult LandingPage()
+        {
+
+            return PartialView();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

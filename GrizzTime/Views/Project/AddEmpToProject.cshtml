@@ -1,0 +1,56 @@
+﻿@model GrizzTime.BusinessLogic.Employee
+
+@using GrizzTime.BusinessLogic
+
+
+@{
+    ViewBag.Title = "Add employee";
+    string ProjManID = ViewBag.ProjectManager;
+    int ProjID = ViewBag.ProjectID;
+
+    //Remove project manager from list of possible employees to add.
+    List<SelectListItem> employeelist = Employee.EmployeeList(ViewBag.UserID);
+    SelectListItem projectmanager = employeelist.Find(x => x.Value.Contains(ProjManID));
+    employeelist.Remove(projectmanager);
+
+}
+
+<h2>Assign employee to @ViewBag.ProjectName</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.UserID, employeelist as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Assign" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}
+
+<div>
+    @Html.ActionLink("Back to Project", "Details", "Project", new { id = ProjID }, null)
+</div>

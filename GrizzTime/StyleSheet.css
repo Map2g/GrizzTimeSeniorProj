@@ -34,37 +34,49 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .Login-Box-Top{
-	width: 1000px;
-	height: 80px;
-	border-radius: 25px 25px 0px 0px;
+	width: 100%;
+	height: 70px;
+	border-radius: 25px 25px 25px 25px;
 	background-color: black;
 	position: relative;
 }
 
 .Login-Box{
-  width: 1000px;
+  width: 600px;
   height: auto;
   position: absolute;
   top: 15%;
   border-radius: 25px 25px 25px 25px;
-  background-color: transparent;
+  background-color: #333;
 }
 
 .Column-1{
   padding:20px;
 }
 .Form-Titles{
-  padding: 17px;
+  /*margin-left: 20px;*/
+  padding: 13px;
   color:white;
   font-size: 40px;
   font-family: Noto Sans, sans-serif;
 }
 
+.input-type {
+    width: 50%;
+    padding: 12px 10px;
+    margin: 15px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
 input[type=text], select {
-  width: 100%;
+  width: 400px;
   padding: 12px 10px;
   margin: 15px 0;
+  margin-left: 100px;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 15px;
@@ -73,9 +85,10 @@ input[type=text], select {
 
 input[type=password] {
 	font: small-caption;
-	width: 100%;
+	width: 400px;
 	padding: 12px 10px;
 	margin: 15px 0;
+    margin-left: 100px;
 	display: inline-block;
 	border: 1px solid #ccc;
 	border-radius: 15px;
@@ -83,11 +96,12 @@ input[type=password] {
 }
 
 input[type=submit]{
-  width: 100%;
+  width: 400px;
   background-color: #D3BD09;
   color: white;
   padding: 14px 20px;
   margin: 20px 0;
+  margin-left:100px;
   border: none;
   border-radius: 15px;
   cursor: pointer;
@@ -110,6 +124,7 @@ label {
 	color: white;
 	font-size: 20px;
 	font-family: Noto Sans, sans-serif;
+    padding:20px;
 }
 
 .Navbar {
@@ -172,21 +187,93 @@ label {
 .Navbar-dropdown:hover .Navbar-dropdown-content {
   display: block;
 }
-/* .Half-Box{
-  width:45%;
+
+.Landing-Box-Container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-*{
-  box-sizing: border-box;
+.Landing-Box {
+    width: 850px;
+    height: 350px;
+    position: absolute;
+    top: 15%;
+    border-radius: 25px 25px 25px 25px;
+    background-color: #333;
 }
-.Form-Columns{
-  float:left;
+.Landing-Page-Buttons {
+    position: absolute;
+    height: 200px;
+    width: 250px;
+    background-color: #D3BD09;
+    /*padding: 50px;*/
+    margin-left: 75px;
+    margin-top: 70px;
+    border-radius: 25px;
+    transition: all 0.2s ease-in-out;
+}
+.Landing-Page-Buttons h2{
+    margin-left:37px;
+    margin-top: 90px;
+    color: #333;
+    font-family: Noto, sans-serif;
+    font-size: 23px;
+}
+    .Landing-Page-Buttons:hover {
+        color: rgba(255, 255, 255, 1);
+        box-shadow: 0 5px 15px #D3BD09;
+    }
+    .transition-swipe{
+        transition: 500ms;
+        /*transform: translateY(0);*/
+    }
+
+    html.is-animating .transition-swipe{
+        transform: translateY(100%);
+    }
+
+    html.is-leaving .transition-swipe{
+        transform: translateX(0);
+    }
+
+    @keyframes facdeIn {
+        0%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp{
+        0%{
+            opacity: 0;
+            transform: translate3d(0, 100%, 0);
+        }
+
+        100%{
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+
+.scene-element {
+    animation-duration: 5s;
+    transition-timing-function: ease-in;
+    animation-fill-mode: both;
 }
 
-.Form-Two-Columns{
-  50%;
+.scene-element--fadein {
+    animation-name: facdeIn;
 }
 
-.Form-Two-Rows:after{
-  display:table;
-} */
+.scene-element--fadeinup {
+    animation-name: fadeInUp;
+}
+
+.scene-element--fadeinright {
+    animation-name: fadeInRight;
+}
