@@ -11,9 +11,13 @@ using System.Data;
 using System.Text;
 using GrizzTime.Models;
 using GrizzTime.ViewModels;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity;
+
 
 namespace GrizzTime.Controllers
 {
+    [Authorize]
     public class BusinessController : Controller
     {
         // GET: Business
@@ -42,12 +46,14 @@ namespace GrizzTime.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Registration()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] Business thisBus)
         {
             bool Status = false;
@@ -108,6 +114,7 @@ namespace GrizzTime.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Login()
         {
 
@@ -115,6 +122,8 @@ namespace GrizzTime.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult Login(business business, String ReturnUrl)
         {
             string message = "";
@@ -125,20 +134,35 @@ namespace GrizzTime.Controllers
                 {
                     if (string.Compare(business.UserPW, v.UserPW) == 0)
                     {
-                        
-                        int timeout = business.RememberMe ? 52600 : 20; // Remembers for one year
-                        var ticket = new FormsAuthenticationTicket(business.UserEmail, business.RememberMe, timeout);
-                        string encrypted = FormsAuthentication.Encrypt(ticket);
-                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                        cookie.HttpOnly = true;
-                        Response.Cookies.Add(cookie);
+                        var claims = new List<Claim>();
+
+                        try
+                        {
+                            claims.Add(new Claim(ClaimTypes.Name, v.UserEmail));
+                            var claimIdentities = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                            var ctx = Request.GetOwinContext();
+                            var authenticationManager = ctx.Authentication;
+
+                            authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { IsPersistent = false }, claimIdentities);
+
+                            //older start
+                            int timeout = business.RememberMe ? 52600 : 20; // Remembers for one year
+                            var ticket = new FormsAuthenticationTicket(business.UserEmail, business.RememberMe, timeout);
+                            string encrypted = FormsAuthentication.Encrypt(ticket);
+                            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                            cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                            cookie.HttpOnly = true;
+                            Response.Cookies.Add(cookie);
 
 
-                        Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString() ) );
-                        //Response.Cookies.Add(new HttpCookie("BusinessName", v.BusName ));
-
-
+                            Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString()));
+                            //Response.Cookies.Add(new HttpCookie("BusinessName", v.BusName ));
+                            //older end
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
 
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
@@ -162,15 +186,15 @@ namespace GrizzTime.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public ActionResult Logout()
-        {
-            Request.Cookies.Clear();
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Business");
-        }
+        //[HttpPost]
+        //[Authorize]
+        //public ActionResult Logout()
+        //{
+        //    Request.Cookies.Clear();
+        //    FormsAuthentication.SignOut();
+        //    Session.Abandon();
+        //    return RedirectToAction("LandingPage", "Home");
+        //}
 
         // GET: User/Details/5
         public ActionResult Details(int? id)

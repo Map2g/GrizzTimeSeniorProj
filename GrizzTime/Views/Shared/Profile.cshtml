@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     GrizzTime.Models.Entities dc = new GrizzTime.Models.Entities();
     int id = Int32.Parse(Request.Cookies["UserID"].Value);
     if (dc.businesses.Find(id) != null)
@@ -17,50 +17,61 @@
     }
 
     string type = ViewBag.Type;
-
 }
 
-<li class="dropdown user user-menu">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <img src="~/assets/img/defaultuser.jpg" class="user-image" alt="User Image">
-        <span class="hidden-xs">Profile</span>
-    </a>
-    <ul class="dropdown-menu">
-        <!-- User image -->
-        <li class="user-header">
-            <img src="~/assets/img/defaultuser.jpg" class="img-circle" alt="User Image">
-            <p>
-                @ViewBag.Name
-                <small>@ViewBag.Email</small>
-            </p>
-        </li>
-        <!-- Menu Body -->
-        @*<li class="user-body">
-            <div class="row">
-                <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                </div>
-            </div>
-        </li>*@
-        <!-- Menu Footer-->
-        <li class="user-footer">
-            <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
-            </div>
-            <div class="pull-right">
-                @using (Html.BeginForm("Logout", type, FormMethod.Post))
-                {
-                @Html.AntiForgeryToken() 
-                @*@Html.ActionLink("Logout", "Logout", type, new {htmlAttributes = new {@class="btn btn-default btn-flat", @type="submit"} }, null) *@
-                <button class="btn btn-default btn-flat" type="submit" value="Logout"><i class="fa fa-sign-out"></i>&nbsp;Logout</button>
-                }
-            </div>
-        </li>
-    </ul>
-</li>
+@if (Request.IsAuthenticated)
+{
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="~/assets/img/defaultuser.jpg" class="user-image" alt="User Image">
+                <span class="hidden-xs">Profile</span>
+            </a>
+            <ul class="dropdown-menu">
+                <!-- User image -->
+                <li class="user-header">
+                    <img src="~/assets/img/defaultuser.jpg" class="img-circle" alt="User Image">
+                    <p>
+                        @User.Identity.Name
+                        @* @ViewBag.Name *@
+                        <small>@ViewBag.Name</small>
+                    </p>
+                </li>
+                <!-- Menu Body -->
+                @*<li class="user-body">
+                        <div class="row">
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Followers</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Sales</a>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a href="#">Friends</a>
+                            </div>
+                        </div>
+                    </li>*@
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
+                    </div>
+                    <div class="pull-right">
+                        @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { @id = "logoutForm", @class = "navbar-right" }))
+                        {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()"> <button class="btn btn-default btn-flat" value="Logout"><i class="fa fa-sign-out"></i>&nbsp;Logout</button> </a>
+                        }
+                    </div>
+                </li>
+            </ul>
+        </li> 
+}
+else
+{
+    <li class="dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="~/assets/img/defaultuser.jpg" class="user-image" alt="User Image">
+            <span class="hidden-xs">Profile</span>
+        </a>
+    </li>
+}

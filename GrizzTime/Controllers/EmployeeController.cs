@@ -14,6 +14,7 @@ using System.Text;
 
 namespace GrizzTime.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         // GET: Employee
@@ -85,6 +86,7 @@ namespace GrizzTime.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Registration(int? id)
         {
             using (Entities dc = new Entities())
@@ -116,6 +118,7 @@ namespace GrizzTime.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Registration(Employee thisEmp, int? id)
         {
             if (id == null)
@@ -184,7 +187,7 @@ namespace GrizzTime.Controllers
             return View(thisEmp);
         }
 
-
+        [AllowAnonymous]
         public ActionResult Login()
         {
 
@@ -192,6 +195,7 @@ namespace GrizzTime.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Login(employee employee, String ReturnUrl)
         {
             string message = "";
@@ -238,6 +242,7 @@ namespace GrizzTime.Controllers
             return RedirectToAction("Login", "Employee");
         }
 
+        [AllowAnonymous]
         public ActionResult AllEmployees()
         {
             Entities db = new Entities();
