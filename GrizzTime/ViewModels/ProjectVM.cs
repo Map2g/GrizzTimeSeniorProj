@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Web.Mvc;
 
-namespace GrizzTime.BusinessLogic
+namespace GrizzTime.ViewModels
 {
     public class Project
     {

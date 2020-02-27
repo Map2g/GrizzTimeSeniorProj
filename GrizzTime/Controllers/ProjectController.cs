@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using GrizzTime.BusinessLogic;
+using GrizzTime.ViewModels;
 using GrizzTime.Models;
 
 namespace GrizzTime.Controllers

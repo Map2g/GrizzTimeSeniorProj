@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace GrizzTime.BusinessLogic
+namespace GrizzTime.ViewModels
 {
     public class Contract
     {

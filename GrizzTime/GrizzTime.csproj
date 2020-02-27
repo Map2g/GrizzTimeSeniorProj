@@ -128,10 +128,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="BusinessLogic\BusinessBL.cs" />
-    <Compile Include="BusinessLogic\ContractBL.cs" />
-    <Compile Include="BusinessLogic\ProjectBL.cs" />
-    <Compile Include="BusinessLogic\EmployeeBL.cs" />
+    <Compile Include="ViewModels\BusinessVM.cs" />
+    <Compile Include="ViewModels\ContractVM.cs" />
+    <Compile Include="ViewModels\ProjectVM.cs" />
+    <Compile Include="ViewModels\EmployeeVM.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\ContractController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -198,8 +198,6 @@
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\BusinessVM.cs" />
-    <Compile Include="ViewModels\EmployeeVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin-lte\css\AdminLTE.css" />

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Data.SqlClient;
 using System.Data;
-using GrizzTime.BusinessLogic;
+using GrizzTime.ViewModels;
 using GrizzTime.Models;
 using System.Text;
 

@@ -1,4 +1,4 @@
-﻿using GrizzTime.BusinessLogic;
+﻿using GrizzTime.ViewModels;
 using GrizzTime.Models;
 using System;
 using System.Collections.Generic;

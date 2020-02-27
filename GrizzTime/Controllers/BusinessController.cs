@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Text;
 using GrizzTime.Models;
-using GrizzTime.BusinessLogic;
+using GrizzTime.ViewModels;
 
 namespace GrizzTime.Controllers
 {
