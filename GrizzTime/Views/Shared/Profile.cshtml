@@ -6,14 +6,12 @@
         var v = dc.businesses.Where(a => a.UserID == id).FirstOrDefault();
         ViewBag.Name = v.BusName;
         ViewBag.Email = v.UserEmail;
-        ViewBag.Type = "business";
     }
     else
     {
         var v = dc.employees.Where(a => a.UserID == id).FirstOrDefault();
         ViewBag.Name = v.EmpFName + " " + v.EmpLName;
         ViewBag.Email = v.UserEmail;
-        ViewBag.Type = "employee";
     }
 
     string type = ViewBag.Type;

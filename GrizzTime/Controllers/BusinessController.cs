@@ -156,6 +156,7 @@ namespace GrizzTime.Controllers
 
 
                             Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString()));
+                            Response.Cookies.Add(new HttpCookie("Role", "Business"));
                             //Response.Cookies.Add(new HttpCookie("BusinessName", v.BusName ));
                             //older end
                         }

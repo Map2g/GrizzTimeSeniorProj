@@ -5,13 +5,35 @@
 
 @{
     ViewBag.Title = "Add employee";
-    string ProjManID = ViewBag.ProjectManager;
+    int ProjManID = ViewBag.ProjectManager;
     int ProjID = ViewBag.ProjectID;
 
-    //Remove project manager from list of possible employees to add.
-    List<SelectListItem> employeelist = Employee.EmployeeList(ViewBag.UserID);
-    SelectListItem projectmanager = employeelist.Find(x => x.Value.Contains(ProjManID));
-    employeelist.Remove(projectmanager);
+    List<Employee> employeelist2 = Employee.EmployeeList(ViewBag.UserID);
+
+    //Get project manager from list of possible employees to add.
+    Employee projectmanager = employeelist2.Find(x => x.UserID == ProjManID);
+
+    //Get existing project members from list. Like why do I have selectlists and lists. That makes it so much worse
+    List<Employee> getProjEmps = Project.GetEmployees(ProjID);
+
+    //remove existing project members
+    foreach (Employee emp in getProjEmps)
+    {
+        employeelist2.Remove(employeelist2.Find(x => x.UserID == emp.UserID));
+    }
+
+    //remove project manager
+    employeelist2.Remove(projectmanager);
+
+    //convert employee list to selectlist
+    List<SelectListItem> employeelist = employeelist2.ConvertAll(a =>
+    {
+        return new SelectListItem()
+        {
+            Text = a.EmpFName + " " + a.EmpLName + "\t" + a.EmpType,
+            Value = a.UserID.ToString()
+        };
+    });
 
 }
 

@@ -313,6 +313,7 @@ namespace GrizzTime.Controllers
 
         public ActionResult AddEmpToProject(int id)
         {
+            //Business ID
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             //string message = "";
             using (Entities dc = new Entities())
@@ -320,7 +321,7 @@ namespace GrizzTime.Controllers
                 project proj = dc.projects.Find(id);
                 ViewBag.ProjectName = proj.ProjName;
                 ViewBag.ProjectID = proj.ProjID;
-                ViewBag.ProjectManager = proj.ProjManID.ToString(); 
+                ViewBag.ProjectManager = proj.ProjManID; 
             }
             //ViewBag.message = message;
             return View();
@@ -336,7 +337,7 @@ namespace GrizzTime.Controllers
                 project proj = dc.projects.Find(id);
                 ViewBag.ProjectName = proj.ProjName;
                 ViewBag.ProjectID = proj.ProjID;
-                ViewBag.ProjectManager = proj.ProjManID.ToString();
+                ViewBag.ProjectManager = proj.ProjManID;
                 if (proj == null)
                 {
                     message = "Project not found.";

@@ -79,22 +79,48 @@ namespace GrizzTime.ViewModels
             new SelectListItem() {Text="Intern", Value="Intern" },
         };
 
-        //Gets a list of employees in a specific business. ID should be UserID of a business
-        public static List<SelectListItem> EmployeeList(string id)
+        ////Gets a list of employees in a specific business. ID should be UserID of a business
+        //public static List<SelectListItem> EmployeeList(string id)
+        //{
+        //    string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
+
+        //    Entities dc = new Entities();
+        //    IEnumerable<employee> thisBusinessEmployees = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
+
+        //    List<SelectListItem> AllEmployees = new List<SelectListItem>();
+
+        //    foreach (var item in thisBusinessEmployees)
+        //    {
+        //        AllEmployees.Add(new SelectListItem() { Text = item.EmpFName + " " + item.EmpLName, Value = item.UserID.ToString() });
+        //    };
+
+        //    return AllEmployees;
+        //}
+
+        public static List<Employee> EmployeeList(string id)
         {
             string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
 
             Entities dc = new Entities();
             IEnumerable<employee> thisBusinessEmployees = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
 
-            List<SelectListItem> AllEmployees = new List<SelectListItem>();
+            List<Employee> AllEmployees = new List<Employee>();
 
             foreach (var item in thisBusinessEmployees)
             {
-                AllEmployees.Add(new SelectListItem() { Text = item.EmpFName + " " + item.EmpLName, Value = item.UserID.ToString() });
+                AllEmployees.Add(new Employee()
+                {
+                    EmpFName = item.EmpFName,
+                    EmpLName = item.EmpLName,
+                    UserID = item.UserID,
+                    EmpType = item.EmpType,
+                    UserEmail = item.UserEmail,
+                    //add more if needed
+                });               
             };
 
             return AllEmployees;
+
         }
 
         public static List<Project> GetProjects(int id)

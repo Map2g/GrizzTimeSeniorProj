@@ -11,15 +11,33 @@ using System.Data;
 using GrizzTime.ViewModels;
 using GrizzTime.Models;
 using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity;
 
 namespace GrizzTime.Controllers
 {
     [Authorize]
     public class EmployeeController : Controller
     {
-        // GET: Employee
-        public ActionResult Index()
+        public ActionResult Dashboard()
         {
+            try
+            {
+                Entities dc = new Entities();
+                int id = Int32.Parse(Request.Cookies["UserID"].Value);
+                var v = dc.employees.Where(a => a.UserID == id).FirstOrDefault();
+
+                ViewBag.EmployeeName = v.EmpFName + " " + v.EmpLName;
+                ViewBag.BusID = v.BusCode;
+                ViewBag.UserID = v.UserID;
+
+            }
+            catch (NullReferenceException e)
+            { //Redirect to login if it can't find business name
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n" + e.Message);
+                return RedirectToAction("Login", "Employee");
+            }
+
             return View();
         }
 
@@ -195,6 +213,7 @@ namespace GrizzTime.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public ActionResult Login(employee employee, String ReturnUrl)
         {
@@ -206,14 +225,33 @@ namespace GrizzTime.Controllers
                 {
                     if (string.Compare(employee.UserPW, v.UserPW) == 0)
                     {
-                        bool LRememberMe = employee.RememberMe;
-                        int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
-                        var ticket = new FormsAuthenticationTicket(employee.UserEmail, LRememberMe, timeout);
-                        string encrypted = FormsAuthentication.Encrypt(ticket);
-                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                        cookie.HttpOnly = true;
-                        Response.Cookies.Add(cookie);
+                        var claims = new List<Claim>();
+                        
+                        try { 
+                            claims.Add(new Claim(ClaimTypes.Name, v.UserEmail));
+                            var claimIdentities = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                            var ctx = Request.GetOwinContext();
+                            var authenticationManager = ctx.Authentication;
+
+                            authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { IsPersistent = false }, claimIdentities);
+
+                            bool LRememberMe = employee.RememberMe;
+                            int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
+                            var ticket = new FormsAuthenticationTicket(employee.UserEmail, LRememberMe, timeout);
+                            string encrypted = FormsAuthentication.Encrypt(ticket);
+                            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                            cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                            cookie.HttpOnly = true;
+                            Response.Cookies.Add(cookie);
+
+                            Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString()));
+                            Response.Cookies.Add(new HttpCookie("Role", v.EmpType));
+
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
 
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
@@ -235,12 +273,12 @@ namespace GrizzTime.Controllers
             return RedirectToAction("Details", "Employee");
         }
 
-        [Authorize]
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Employee");
-        }
+        //[Authorize]
+        //public ActionResult Logout()
+        //{
+        //    FormsAuthentication.SignOut();
+        //    return RedirectToAction("Login", "Employee");
+        //}
 
         [AllowAnonymous]
         public ActionResult AllEmployees()
@@ -284,6 +322,7 @@ namespace GrizzTime.Controllers
         public ActionResult Edit(int? id)
         {
             ViewBag.UserID = Request.Cookies["UserID"].Value;
+
             using (Entities dc = new Entities())
             {
 
@@ -377,7 +416,10 @@ namespace GrizzTime.Controllers
                 Status = true;
                 ViewBag.Message = message;
                 ViewBag.Status = Status;
-                return RedirectToAction("MyEmployees", "Business");
+                if (Request.Cookies["Role"].Value.Equals("Business"))
+                    return RedirectToAction("MyEmployees", "Business");
+                else
+                    return RedirectToAction("Dashboard", "Employee");
             }
             else
             {
