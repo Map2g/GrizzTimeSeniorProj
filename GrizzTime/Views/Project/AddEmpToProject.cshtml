@@ -1,0 +1,78 @@
+﻿@model GrizzTime.ViewModels.Employee
+
+@using GrizzTime.ViewModels
+
+
+@{
+    ViewBag.Title = "Add employee";
+    int ProjManID = ViewBag.ProjectManager;
+    int ProjID = ViewBag.ProjectID;
+
+    List<Employee> employeelist2 = Employee.EmployeeList(ViewBag.UserID);
+
+    //Get project manager from list of possible employees to add.
+    Employee projectmanager = employeelist2.Find(x => x.UserID == ProjManID);
+
+    //Get existing project members from list. Like why do I have selectlists and lists. That makes it so much worse
+    List<Employee> getProjEmps = Project.GetEmployees(ProjID);
+
+    //remove existing project members
+    foreach (Employee emp in getProjEmps)
+    {
+        employeelist2.Remove(employeelist2.Find(x => x.UserID == emp.UserID));
+    }
+
+    //remove project manager
+    employeelist2.Remove(projectmanager);
+
+    //convert employee list to selectlist
+    List<SelectListItem> employeelist = employeelist2.ConvertAll(a =>
+    {
+        return new SelectListItem()
+        {
+            Text = a.EmpFName + " " + a.EmpLName + "\t" + a.EmpType,
+            Value = a.UserID.ToString()
+        };
+    });
+
+}
+
+<h2>Assign employee to @ViewBag.ProjectName</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.UserID, employeelist as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Assign" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}
+
+<div>
+    @Html.ActionLink("Back to Project", "Details", "Project", new { id = ProjID }, null)
+</div>

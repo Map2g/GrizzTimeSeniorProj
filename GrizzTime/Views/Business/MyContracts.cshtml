@@ -1,0 +1,63 @@
+﻿@model IEnumerable<GrizzTime.Models.contract>
+@using GrizzTime.ViewModels
+
+@{
+    ViewBag.Title = "My Contracts";
+}
+
+<h2>Details</h2>
+
+@*Link name, controller name, action method, route argument, html details*@
+@Html.ActionLink("Add a new contract", "Create", "Contract", null, null)
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Allotted hours")
+        </th>
+        <th>
+            @Html.DisplayName("Hours remaining")
+        </th>
+        <th>
+            @Html.DisplayName("Projects")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConAllottedHours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConHoursRemaining)
+            </td>
+            <td>
+                @Html.DropDownList("Projects", Project.ConProjList(item.ConID.ToString()))
+            </td>
+            <td>
+                @*Link name, controller name, action method, route argument, html details*@
+                @Html.ActionLink("Edit", "Edit", "Contract", new { id = item.ConID }, null) |
+                @Html.ActionLink("Details", "Details", new { id = item.ConID }) |
+                @Html.ActionLink("Delete", "Delete", "Contract", new { id = item.ConID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}

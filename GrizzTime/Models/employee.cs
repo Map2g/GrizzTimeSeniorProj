@@ -14,9 +14,8 @@ namespace GrizzTime.Models
 
 using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
-    public partial class employee
+    
+public partial class employee
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -39,29 +38,6 @@ using System;
 
     }
 
-    public enum JobType
-    {
-        [Description("President")]
-        President,
-        [Description("CEO")]
-        CEO,
-        [Description("CTO")]
-        CTO,
-        [Description("CIO")]
-        CIO,
-        [Description("CFO")]
-        CFO,
-        [Description("Director")]
-        Director,
-        [Description("Project Manager")]
-        ProjectManager,
-        [Description("Technology Lead")]
-        TechnologyLead,
-        [Description("Software Engineer")]
-        SoftwareEngineer,
-        [Description("Intern")]
-        Intern
-    }    
 
     public int UserID { get; set; }
 

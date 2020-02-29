@@ -36,6 +36,22 @@
         <AssociationConnector Association="GrizzTime_dbModel.FK_Contract_Business" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_project_contract" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_projman_project" />
+        <EntityTypeShape EntityType="GrizzTime_dbModel.task" Width="1.5" PointX="14.625" PointY="4" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_ExpenseTask" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_ProjectTask" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_WorkTask" ManuallyRouted="true" >
+          <ConnectorPoint PointX="14.968748" PointY="6.5571907552083317" />
+          <ConnectorPoint PointX="14.968748" PointY="13.162165665161465" />
+          <ConnectorPoint PointX="9.125" PointY="13.162165665161465" />
+          <ConnectorPoint PointX="9.125" PointY="12.693979870018099" />
+          <ConnectorPoint PointX="6.333333333333333" PointY="12.693979870018099" />
+          <ConnectorPoint PointX="6.166666666666667" PointY="12.693979870018099" />
+          <ConnectorPoint PointX="5.583333333333333" PointY="12.693979870018099" />
+          <ConnectorPoint PointX="5.416666666666667" PointY="12.693979870018099" />
+          <ConnectorPoint PointX="2.375" PointY="12.693979870018099" />
+          <ConnectorPoint PointX="2.375" PointY="11.456347214843746" />
+          <ConnectorPoint PointX="2" PointY="11.456347214843746" />
+        </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

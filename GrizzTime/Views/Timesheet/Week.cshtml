@@ -1,0 +1,138 @@
+﻿@model ICollection<GrizzTime.Models.workentry>
+@using GrizzTime.ViewModels
+
+@{
+    GrizzTime.Models.workentry mon = null;
+    GrizzTime.Models.workentry tue = null;
+    GrizzTime.Models.workentry wed = null;
+    GrizzTime.Models.workentry thu = null;
+    GrizzTime.Models.workentry fri = null;
+    GrizzTime.Models.workentry sat = null;
+    GrizzTime.Models.workentry sun = null;
+
+    if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            switch (item.WorkDate)
+            {
+                case "Monday":
+                    mon = item;
+                    break;
+                case "Tuesday":
+                    tue = item;
+                    break;
+                case "Wednesday":
+                    wed = item;
+                    break;
+                case "Thursday":
+                    thu = item;
+                    break;
+                case "Friday":
+                    fri = item;
+                    break;
+                case "Saturday":
+                    sat = item;
+                    break;
+                case "Sunday":
+                    sun = item;
+                    break;
+            }
+        }
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Monday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Wednesday</th>
+            <th scope="col">Thursday</th>
+            <th scope="col">Friday</th>
+            <th scope="col">Saturday</th>
+            <th scope="col">Sunday</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @if (mon != null)
+                {
+                    @Html.EditorFor(model => mon.WorkHours);
+                }
+                else
+                {
+                    @Html.Editor("0");
+                }
+                @Html.ActionLink("Change", "placeholder");
+            </td>
+            <td>
+                @if (tue != null)
+                {
+                    @Html.EditorFor(model => tue.WorkHours);
+                }
+                else
+                {
+                    @Html.Editor("0");
+                }
+                @Html.ActionLink("Change", "placeholder");
+            </td>
+            <td>
+                @if (wed != null)
+                {
+                    @Html.EditorFor(model => wed.WorkHours);
+                }
+                else
+                {
+                    @Html.Editor("0");
+                }
+                @Html.ActionLink("Change", "placeholder");
+            </td>
+            <td>
+                @if (thu != null)
+                {
+                    @Html.EditorFor(model => thu.WorkHours);
+                }
+                else
+                {
+                    @Html.Editor("0");
+                }
+                @Html.ActionLink("Change", "placeholder");
+            </td>
+            <td>
+                @if (fri != null)
+                {
+                    @Html.EditorFor(model => fri.WorkHours);
+                }
+                else
+                {
+                    @Html.Editor("0");
+                }
+                @Html.ActionLink("Change", "placeholder");
+            </td>
+            <td>
+                @if (sat != null)
+                {
+                    @Html.EditorFor(model => sat.WorkHours);
+                }
+                else
+                {
+                    @Html.Editor("0");
+                }
+                @Html.ActionLink("Change", "placeholder");
+            </td>
+            <td>
+                @if (sun != null)
+                {
+                    @Html.EditorFor(model => sun.WorkHours);
+                }
+                else
+                {
+                    @Html.Editor("0");
+                }
+                @Html.ActionLink("Change", "placeholder");
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -24,6 +24,8 @@ public partial class project
 
         this.employee_project = new HashSet<employee_project>();
 
+        this.tasks = new HashSet<task>();
+
     }
 
 
@@ -52,6 +54,10 @@ public partial class project
     public virtual contract contract { get; set; }
 
     public virtual employee employee { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<task> tasks { get; set; }
 
 }
 

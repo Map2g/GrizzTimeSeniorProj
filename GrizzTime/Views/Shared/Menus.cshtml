@@ -1,20 +1,56 @@
-﻿<section class="sidebar">
+@{
+    string Role = Request.Cookies["Role"].Value;
+}
+
+<section class="sidebar">
     <ul class="sidebar-menu">
         <li class="header">Menu Navigation</li>
         <li>
             <a href="@(Url.Action("Index","Home"))">
-                <i class="fa fa-home fa-fw"></i> <span>Inicio</span>
+                <i class="fa fa-home fa-fw"></i> <span>Home</span>
             </a>
         </li>
-       
-        @if (User.IsInRole("Role"))
-        {
-           
-        }
-         
-        
+        <li>
+            <a href="@(Url.Action("About","Home"))">
+                <span>About</span>
+            </a>
+        </li>
+        <li>
+            <a href="@(Url.Action("Contact","Home"))">
+                <span>Contact</span>
+            </a>
+        </li>
+        <li style="@(Role == "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("Dashboard","Business"))">
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li style="@(Role == "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("MyEmployees","Business" ))">
+                <span>View my Employees</span>
+            </a>
+        </li>
+        <li style="@(Role == "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("MyProjects","Business" ))">
+                <span>View my Projects</span>
+            </a>
+        </li>
+        <li style="@(Role == "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("MyContracts","Business" ))">
+                <span>View my Contracts</span>
+            </a>
+        </li>
+        <li style="@(Role != "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("Dashboard","Employee" ))">
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+
+
     </ul>
 </section>
+
 
 @*
      <li>

@@ -1,66 +1,95 @@
-﻿@model IEnumerable<GrizzTime.Models.employee>
+﻿@model GrizzTime.ViewModels.Employee
+@using GrizzTime.ViewModels
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.EmpFName @Model.EmpLName</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("UserEmail")
-        </th>
-        <th>
-            @Html.DisplayName("UserPW")
-        </th>
-        <th>
-            @Html.DisplayName("EmpFName")
-        </th>
-        <th>
-            @Html.DisplayName("EmpLName")
-        </th>
-        <th>
-            @Html.DisplayName("EmpPhone")
-        </th>
-        <th>
-            @Html.DisplayName("Business")
-        </th>
-        <th>
-            @Html.DisplayName("EmpType")
-        </th>
-        <th></th>
-    </tr>
+<div class="form-horizontal">
+    <hr />
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserPW)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpFName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpLName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BusCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmpType)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UserID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserID })
-        </td>
-    </tr>
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmpFName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.EmpFName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmpLName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.EmpLName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmpPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.EmpPhone, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Job Title:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.EmpType, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmpPayRate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.EmpPayRate, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            List of Projects:
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Project")
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Employee.GetProjects(Model.UserID))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProjName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Project", new { id = item.ProjID }, null)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "MyEmployees", "Business")
+</div>
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
 }
-
-</table>

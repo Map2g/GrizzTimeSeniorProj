@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+
+}
+
+<h2>Employee Dashboard</h2>
+
+<div class="form-horizontal">
+    <h4>Employee - @ViewBag.EmployeeName </h4>
+    <hr />
+
+    <p><a href="/employee/edit/@Request.Cookies["UserID"].Value">Edit employee</a></p>
+    @Html.ActionLink("See Timesheets", "List", "Timesheet")
+    <p><a href="/timesheets/list/">See timesheets</a></p>
+
+
+</div>
+
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}

@@ -60,6 +60,8 @@ public partial class Entities : DbContext
 
     public virtual DbSet<contract> contracts { get; set; }
 
+    public virtual DbSet<task> tasks { get; set; }
+
 }
 
 }
