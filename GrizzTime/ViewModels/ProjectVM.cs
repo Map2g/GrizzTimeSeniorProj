@@ -176,5 +176,34 @@ namespace GrizzTime.ViewModels
                 return tryIt;
             }
         }
+
+        public static List<task> GetTasks(int id)
+        {
+            using (Entities dc = new Entities())
+            {
+                //get projects for this project manager
+                var thisProjectTasks = (from p in dc.projects
+                                      join t in dc.tasks
+                                      on p.ProjID equals t.ProjID
+                                      where p.ProjID == id
+                                      select new { p.ProjID, p.ProjName, t.TaskName, t.TaskID, t.BillableRate }
+                            ).ToList();
+
+                List<task> tryIt = new List<task>();
+
+                foreach (var item in thisProjectTasks)
+                {
+                    tryIt.Add(new task()
+                    {
+                        TaskName = item.TaskName,
+                        BillableRate = item.BillableRate,
+                        TaskID = item.TaskID,
+                        ProjID = item.ProjID,
+                    });
+                }
+
+                return tryIt;
+            }
+        }
     }
 }

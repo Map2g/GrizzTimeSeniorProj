@@ -42,97 +42,163 @@
     }
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Monday</th>
-            <th scope="col">Tuesday</th>
-            <th scope="col">Wednesday</th>
-            <th scope="col">Thursday</th>
-            <th scope="col">Friday</th>
-            <th scope="col">Saturday</th>
-            <th scope="col">Sunday</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                @if (mon != null)
-                {
-                    @Html.EditorFor(model => mon.WorkHours);
-                }
-                else
-                {
-                    @Html.Editor("0");
-                }
-                @Html.ActionLink("Change", "placeholder");
-            </td>
-            <td>
-                @if (tue != null)
-                {
-                    @Html.EditorFor(model => tue.WorkHours);
-                }
-                else
-                {
-                    @Html.Editor("0");
-                }
-                @Html.ActionLink("Change", "placeholder");
-            </td>
-            <td>
-                @if (wed != null)
-                {
-                    @Html.EditorFor(model => wed.WorkHours);
-                }
-                else
-                {
-                    @Html.Editor("0");
-                }
-                @Html.ActionLink("Change", "placeholder");
-            </td>
-            <td>
-                @if (thu != null)
-                {
-                    @Html.EditorFor(model => thu.WorkHours);
-                }
-                else
-                {
-                    @Html.Editor("0");
-                }
-                @Html.ActionLink("Change", "placeholder");
-            </td>
-            <td>
-                @if (fri != null)
-                {
-                    @Html.EditorFor(model => fri.WorkHours);
-                }
-                else
-                {
-                    @Html.Editor("0");
-                }
-                @Html.ActionLink("Change", "placeholder");
-            </td>
-            <td>
-                @if (sat != null)
-                {
-                    @Html.EditorFor(model => sat.WorkHours);
-                }
-                else
-                {
-                    @Html.Editor("0");
-                }
-                @Html.ActionLink("Change", "placeholder");
-            </td>
-            <td>
-                @if (sun != null)
-                {
-                    @Html.EditorFor(model => sun.WorkHours);
-                }
-                else
-                {
-                    @Html.Editor("0");
-                }
-                @Html.ActionLink("Change", "placeholder");
-            </td>
-        </tr>
-    </tbody>
-</table>
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: ". Mon Tues Wed Thurs Fri Sat Sun Action" ". Mon-form Tues-form Wed-form Thurs-form Fri-form Sat-form Sun-form submit" ". . . . . . . . ." ;
+}
+
+.Mon { grid-area: Mon; }
+
+.Mon-form { grid-area: Mon-form; }
+
+.Tues { grid-area: Tues; }
+
+.Tues-form { grid-area: Tues-form; }
+
+.Wed { grid-area: Wed; }
+
+.Wed-form { grid-area: Wed-form; }
+
+.Thurs { grid-area: Thurs; }
+
+.Thurs-form { grid-area: Thurs-form; }
+
+.Fri { grid-area: Fri; }
+
+.Fri-form { grid-area: Fri-form; }
+
+.Sat { grid-area: Sat; }
+
+.Sat-form { grid-area: Sat-form; }
+
+.Sun { grid-area: Sun; }
+
+.Sun-form { grid-area: Sun-form; }
+
+.Action { grid-area: Action; }
+
+.submit { grid-area: submit; }
+</style>
+
+<div class="grid-container">
+    <div>
+    </div>
+    <div>
+        Hours worked
+    </div>
+    <div>
+        Edit details
+    </div>
+    <div class="Mon">Monday</div>
+    <div class="Mon-form">
+        @if (mon != null)
+        {
+            @Html.TextBoxFor(model => mon.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly"});
+        }
+        else
+        {
+            @Html.TextBox("monHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+
+        }
+    </div>
+    <div>
+        @ActionLink("Edit", "WeekEntry", "Timesheet", new { tid = @ViewBag.TimeSheetID, wid = null, DOW = "Monday" }, null);
+    </div>
+    <div class="Tues">Tuesday</div>
+    <div class="Tues-form">
+        @if (tue != null)
+        {
+            @Html.TextBoxFor(model => tue.WorkHours, new { type = "number", style = "width: 60%;" });
+        }
+        else
+        {
+            @Html.TextBox("tueHours", "0", new { type = "number", style = "width: 60%;" });
+
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Change", "placeholder")
+    </div>
+    <div class="Wed">Wednesday</div>
+    <div class="Wed-form">
+        @if (wed != null)
+        {
+            @Html.TextBoxFor(model => wed.WorkHours, new { type = "number", style = "width: 60%;" });
+        }
+        else
+        {
+            @Html.TextBox("wedHours", "0", new { type = "number", style = "width: 60%;" });
+
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Change", "placeholder")
+    </div>
+    <div class="Thurs">Thursday</div>
+    <div class="Thurs-form">
+        @if (thu != null)
+        {
+            @Html.TextBoxFor(model => thu.WorkHours, new { type = "number", style = "width: 60%;" });
+        }
+        else
+        {
+            @Html.TextBox("thuHours", "0", new { type = "number", style = "width: 60%;" });
+
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Change", "placeholder")
+    </div>
+    <div class="Fri">Friday</div>
+    <div class="Fri-form">
+        @if (fri != null)
+        {
+            @Html.TextBoxFor(model => fri.WorkHours, new { type = "number", style = "width: 60%;" });
+        }
+        else
+        {
+            @Html.TextBox("friHours", "0", new { type = "number", style = "width: 60%;" });
+
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Change", "placeholder")
+    </div>
+    <div class="Sat">Saturday</div>
+    <div class="Sat-form">
+        @if (sat != null)
+        {
+            @Html.TextBoxFor(model => sat.WorkHours, new { type = "number", style = "width: 60%;" });
+        }
+        else
+        {
+            @Html.TextBox("satHours", "0", new { type = "number", style = "width: 60%;" });
+
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Change", "placeholder")
+    </div>
+    <div class="Sun">Sunday</div>
+    <div class="Sun-form">
+        @if (sun != null)
+        {
+            @Html.TextBoxFor(model => sun.WorkHours, new { type = "number", style = "width: 60%;" });
+        }
+        else
+        {
+            @Html.TextBox("sunHours", "0", new { type = "number", style = "width: 60%;" });
+
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Change", "placeholder")
+    </div>
+    <div class="Action"></div>
+    <div class="submit"><button>Submit</button></div>
+</div>
+
+            

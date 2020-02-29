@@ -23,7 +23,6 @@ namespace GrizzTime.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-
             return View();
         }
 

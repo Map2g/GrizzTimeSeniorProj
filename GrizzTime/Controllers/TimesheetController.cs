@@ -100,8 +100,8 @@ namespace GrizzTime.Controllers
         [HttpGet]
         public ActionResult Week(int? id)
         {
-
             ViewBag.UserID = Request.Cookies["UserID"].Value;
+            ViewBag.TimeSheetID = id.ToString();
             Entities dc = new Entities();
             
 
@@ -113,206 +113,118 @@ namespace GrizzTime.Controllers
                 timesheet ts = dc.timesheets.Find(id);               
                 ICollection<workentry> thisWeekTry = ts.workentries;
 
-                //if (thisWeekTry == null)
-                //{
-                //    //string message = "";
-                //    ViewBag.UserID = Request.Cookies["UserID"].Value;                                  
-
-                //        workentry mondayWE = new workentry();
-                //        mondayWE.TimeSheetID = ts.TimeSheetID;
-                //        mondayWE.WorkDate = DayOfWeek.Monday.ToString();
-                //        mondayWE.WorkHours = 0;
-                //        mondayWE.ProjID = null;
-                //        mondayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        mondayWE.TaskID = null;
-
-                //        workentry tuesdayWE = new workentry();
-                //        tuesdayWE.TimeSheetID = ts.TimeSheetID;
-                //        tuesdayWE.WorkDate = DayOfWeek.Tuesday.ToString();
-                //        tuesdayWE.WorkHours = 0;
-                //        tuesdayWE.ProjID = thisWeek[1].ProjID;
-                //        tuesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        tuesdayWE.TaskID = thisWeek[1].TaskID;
-
-                //        workentry wednesdayWE = new workentry();
-                //        wednesdayWE.TimeSheetID = ts.TimeSheetID;
-                //        wednesdayWE.WorkDate = DayOfWeek.Wednesday.ToString();
-                //        wednesdayWE.WorkHours = thisWeek[2].WorkHours;
-                //        wednesdayWE.ProjID = thisWeek[2].ProjID;
-                //        wednesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        wednesdayWE.TaskID = thisWeek[2].TaskID;
-
-                //        workentry thursdayWE = new workentry();
-                //        thursdayWE.TimeSheetID = ts.TimeSheetID;
-                //        thursdayWE.WorkDate = DayOfWeek.Thursday.ToString();
-                //        thursdayWE.WorkHours = thisWeek[3].WorkHours;
-                //        thursdayWE.ProjID = thisWeek[3].ProjID;
-                //        thursdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        thursdayWE.TaskID = thisWeek[3].TaskID;
-
-                //        workentry fridayWE = new workentry();
-                //        fridayWE.TimeSheetID = ts.TimeSheetID;
-                //        fridayWE.WorkDate = DayOfWeek.Friday.ToString();
-                //        fridayWE.WorkHours = thisWeek[4].WorkHours;
-                //        fridayWE.ProjID = thisWeek[4].ProjID;
-                //        fridayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        fridayWE.TaskID = thisWeek[4].TaskID;
-
-                //        workentry saturdayWE = new workentry();
-                //        saturdayWE.TimeSheetID = ts.TimeSheetID;
-                //        saturdayWE.WorkDate = DayOfWeek.Saturday.ToString();
-                //        saturdayWE.WorkHours = thisWeek[5].WorkHours;
-                //        saturdayWE.ProjID = thisWeek[5].ProjID;
-                //        saturdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        saturdayWE.TaskID = thisWeek[5].TaskID;
-
-                //        workentry sundayWE = new workentry();
-                //        sundayWE.TimeSheetID = ts.TimeSheetID;
-                //        sundayWE.WorkDate = DayOfWeek.Sunday.ToString();
-                //        sundayWE.WorkHours = thisWeek[6].WorkHours;
-                //        sundayWE.ProjID = thisWeek[6].ProjID;
-                //        sundayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        sundayWE.TaskID = thisWeek[6].TaskID;
-
-                //        dc.workentries.Add(mondayWE);
-                //        dc.workentries.Add(tuesdayWE);
-                //        dc.workentries.Add(wednesdayWE);
-                //        dc.workentries.Add(thursdayWE);
-                //        dc.workentries.Add(fridayWE);
-                //        dc.workentries.Add(saturdayWE);
-                //        dc.workentries.Add(sundayWE);
-
-
-                //        try
-                //        {
-                //            dc.SaveChanges();
-                //            message = "Timesheet updated successfully.";
-                //            ViewBag.Message = message;
-                //            return Redirect("List");
-                //        }
-                //        catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                //        {
-                //            //more descriptive error for validation problems
-                //            Exception exception = dbEx;
-                //            foreach (var validationErrors in dbEx.EntityValidationErrors)
-                //            {
-                //                foreach (var validationError in validationErrors.ValidationErrors)
-                //                {
-                //                    string message1 = string.Format("{0}:{1}",
-                //                        validationErrors.Entry.Entity.ToString(),
-                //                        validationError.ErrorMessage);
-
-                //                    //create a new exception inserting the current one
-                //                    //as the InnerException
-                //                    exception = new InvalidOperationException(message1, exception);
-                //                }
-                //            }
-                //            //error for UI
-                //            ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                //            throw exception;
-
-                //        }
-                //    }
-
-
                 if (ts == null)
                 {
                     return HttpNotFound();
                 }
 
                 return View(thisWeekTry);           
-
         }
 
         // View AND edit: Specific timesheet week. id is the id of a timesheet
+        //[HttpPost]
+        //public ActionResult Week(int? id)
+        //{
+        //    return View();
+        //}
+
+        //tid is timesheet id, wid is workentry id
+        [HttpGet]
+        public ActionResult WeekEntry(int? tid, int? wid, string DOW)
+        {
+            var message = "";
+            Entities dc = new Entities();
+
+            if (tid == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (wid == null)
+            {
+                if (DOW != null) 
+                {
+                    workentry thisDay = new workentry()
+                    {
+                        EmpID = Int32.Parse(Request.Cookies["UserID"].Value),
+                        TimeSheetID = (int)tid,
+                        WorkDate = DOW,    
+                    };
+
+                    dc.workentries.Add(thisDay);
+
+                    try
+                    {
+                        dc.SaveChanges();
+                        return RedirectToAction("WeekEntry", "Timesheet", new { tid, wid = thisDay.WorkEntryID });
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        //more descriptive error for validation problems
+                        Exception exception = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
+
+                                //create a new exception inserting the current one
+                                //as the InnerException
+                                exception = new InvalidOperationException(message1, exception);
+                            }
+                        }
+                        //error for UI
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                        throw exception;
+                    }                   
+                }
+                else
+                {
+                    message = "Date of week not captured";
+                    return View();
+                }
+            }
+            else //wid is not null
+            {
+                var w = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
+                return View(w);
+            }
+        }
+
+
+        // View AND edit: Specific timesheet week. id is the id of a timesheet
         [HttpPost]
-        public ActionResult Week(int? id, workentry[] thisWeek)
+        public ActionResult WeekEntry(int? tid, int? wid, workentry thisDay)
         {
             string message = "";
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             using (Entities dc = new Entities())
             {
 
-                if (id == null)
+                if (tid == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
-                timesheet ts = dc.timesheets.Find(id);
+                timesheet ts = dc.timesheets.Find(tid);
 
-                //TO DO: Fix below: I will not want to create seven entries for every TS if they didn't work seven days a week.
-                //I want to create entries only for the days of the week that they worked.
-                workentry mondayWE = new workentry();
-                mondayWE.TimeSheetID = ts.TimeSheetID;
-                mondayWE.WorkDate = DayOfWeek.Monday.ToString();
-                mondayWE.WorkHours = thisWeek[0].WorkHours;
-                mondayWE.ProjID = thisWeek[0].ProjID;
-                mondayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                mondayWE.TaskID = thisWeek[0].TaskID;
+                GrizzTime.Models.workentry we = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
+                if (thisDay == null)
+                    return HttpNotFound();
 
-                workentry tuesdayWE = new workentry();
-                tuesdayWE.TimeSheetID = ts.TimeSheetID;
-                tuesdayWE.WorkDate = DayOfWeek.Tuesday.ToString();
-                tuesdayWE.WorkHours = thisWeek[1].WorkHours;
-                tuesdayWE.ProjID = thisWeek[1].ProjID;
-                tuesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                tuesdayWE.TaskID = thisWeek[1].TaskID;
+                we.WorkHours = thisDay.WorkHours;
+                we.ProjID = thisDay.ProjID;
+                we.TaskID = thisDay.TaskID;
 
-                workentry wednesdayWE = new workentry();
-                wednesdayWE.TimeSheetID = ts.TimeSheetID;
-                wednesdayWE.WorkDate = DayOfWeek.Wednesday.ToString();
-                wednesdayWE.WorkHours = thisWeek[2].WorkHours;
-                wednesdayWE.ProjID = thisWeek[2].ProjID;
-                wednesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                wednesdayWE.TaskID = thisWeek[2].TaskID;
-
-                workentry thursdayWE = new workentry();
-                thursdayWE.TimeSheetID = ts.TimeSheetID;
-                thursdayWE.WorkDate = DayOfWeek.Thursday.ToString();
-                thursdayWE.WorkHours = thisWeek[3].WorkHours;
-                thursdayWE.ProjID = thisWeek[3].ProjID;
-                thursdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                thursdayWE.TaskID = thisWeek[3].TaskID;
-
-                workentry fridayWE = new workentry();
-                fridayWE.TimeSheetID = ts.TimeSheetID;
-                fridayWE.WorkDate = DayOfWeek.Friday.ToString();
-                fridayWE.WorkHours = thisWeek[4].WorkHours;
-                fridayWE.ProjID = thisWeek[4].ProjID;
-                fridayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                fridayWE.TaskID = thisWeek[4].TaskID;
-
-                workentry saturdayWE = new workentry();
-                saturdayWE.TimeSheetID = ts.TimeSheetID;
-                saturdayWE.WorkDate = DayOfWeek.Saturday.ToString();
-                saturdayWE.WorkHours = thisWeek[5].WorkHours;
-                saturdayWE.ProjID = thisWeek[5].ProjID;
-                saturdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                saturdayWE.TaskID = thisWeek[5].TaskID;
-
-                workentry sundayWE = new workentry();
-                sundayWE.TimeSheetID = ts.TimeSheetID;
-                sundayWE.WorkDate = DayOfWeek.Sunday.ToString();
-                sundayWE.WorkHours = thisWeek[6].WorkHours;
-                sundayWE.ProjID = thisWeek[6].ProjID;
-                sundayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                sundayWE.TaskID = thisWeek[6].TaskID;
-
-                dc.workentries.Add(mondayWE);
-                dc.workentries.Add(tuesdayWE);
-                dc.workentries.Add(wednesdayWE);
-                dc.workentries.Add(thursdayWE);
-                dc.workentries.Add(fridayWE);
-                dc.workentries.Add(saturdayWE);
-                dc.workentries.Add(sundayWE);
-
-
+                dc.Entry(we).State = System.Data.Entity.EntityState.Modified;
                 try
                 {
                     dc.SaveChanges();
                     message = "Timesheet updated successfully.";
                     ViewBag.Message = message;
-                    return Redirect("List");
+                    return RedirectToAction("Week", "Timesheet", new { id = tid });
                 }
                 catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
                 {
@@ -334,17 +246,8 @@ namespace GrizzTime.Controllers
                     //error for UI
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                     throw exception;
-
                 }
-
-                if (ts == null)
-                {
-                    return HttpNotFound();
-                }
-
-                return View(thisWeek);
             }
-
         }
 
         // Submit: Timesheet
