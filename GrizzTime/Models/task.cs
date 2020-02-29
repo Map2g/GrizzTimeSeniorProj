@@ -15,49 +15,41 @@ namespace GrizzTime.Models
 using System;
     using System.Collections.Generic;
     
-public partial class project
+public partial class task
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public project()
+    public task()
     {
 
-        this.employee_project = new HashSet<employee_project>();
+        this.expenseentries = new HashSet<expenseentry>();
 
-        this.tasks = new HashSet<task>();
+        this.workentries = new HashSet<workentry>();
 
     }
 
 
+    public int TaskID { get; set; }
+
+    public string TaskName { get; set; }
+
+    public bool IsBillable { get; set; }
+
+    public Nullable<decimal> BillableRate { get; set; }
+
     public int ProjID { get; set; }
 
-    public string ProjName { get; set; }
-
-    public string ProjDesc { get; set; }
-
-    public System.DateTime ProjStartDate { get; set; }
-
-    public string ProjStatus { get; set; }
-
-    public Nullable<System.DateTime> ProjEndDate { get; set; }
-
-    public int ConID { get; set; }
-
-    public int ProjManID { get; set; }
-
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<employee_project> employee_project { get; set; }
+    public virtual ICollection<expenseentry> expenseentries { get; set; }
 
-    public virtual contract contract { get; set; }
-
-    public virtual employee employee { get; set; }
+    public virtual project project { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<task> tasks { get; set; }
+    public virtual ICollection<workentry> workentries { get; set; }
 
 }
 

@@ -28,13 +28,15 @@ public partial class expenseentry
 
     public decimal ExpDollarAmt { get; set; }
 
-    public string ExpType { get; set; }
-
     public int ExpSheetID { get; set; }
+
+    public int TaskID { get; set; }
 
 
 
     public virtual expensesheet expensesheet { get; set; }
+
+    public virtual task task { get; set; }
 
 }
 

@@ -28,13 +28,15 @@ public partial class workentry
 
     public decimal WorkHours { get; set; }
 
-    public string WorkType { get; set; }
-
     public int TimeSheetID { get; set; }
+
+    public int TaskID { get; set; }
 
 
 
     public virtual timesheet timesheet { get; set; }
+
+    public virtual task task { get; set; }
 
 }
 

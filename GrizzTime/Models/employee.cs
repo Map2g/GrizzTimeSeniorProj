@@ -14,8 +14,8 @@ namespace GrizzTime.Models
 
 using System;
     using System.Collections.Generic;
-
-    public partial class employee
+    
+public partial class employee
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -36,12 +36,13 @@ using System;
 
         this.projects = new HashSet<project>();
 
-    }   
-    
+    }
+
+
     public int UserID { get; set; }
 
     public string UserEmail { get; set; }
-    
+
     public string UserPW { get; set; }
 
     public string UserStatus { get; set; }
@@ -55,10 +56,11 @@ using System;
     public int BusCode { get; set; }
 
     public decimal EmpPayRate { get; set; }
-    
+
     public string EmpPhone { get; set; }
 
     public bool RememberMe { get; set; }
+
 
 
     public virtual business business { get; set; }
