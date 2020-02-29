@@ -156,8 +156,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\TimesheetController.cs" />
+    <Compile Include="Models\task.cs">
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BusinessVM.cs" />
+    <Compile Include="ViewModels\TimesheetVM.cs" />
     <Compile Include="ViewModels\ContractVM.cs" />
     <Compile Include="ViewModels\ProjectVM.cs" />
     <Compile Include="ViewModels\EmployeeVM.cs" />
@@ -662,10 +667,14 @@
     <Content Include="Views\Shared\Menus.cshtml" />
     <Content Include="Views\Shared\Profile.cshtml" />
     <Content Include="Views\Employee\Dashboard.cshtml" />
+    <Content Include="Views\Timesheet\List.cshtml" />
+    <Content Include="Views\Timesheet\Week.cshtml" />
+    <Content Include="Views\Timesheet\Create.cshtml" />
+    <Content Include="Views\Timesheet\Edit.cshtml" />
+    <Content Include="Views\Project\AddTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

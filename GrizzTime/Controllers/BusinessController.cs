@@ -20,107 +20,13 @@ namespace GrizzTime.Controllers
     [Authorize]
     public class BusinessController : Controller
     {
-        // GET: Business
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult Dashboard()
-        {
-            try
-            {
-                Entities dc = new Entities();
-                int id = Int32.Parse(Request.Cookies["UserID"].Value);
-                var v = dc.businesses.Where(a => a.UserID == id).FirstOrDefault();
-                ViewBag.BusinessName = v.BusName;
-
-                ViewBag.BusinessID = Request.Cookies["UserID"].Value;
-            }
-            catch (NullReferenceException e)
-            { //Redirect to login if it can't find business name
-                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n" + e.Message);
-                return RedirectToAction("Login", "Business");
-            }
-
-            return View();
-        }
-
-        [AllowAnonymous]
-        public ActionResult Registration()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] Business thisBus)
-        {
-            bool Status = false;
-            string message = "";
-            //ensure that the model exists
-            if (ModelState.IsValid)
-            {
-                //Email already exists
-                var isExist = IsEmailExist(thisBus.UserEmail);
-                if (isExist)
-                {
-                    ModelState.AddModelError("EmailExist", "Email already exists.");
-                    return View(thisBus);
-                }
-                //Save to Database
-                try
-                {
-                    using (Entities dc = new Entities())
-                    {
-                        GrizzTime.Models.business bus = new GrizzTime.Models.business();
-                        bus.UserEmail = thisBus.UserEmail;
-                        bus.UserPW = thisBus.UserPW;
-                        bus.BusName = thisBus.BusName;
-                        bus.BusDesc = thisBus.BusDesc;
-                        bus.BusAddress = thisBus.BusAddress;
-                        
-                        bus.UserStatus = "Registered";
-
-                        dc.businesses.Add(bus);
-                        dc.SaveChanges();
-                    }
-
-                    SendVerificationEMail(thisBus.UserEmail);
-                    message = "Registration complete! An email has been sent to you to confirm your registration!";
-                    Status = true;
-
-                    return RedirectToAction("Details");
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", ex.Message);
-                    return View(thisBus);
-                }
-                //using (Entities dc = new Entities())
-                //{
-                //    dc.businesses.Add(business);
-                //    dc.SaveChanges();
-
-                //    send email to User
-                //}
-            }
-            else
-            {
-                message = "Invalid Request";
-            }
-            ViewBag.Message = message;
-            ViewBag.Status = Status;
-            return View();
-        }
-
         [AllowAnonymous]
         public ActionResult Login()
         {
 
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -132,7 +38,7 @@ namespace GrizzTime.Controllers
                 var v = dc.businesses.Where(a => a.UserEmail == business.UserEmail).FirstOrDefault();
                 if (v != null)
                 {
-                    if (string.Compare(business.UserPW, v.UserPW) == 0)
+                    if (string.Compare(Hash(business.UserPW), v.UserPW) == 0)
                     {
                         var claims = new List<Claim>();
 
@@ -185,6 +91,94 @@ namespace GrizzTime.Controllers
 
             ViewBag.Message = message;
             return RedirectToAction("Dashboard");
+        }
+
+        public ActionResult Dashboard()
+        {
+            try
+            {
+                Entities dc = new Entities();
+                int id = Int32.Parse(Request.Cookies["UserID"].Value);
+                var v = dc.businesses.Where(a => a.UserID == id).FirstOrDefault();
+                ViewBag.BusinessName = v.BusName;
+
+                ViewBag.BusinessID = Request.Cookies["UserID"].Value;
+            }
+            catch (NullReferenceException e)
+            { //Redirect to login if it can't find business name
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n" + e.Message);
+                return RedirectToAction("Login", "Business");
+            }
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] Business thisBus)
+        {
+            bool Status = false;
+            string message = "";
+            //ensure that the model exists
+            if (ModelState.IsValid)
+            {
+                //Email already exists
+                var isExist = IsEmailExist(thisBus.UserEmail);
+                if (isExist)
+                {
+                    ModelState.AddModelError("EmailExist", "Email already exists.");
+                    return View(thisBus);
+                }
+                //Save to Database
+                try
+                {
+                    using (Entities dc = new Entities())
+                    {
+                        GrizzTime.Models.business bus = new GrizzTime.Models.business();
+                        bus.UserEmail = thisBus.UserEmail;
+                        bus.UserPW = Hash(thisBus.UserPW);
+                        bus.BusName = thisBus.BusName;
+                        bus.BusDesc = thisBus.BusDesc;
+                        bus.BusAddress = thisBus.BusAddress;
+                        
+                        bus.UserStatus = "Registered";
+
+                        dc.businesses.Add(bus);
+                        dc.SaveChanges();
+                    }
+
+                    SendVerificationEMail(thisBus.UserEmail);
+                    message = "Registration complete! An email has been sent to you to confirm your registration!";
+                    Status = true;
+
+                    return RedirectToAction("Details");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return View(thisBus);
+                }
+                //using (Entities dc = new Entities())
+                //{
+                //    dc.businesses.Add(business);
+                //    dc.SaveChanges();
+
+                //    send email to User
+                //}
+            }
+            else
+            {
+                message = "Invalid Request";
+            }
+            ViewBag.Message = message;
+            ViewBag.Status = Status;
+            return View();
         }
 
         //[HttpPost]

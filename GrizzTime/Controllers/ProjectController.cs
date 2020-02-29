@@ -287,6 +287,77 @@ namespace GrizzTime.Controllers
             return RedirectToAction("MyProjects", "Business");
         }
 
+        public ActionResult AddTask(int id)
+        {
+            //BusID
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+            //string message = "";
+            using (Entities dc = new Entities())
+            {
+                project proj = dc.projects.Find(id);
+                ViewBag.ProjectName = proj.ProjName;
+                ViewBag.ProjectID = proj.ProjID;
+            }
+            //ViewBag.message = message;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddTask(int id, task addTask)
+        {
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+            string message = "";
+            using (Entities dc = new Entities())
+            {
+                project proj = dc.projects.Find(id);
+                ViewBag.ProjectName = proj.ProjName;
+                ViewBag.ProjectID = proj.ProjID;
+                if (proj == null)
+                {
+                    message = "Project not found.";
+                    ViewBag.message = message;
+                    //TODO: Redirect to somewhere more general.
+                    return RedirectToAction("MyProjects", "Business");
+                }
+
+                task newTask = new task()
+                {
+                    ProjID = proj.ProjID,
+                    TaskName = addTask.TaskName,
+                    BillableRate = addTask.BillableRate,
+                    IsBillable = true,                  
+                };
+
+                dc.tasks.Add(newTask);
+
+                try
+                {
+                    dc.SaveChanges();
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                {
+                    Exception exception = dbEx;
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            string message1 = string.Format("{0}:{1}",
+                                validationErrors.Entry.Entity.ToString(),
+                                validationError.ErrorMessage);
+
+                            //create a new exception inserting the current one
+                            //as the InnerException
+                            exception = new InvalidOperationException(message1, exception);
+                        }
+                    }
+                    throw exception;
+                }
+            }
+            message = "Task added successfully.";
+            ViewBag.message = message;
+            return View();
+        }
+
         public ActionResult MarkEnded(int id, Project thisProj)
         {
             string message = "";

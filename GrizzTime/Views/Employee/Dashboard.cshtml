@@ -10,6 +10,8 @@
     <hr />
 
     <p><a href="/employee/edit/@Request.Cookies["UserID"].Value">Edit employee</a></p>
+    @Html.ActionLink("See Timesheets", "List", "Timesheet")
+    <p><a href="/timesheets/list/">See timesheets</a></p>
 
 
 </div>

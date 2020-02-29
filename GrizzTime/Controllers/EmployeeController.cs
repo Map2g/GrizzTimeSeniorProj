@@ -19,8 +19,80 @@ namespace GrizzTime.Controllers
     [Authorize]
     public class EmployeeController : Controller
     {
+        [AllowAnonymous]
+        public ActionResult Login()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public ActionResult Login(employee employee, String ReturnUrl)
+        {
+            string message = "";
+            using (Entities dc = new Entities())
+            {
+                var v = dc.employees.Where(a => a.UserEmail == employee.UserEmail).FirstOrDefault();
+                if (v != null)
+                {
+                    if (string.Compare(Hash(employee.UserPW), v.UserPW) == 0)
+                    {
+                        var claims = new List<Claim>();
+
+                        try
+                        {
+                            claims.Add(new Claim(ClaimTypes.Name, v.UserEmail));
+                            var claimIdentities = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                            var ctx = Request.GetOwinContext();
+                            var authenticationManager = ctx.Authentication;
+
+                            authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { IsPersistent = false }, claimIdentities);
+
+                            bool LRememberMe = employee.RememberMe;
+                            int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
+                            var ticket = new FormsAuthenticationTicket(employee.UserEmail, LRememberMe, timeout);
+                            string encrypted = FormsAuthentication.Encrypt(ticket);
+                            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                            cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                            cookie.HttpOnly = true;
+                            Response.Cookies.Add(cookie);
+
+                            Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString()));
+                            Response.Cookies.Add(new HttpCookie("Role", v.EmpType));
+
+                        }
+                        catch (Exception ex)
+                        {
+                            message = "Failed try.";
+                            throw ex;
+                        }
+
+                        if (Url.IsLocalUrl(ReturnUrl))
+                        {
+                            return Redirect(ReturnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Dashboard");
+                        }
+                    }
+                }
+                else
+                {
+                    message = "Invalid credentials";
+                    return View();
+                }
+            }
+
+            ViewBag.Message = message;
+            return RedirectToAction("Dashboard");
+        }
+
         public ActionResult Dashboard()
         {
+            string message = "";
             try
             {
                 Entities dc = new Entities();
@@ -34,14 +106,22 @@ namespace GrizzTime.Controllers
             }
             catch (NullReferenceException e)
             { //Redirect to login if it can't find business name
-                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n" + e.Message);
+                message = "User not logged in. Redirecting to login page.\n" + Request.Cookies["UserID"].Value;
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n" + e.Message + Request.Cookies["UserID"].Value);
                 return RedirectToAction("Login", "Employee");
             }
 
             return View();
+
         }
 
         public ActionResult Test()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Timesheet()
         {
             return View();
         }
@@ -203,74 +283,6 @@ namespace GrizzTime.Controllers
             ViewBag.Message = message;
             ViewBag.Status = Status;
             return View(thisEmp);
-        }
-
-        [AllowAnonymous]
-        public ActionResult Login()
-        {
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AllowAnonymous]
-        public ActionResult Login(employee employee, String ReturnUrl)
-        {
-            string message = "";
-            using (Entities dc = new Entities())
-            {
-                var v = dc.employees.Where(a => a.UserEmail == employee.UserEmail).FirstOrDefault();
-                if (v != null)
-                {
-                    if (string.Compare(employee.UserPW, v.UserPW) == 0)
-                    {
-                        var claims = new List<Claim>();
-                        
-                        try { 
-                            claims.Add(new Claim(ClaimTypes.Name, v.UserEmail));
-                            var claimIdentities = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-                            var ctx = Request.GetOwinContext();
-                            var authenticationManager = ctx.Authentication;
-
-                            authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { IsPersistent = false }, claimIdentities);
-
-                            bool LRememberMe = employee.RememberMe;
-                            int timeout = LRememberMe ? 52600 : 20; // Remembers for one year
-                            var ticket = new FormsAuthenticationTicket(employee.UserEmail, LRememberMe, timeout);
-                            string encrypted = FormsAuthentication.Encrypt(ticket);
-                            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                            cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                            cookie.HttpOnly = true;
-                            Response.Cookies.Add(cookie);
-
-                            Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString()));
-                            Response.Cookies.Add(new HttpCookie("Role", v.EmpType));
-
-                        }
-                        catch (Exception ex)
-                        {
-                            throw ex;
-                        }
-
-                        if (Url.IsLocalUrl(ReturnUrl))
-                        {
-                            return Redirect(ReturnUrl);
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
-                    }
-                }
-                else
-                {
-                    message = "Invalid Credentials";
-                }
-            }
-
-            ViewBag.Message = message;
-            return RedirectToAction("Details", "Employee");
         }
 
         //[Authorize]

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<GrizzTime.Models.timesheet>
+@using GrizzTime.ViewModels
+
+@{
+    ViewBag.Title = "My Timesheets";
+
+    bool currentWeekExists = false;
+
+    if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            if ( item.payrollcycle.PayrollCycleStart.Date == System.DateTime.Now.StartOfWeek(DayOfWeek.Monday) )
+            {
+                currentWeekExists = true;
+            }
+        }
+    }
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Week</th>
+            <th>Time</th>
+            <th>Reviewer</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+            @*Don't display this block if the current week is already in the DB*@
+            <tr style="@(currentWeekExists? "display:none" : "display:block")"> 
+                <td>@System.DateTime.Now.StartOfWeek(DayOfWeek.Monday)</td>
+                <td>0.00</td>
+                <td>---</td>
+                <td>---</td>
+                <td>
+                    @Html.ActionLink("View Week", "Create")
+                </td>
+            </tr>
+        @if (Model != null)
+        {
+        foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.payrollcycle.PayrollCycleStart.Date</th>
+                <td>@item.TimeSheetTotalHr</td>
+                <td>@item.employee.EmpFName @item.employee.EmpLName Placeholder</td>
+                <td>@item.TimeSheetStatus</td>
+                <td>
+                    @Html.ActionLink("View Week", "Week", new { id = item.TimeSheetID }) |
+                    @Html.ActionLink("Submit for Approval", "Submit", new { id = item.TimeSheetID })
+                </td>
+            </tr>
+        }
+        }
+    </tbody>
+</table>

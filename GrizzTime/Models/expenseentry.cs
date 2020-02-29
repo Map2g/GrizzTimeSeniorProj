@@ -24,7 +24,7 @@ public partial class expenseentry
 
     public int ProjID { get; set; }
 
-    public System.DateTime ExpDate { get; set; }
+    public String ExpDate { get; set; }
 
     public decimal ExpDollarAmt { get; set; }
 

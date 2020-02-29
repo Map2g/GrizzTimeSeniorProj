@@ -80,7 +80,7 @@
           <Property Name="ExpEntryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EmpID" Type="int" Nullable="false" />
           <Property Name="ProjID" Type="int" Nullable="false" />
-          <Property Name="ExpDate" Type="date" Nullable="false" />
+          <Property Name="ExpDate" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ExpDollarAmt" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="ExpSheetID" Type="int" Nullable="false" />
           <Property Name="TaskID" Type="int" Nullable="false" />
@@ -143,8 +143,8 @@
           <Key>
             <PropertyRef Name="TaskID" />
           </Key>
-          <Property Name="TaskID" Type="int" Nullable="false" />
-          <Property Name="TaskName" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="TaskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="IsBillable" Type="bit" Nullable="false" />
           <Property Name="BillableRate" Type="decimal" Precision="10" Scale="2" />
           <Property Name="ProjID" Type="int" Nullable="false" />
@@ -168,7 +168,7 @@
           <Property Name="WorkEntryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EmpID" Type="int" Nullable="false" />
           <Property Name="ProjID" Type="int" Nullable="false" />
-          <Property Name="WorkDate" Type="date" Nullable="false" />
+          <Property Name="WorkDate" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="WorkHours" Type="decimal" Precision="13" Scale="1" Nullable="false" />
           <Property Name="TimeSheetID" Type="int" Nullable="false" />
           <Property Name="TaskID" Type="int" Nullable="false" />
@@ -583,7 +583,7 @@
           <Property Name="ExpEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EmpID" Type="Int32" Nullable="false" />
           <Property Name="ProjID" Type="Int32" Nullable="false" />
-          <Property Name="ExpDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ExpDate" Type="String" Nullable="false" />
           <Property Name="ExpDollarAmt" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="ExpSheetID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="expensesheet" Relationship="Self.expenseentry_ExpSheetID" FromRole="expenseentry" ToRole="expensesheet" />
@@ -679,7 +679,7 @@
           <Property Name="WorkEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EmpID" Type="Int32" Nullable="false" />
           <Property Name="ProjID" Type="Int32" Nullable="false" />
-          <Property Name="WorkDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="WorkDate" Type="String" Nullable="false" />
           <Property Name="WorkHours" Type="Decimal" Precision="13" Scale="1" Nullable="false" />         
           <Property Name="TimeSheetID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="timesheet" Relationship="Self.workentry_TimeSheetID" FromRole="workentry" ToRole="timesheet" />
@@ -988,7 +988,7 @@
             <PropertyRef Name="TaskID" />
           </Key>
           <Property Name="TaskID" Type="Int32" Nullable="false" />
-          <Property Name="TaskName" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="TaskName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="IsBillable" Type="Boolean" Nullable="false" />
           <Property Name="BillableRate" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="ProjID" Type="Int32" Nullable="false" />

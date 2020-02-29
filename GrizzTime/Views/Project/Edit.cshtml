@@ -95,6 +95,8 @@
 }
 
 @Html.ActionLink("Assign employees to this project", "AddEmpToProject", new { id = Model.ProjID })
+<br />
+@Html.ActionLink("Add tasks", "AddTask", new { id = Model.ProjID })
 
 @*Displays alert message telling user how the operation went.*@
 @if (ViewBag.message != null)

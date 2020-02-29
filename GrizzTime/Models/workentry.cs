@@ -24,7 +24,7 @@ public partial class workentry
 
     public int ProjID { get; set; }
 
-    public System.DateTime WorkDate { get; set; }
+    public String WorkDate { get; set; }
 
     public decimal WorkHours { get; set; }
 
