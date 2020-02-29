@@ -1,27 +1,73 @@
-﻿@using GrizzTime.Models
-@model business
-
-@{
+﻿@{
     ViewBag.Title = "Dashboard";
 
 }
 
 <h2>Business Dashboard</h2>
-
-
-    <div class="form-horizontal">
-        <h4>Business Login - @ViewBag.BusinessName </h4>
-        <hr />
-
-            @Html.AntiForgeryToken()
-            @using (Html.BeginForm())
-            {
-
-                @Html.Action("AddEmployeePopUp")
-            }
-
+<div class="form-horizontal">
+    <h4>Business Login - @ViewBag.BusinessName </h4>
+    <hr />
+    <div class="db-Row-Button-Box">
+        <div class="db-Column-Button-Box">
+            <a href="/business/myprojects">
+                <div class="db-Page-Buttons">
+                    <h2>
+                        See my Projects
+                    </h2>
+                </div>
+            </a>
+        </div>
+        
+        <div class="db-Column-Button-Box">
+            <a href="/business/mycontracts">
+                <div class="db-Page-Buttons">
+                    <h2>
+                        See my Contracts
+                    </h2>
+                </div>
+            </a>
+        </div>
     </div>
+    <div class="Row-Button-Box">
+
+        <div class="db-Column-Button-Box">
+            <a href="/business/myemployees">
+                <div class="db-Page-Buttons">
+                    <h2>
+                        See my Employees
+                    </h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="db-Column-Button-Box">
+            <a href="/business/edit/@Request.Cookies["UserID"].Value">
+                <div class="db-Page-Buttons">
+                    <h2>
+                        See Business Details
+                    </h2>
+                </div>
+            </a>
+        </div>
+    </div>
+    <p><a href="/business/myprojects">See my projects</a></p>
+    <p><a href="/business/mycontracts">See my contracts</a></p>
+    <p><a href="/business/myemployees">See my employees</a></p>
+    <p><a href="/business/edit/@Request.Cookies["UserID"].Value">See business details</a></p>
+
+
+</div>
 
 <div>
     <p><a href="/home/index">Back to Home &raquo;</a></p>
 </div>
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.message");
+        };
+    </script>
+}
