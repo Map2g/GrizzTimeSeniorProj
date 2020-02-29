@@ -1,22 +1,29 @@
 body {
-	background-color: #505050;
+    background-color: #b59a57;
     body: 100%;
 }
 
-.Button-Box {
+.db-Page-Buttons {
+    position: absolute;
     height: 200px;
-    width: 400px;
+    width: 350px;
     background-color: #333;
-    padding: 50px;
-    margin: auto;
-    margin-top: 5%;
-    border-radius: 1px;
+    border-radius: 25px;
+    transition: all 0.2s ease-in-out;
 }
 
-.Button-Box:hover{
-  border-radius: 25px;
-  cursor: pointer;
-}
+    .db-Page-Buttons h2 {
+        text-align: center;
+        margin-top:25%;
+        color: white;
+        font-family: Noto, sans-serif;
+        font-size: 23px;
+    }
+
+    .db-Page-Buttons:hover {
+        color: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 20px #D3BD09;
+    }
 
 .Column-Button-Box{
   flex: 50%;
@@ -26,6 +33,30 @@ body {
 
 .Row-Button-Box{
   display:flex;
+}
+
+/*.db-Button-Box {
+    height: 200px;
+    width: 400px;
+    background-color: #333;
+    margin: auto;
+    margin-top: 5%;
+    border-radius: 1px;
+}
+
+    .db-Button-Box:hover {
+        border-radius: 25px;
+        cursor: pointer;
+    }*/
+
+.db-Column-Button-Box {
+    flex: 50%;
+    padding-left: 80px;
+    height: 500px;
+}
+
+.db-Row-Button-Box {
+    display: flex;
 }
 
 .Login-Box-Container{
@@ -95,24 +126,24 @@ input[type=password] {
 	box-sizing: border-box
 }
 
-input[type=submit]{
-  width: 400px;
-  background-color: #D3BD09;
-  color: white;
-  padding: 14px 20px;
-  margin: 20px 0;
-  margin-left:100px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 25px;
+input[type=submit] {
+    width: 400px;
+    background-color: #0000FF;
+    color: white;
+    padding: 14px 20px;
+    margin: 20px 0;
+    margin-left: 100px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 25px;
 }
 
-input[type=submit]:hover, input[type=submit]:active{
-  //font-size: 150%;
-  background-color: blue;
-  color: white;
-}
+    input[type=submit]:hover, input[type=submit]:active {
+        //font-size: 150%;
+        background-color: #0000A0;
+        color: white;
+    }
 
 label {
 	color: black;
@@ -125,6 +156,12 @@ label {
 	font-size: 20px;
 	font-family: Noto Sans, sans-serif;
     padding:20px;
+}
+
+.form-Labels{
+    color: black;
+    font-size: 20px;
+    font-family: Noto sans-serif, sans-serif;
 }
 
 .Navbar {
@@ -201,13 +238,13 @@ label {
     position: absolute;
     top: 15%;
     border-radius: 25px 25px 25px 25px;
-    background-color: #333;
+    background-color: #b59a57;
 }
 .Landing-Page-Buttons {
     position: absolute;
     height: 200px;
     width: 250px;
-    background-color: #D3BD09;
+    background-color: #333;
     /*padding: 50px;*/
     margin-left: 75px;
     margin-top: 70px;
@@ -217,7 +254,7 @@ label {
 .Landing-Page-Buttons h2{
     margin-left:37px;
     margin-top: 90px;
-    color: #333;
+    color: white;
     font-family: Noto, sans-serif;
     font-size: 23px;
 }
@@ -230,50 +267,6 @@ label {
         /*transform: translateY(0);*/
     }
 
-    html.is-animating .transition-swipe{
-        transform: translateY(100%);
-    }
-
-    html.is-leaving .transition-swipe{
-        transform: translateX(0);
-    }
-
-    @keyframes facdeIn {
-        0%{
-            opacity: 0;
-        }
-        100%{
-            opacity: 1;
-        }
-    }
-
-    @keyframes fadeInUp{
-        0%{
-            opacity: 0;
-            transform: translate3d(0, 100%, 0);
-        }
-
-        100%{
-            opacity: 1;
-            transform: none;
-        }
-    }
-
-
-.scene-element {
-    animation-duration: 5s;
-    transition-timing-function: ease-in;
-    animation-fill-mode: both;
-}
-
-.scene-element--fadein {
-    animation-name: facdeIn;
-}
-
-.scene-element--fadeinup {
-    animation-name: fadeInUp;
-}
-
-.scene-element--fadeinright {
-    animation-name: fadeInRight;
+.Modal-Title{
+    
 }
