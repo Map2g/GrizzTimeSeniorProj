@@ -8,7 +8,14 @@
 <h2>Details</h2>
 
 @*Link name, controller name, action method, route argument, html details*@
-@Html.ActionLink("Add a new contract", "Create", "Contract", null, null)
+@*@Html.ActionLink("Add a new contract", "Create", "Contract", null, null)*@
+<a href="/contract/create">
+    <div class="small-button">
+        <span>
+            <h2>Add a New Contract</h2>
+        </span>
+    </div>
+</a>
 
 <table class="table">
     <tr>

@@ -1,29 +1,8 @@
 body {
     background-color: #b59a57;
-    body: 100%;
 }
 
-.db-Page-Buttons {
-    position: absolute;
-    height: 200px;
-    width: 350px;
-    background-color: #333;
-    border-radius: 25px;
-    transition: all 0.2s ease-in-out;
-}
 
-    .db-Page-Buttons h2 {
-        text-align: center;
-        margin-top:25%;
-        color: white;
-        font-family: Noto, sans-serif;
-        font-size: 23px;
-    }
-
-    .db-Page-Buttons:hover {
-        color: rgba(255, 255, 255, 1);
-        box-shadow: 0 0 20px #D3BD09;
-    }
 
 .Column-Button-Box{
   flex: 50%;
@@ -51,19 +30,12 @@ body {
 
 .db-Column-Button-Box {
     flex: 50%;
-    padding-left: 80px;
+    padding-left: 15%;
     height: 500px;
 }
 
 .db-Row-Button-Box {
     display: flex;
-}
-
-.Login-Box-Container{
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .Login-Box-Top{
@@ -72,6 +44,13 @@ body {
 	border-radius: 25px 25px 25px 25px;
 	background-color: black;
 	position: relative;
+}
+
+.Login-Box-Container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .Login-Box{
@@ -140,7 +119,6 @@ input[type=submit] {
 }
 
     input[type=submit]:hover, input[type=submit]:active {
-        //font-size: 150%;
         background-color: #0000A0;
         color: white;
     }
@@ -245,28 +223,152 @@ label {
     height: 200px;
     width: 250px;
     background-color: #333;
-    /*padding: 50px;*/
-    margin-left: 75px;
-    margin-top: 70px;
     border-radius: 25px;
     transition: all 0.2s ease-in-out;
 }
-.Landing-Page-Buttons h2{
-    margin-left:37px;
-    margin-top: 90px;
-    color: white;
-    font-family: Noto, sans-serif;
-    font-size: 23px;
-}
-    .Landing-Page-Buttons:hover {
-        color: rgba(255, 255, 255, 1);
-        box-shadow: 0 5px 15px #D3BD09;
-    }
-    .transition-swipe{
-        transition: 500ms;
-        /*transform: translateY(0);*/
+
+    .Landing-Page-Buttons h2 {
+        text-align: center;
+        margin-top: 25%;
+        color: white;
+        font-family: Noto, sans-serif;
+        font-size: 23px;
     }
 
-.Modal-Title{
-    
+    .Landing-Page-Buttons:hover {
+        /*color: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 20px #D3BD09;*/
+        border-radius: 0;
+        width: 260px;
+        height: 210px;
+    }
+
+.small-button {
+    border-radius: 4px;
+    background-color: #333;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    /*margin: 5px;*/
+    height:50px;
 }
+    .small-button h2 {
+        text-align: center;
+        margin-top: 15%;
+        color: white;
+        font-family: Noto, sans-serif;
+        font-size: 15px;
+    }
+    .small-button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+
+        .small-button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 15px;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+    .small-button:hover span {
+        padding-right: 25px;
+    }
+
+        .small-button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+.db-Page-Buttons {
+    border-radius: 4px;
+    background-color: #333;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    width: 300px;
+    transition: all 0.5s;
+    cursor: pointer;
+    /*margin: 5px;*/
+    height: 75px;
+}
+
+    .db-Page-Buttons h2 {
+        color: white;
+        font-family: Noto, sans-serif;
+        font-size: 23px;
+    }
+
+    .db-Page-Buttons span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+
+        .db-Page-Buttons span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 10px;
+            font-size:30px;
+            /*right: -20px;*/
+            right:-150px;
+            transition: 0.5s;
+        }
+
+    .db-Page-Buttons:hover span {
+        padding-right: 25px;
+    }
+
+        .db-Page-Buttons:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+.Form-Box-Container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Form-Box {
+    width: 600px;
+    height: auto;
+    position: absolute;
+    top: 15%;
+    border-radius: 25px 25px 25px 25px;
+    background-color: #333;
+}
+/*.db-Page-Buttons {
+    position: absolute;
+    height: 200px;
+    width: 350px;
+    background-color: #333;
+    border-radius: 25px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .db-Page-Buttons h2 {
+        text-align: center;
+        margin-top: 25%;
+        color: white;
+        font-family: Noto, sans-serif;
+        font-size: 23px;
+    }
+
+    .db-Page-Buttons:hover {
+        /*color: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 20px #D3BD09;
+        border-radius: 0;
+        width: 375px;
+        height: 225px;
+    }*/
