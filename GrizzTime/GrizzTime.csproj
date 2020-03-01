@@ -638,7 +638,7 @@
     <Content Include="Views\Employee\AllEmployees.cshtml" />
     <Content Include="Views\Business\Registration.cshtml" />
     <Content Include="Views\Business\Login.cshtml" />
-    <Content Include="Views\Business\Details.cshtml" />
+    <Content Include="Views\Business\AllBusinesses.cshtml" />
     <Content Include="Views\Business\Edit.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Business\Dashboard.cshtml" />
@@ -668,6 +668,7 @@
     <Content Include="Views\Timesheet\Edit.cshtml" />
     <Content Include="Views\Project\AddTask.cshtml" />
     <Content Include="Views\Timesheet\WorkEntry.cshtml" />
+    <Content Include="Views\Business\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

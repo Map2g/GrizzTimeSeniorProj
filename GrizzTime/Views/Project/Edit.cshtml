@@ -5,7 +5,8 @@
 
 
 @{
-    ViewBag.Title = "Edit project";
+    string ProjectName = Model.ProjName;
+    ViewBag.Title = "Edit " + ProjectName;
 
     //Remove non-pms from list.
     List<Employee> employees = Employee.EmployeeList(ViewBag.UserID);
@@ -23,13 +24,10 @@
 
 }
 
-<h2>Edit</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        <h4>Project</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -52,7 +50,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                 @Html.ValidationMessageFor(model => model.ProjStartDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -60,7 +58,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                 @Html.ValidationMessageFor(model => model.ProjEndDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -83,7 +81,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.IsEnded, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.CheckBoxFor(model => model.IsEnded, new { htmlAttributes = new { @class = "form-check-input", @type = "checkbox" } })
+            @Html.CheckBoxFor(model => model.IsEnded, new { htmlAttributes = new { @class = "form-control" } })
         </div>
 
         <div class="form-group">
@@ -94,19 +92,56 @@
     </div>
 }
 
+<div class="db-Row-Button-Box">
+    <div class="db-Column-Button-Box">
+        <a href="@Request.UrlReferrer">
+            <div class="small-button">
+                <span>
+                    <h2>
+                        Back
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+    <div class="db-Column-Button-Box">
+        <a href="@Url.Action( "AddTask", new { id = Model.ProjID })">
+            <div class="small-button">
+                <span>
+                    <h2>
+                        Add Tasks
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+    <div class="db-Column-Button-Box">
+        <a href="@Url.Action("AddEmpToProject", new { id = Model.ProjID })">
+            <div class="small-button">
+                <span>
+                    <h2>
+                        Assign Employees
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+</div>
+
 @Html.ActionLink("Assign employees to this project", "AddEmpToProject", new { id = Model.ProjID })
 <br />
 @Html.ActionLink("Add tasks", "AddTask", new { id = Model.ProjID })
 
 @*Displays alert message telling user how the operation went.*@
-@if (ViewBag.message != null)
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
+
 
 <div>
     @Html.ActionLink("Back to List", "MyProjects", "Business")

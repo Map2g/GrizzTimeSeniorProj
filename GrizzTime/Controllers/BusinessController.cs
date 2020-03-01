@@ -180,18 +180,44 @@ namespace GrizzTime.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //[Authorize]
-        //public ActionResult Logout()
-        //{
-        //    Request.Cookies.Clear();
-        //    FormsAuthentication.SignOut();
-        //    Session.Abandon();
-        //    return RedirectToAction("LandingPage", "Home");
-        //}
-
         // GET: User/Details/5
         public ActionResult Details(int? id)
+        {
+            string message = "";
+            using (Entities dc = new Entities())
+            {
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                business bus = dc.businesses.Find(id);
+
+                if (bus == null)
+                {
+                    message = "Business not find with id: " + id.ToString();
+                    ViewBag.Message = message;
+                    RedirectToAction("Dashboard");
+                }
+
+                Business viewBus = new Business()
+                {
+                    BusName = bus.BusName,
+                    BusAddress = bus.BusAddress,
+                    BusDesc = bus.BusDesc,
+                    UserEmail = bus.UserEmail,
+                    UserPW = bus.UserPW,
+                    UserStatus = bus.UserStatus,
+                };
+
+                return View(viewBus);
+            }
+        }
+
+        //Administration view
+        [AllowAnonymous]
+        public ActionResult AllBusinesses()
         {
             Entities db = new Entities();
             return View(from business in db.businesses select business);
@@ -326,10 +352,10 @@ namespace GrizzTime.Controllers
                 if (business == null)
                 {
                     message = "Business does not exist.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return View("Details");
                 }
-                ViewBag.message = message;
+                ViewBag.Message = message;
                 return View(business);
             }
         }
@@ -345,7 +371,7 @@ namespace GrizzTime.Controllers
                 if (business == null)
                 {
                     message = "Business not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("Details");
                 }
 
@@ -353,12 +379,20 @@ namespace GrizzTime.Controllers
                 dc.SaveChanges();
                 message = "Business successfully deleted.";
             }
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return View("Details");
         }
 
         public ActionResult MyContracts()
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             var id = Request.Cookies["UserID"].Value;
             string query = "SELECT * FROM grizztime.contract WHERE BusID = @id";
             Entities dc = new Entities();
@@ -369,17 +403,34 @@ namespace GrizzTime.Controllers
 
         public ActionResult MyEmployees()
         {
-            var id = Request.Cookies["UserID"].Value;
-            string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
-            Entities dc = new Entities();
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
 
-            IEnumerable<employee> thisBusinessEmployee = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
+            var id = Request.Cookies["UserID"].Value;
+            //string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
+            //Entities dc = new Entities();
+
+            //IEnumerable<employee> thisBusinessEmployee = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
+            List<Employee> thisBusinessEmployee = Employee.EmployeeList(id);
 
             return View(thisBusinessEmployee);
         }
 
         public ActionResult MyProjects()
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             int id = Int32.Parse(Request.Cookies["UserID"].Value);
             List<Project> theseProjects = Project.BusProjList(id);
 

@@ -115,6 +115,7 @@ namespace GrizzTime.ViewModels
                     UserID = item.UserID,
                     EmpType = item.EmpType,
                     UserEmail = item.UserEmail,
+                    EmpPhone = item.EmpPhone,                   
                     //add more if needed
                 });               
             };

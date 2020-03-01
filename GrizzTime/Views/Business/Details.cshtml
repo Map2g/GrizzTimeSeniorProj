@@ -1,71 +1,79 @@
-﻿@model IEnumerable<GrizzTime.Models.business>
+﻿@model GrizzTime.ViewModels.Business
+@using GrizzTime.ViewModels
 
 @{
-    ViewBag.Title = "Business Details";
+    ViewBag.Title = "My Business";
 }
 
-<h2>Details</h2>
+<h2> @Model.BusName </h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Business")
-        </th>
-        <th>
-            @Html.DisplayName("Business Code")
-        </th>
-        <th>
-            @Html.DisplayName("Email Address")
-        </th>
-        <th>
-            @Html.DisplayName("Password")
-        </th>
-        <th>
-            @Html.DisplayName("Address")
-        </th>
-        <th>
-            @Html.DisplayName("Description")
-        </th>
-        <th></th>
-    </tr>
+<div class="form-horizontal">
+    <hr />
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.BusName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserPW)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusDesc)
-            </td>
-            <td>
+    <div class="form-group">
+        @Html.LabelFor(model => model.BusName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.BusName, new { htmlAttributes = new { @class = "form-control", @readonly="readyonly"} })
+        </div>
+    </div>
 
-                @Html.ActionLink("Edit", "Edit", new { id = item.UserID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.UserID })
-            </td>
-        </tr>
-    }
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control", @readonly="readyonly" } })
+        </div>
+    </div>
 
-</table>
+    <div class="form-group">
+        @Html.LabelFor(model => model.BusDesc, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.BusDesc, new { htmlAttributes = new { @class = "form-control", @readonly="readyonly" } })
+        </div>
+    </div>
 
-@if (ViewBag.message != null)
+    <div class="form-group">
+        @Html.LabelFor(model => model.BusAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.BusAddress, new { htmlAttributes = new { @class = "form-control", @readonly="readyonly" } })
+        </div>
+    </div>
+
+</div>
+
+<br />
+
+<div class="db-Row-Button-Box">
+    <div class="db-Column-Button-Box">
+        <a href="@Request.UrlReferrer">
+            <div class="small-button">
+                <span>
+                    <h2>
+                        Back
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+    <div class="db-Column-Button-Box">
+        <a href="/business/edit/@Request.Cookies["UserID"].Value">
+            <div class="small-button">
+                <span>
+                    <h2>
+                        Edit
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+</div>
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
+

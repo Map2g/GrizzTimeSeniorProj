@@ -94,11 +94,12 @@
     <p><a href="/home/index">Back to Home &raquo;</a></p>
 </div>
 
-@if (ViewBag.message != null)
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
+

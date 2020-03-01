@@ -17,6 +17,14 @@ namespace GrizzTime.Controllers
         {
             string message;
 
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             //ensure that the model exists
             if (ModelState.IsValid)
             {
@@ -25,8 +33,8 @@ namespace GrizzTime.Controllers
                 using (Entities dc = new Entities())
                 {
                     GrizzTime.Models.payrollcycle pc = new GrizzTime.Models.payrollcycle();
-                    pc.PayrollCycleStart = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
-                    pc.PayrollCycleEnd = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7);
+                    pc.PayrollCycleStart = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).Date;
+                    pc.PayrollCycleEnd = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7).Date;
                     pc.PayrollCycleYear = (short)System.DateTime.Now.Year;
 
                     dc.payrollcycles.Add(pc);
@@ -67,6 +75,15 @@ namespace GrizzTime.Controllers
         public ActionResult List()
         {
             string message = "";
+
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             try
             {
                 IEnumerable<timesheet> thisEmployeeTimesheet;
@@ -99,8 +116,24 @@ namespace GrizzTime.Controllers
         // View week entry (edit)
         public ActionResult Week(int? id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
-            ViewBag.TimeSheetID = id.ToString();
+
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.TimeSheetID = (int) id;
+
+
             Entities dc = new Entities();
             
 
@@ -124,6 +157,14 @@ namespace GrizzTime.Controllers
         [HttpGet]
         public ActionResult WorkEntry(int? tid, int? wid, string DOW)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             var message = "";
             ViewBag.IsExist = false;
             ViewBag.TimeSheetID = (int) tid;
@@ -174,6 +215,14 @@ namespace GrizzTime.Controllers
         [HttpPost]
         public ActionResult WorkEntry(int? tid, int? wid, WorkEntry thisDay)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             string message = "";
             ViewBag.IsExist = false;
             ViewBag.TimeSheetID = (int)tid;
@@ -217,7 +266,7 @@ namespace GrizzTime.Controllers
                     //add try catch
                     dc.SaveChanges();
 
-                    ViewBag.message = "Successfully saved.";
+                    ViewBag.Message = "Successfully saved.";
                     //return View(thisWE);
                     return Redirect("Week/" + tid);
                 }

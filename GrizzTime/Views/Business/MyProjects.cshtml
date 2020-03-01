@@ -15,7 +15,6 @@
         </span>
     </div>
 </a>
-@Html.ActionLink("Add a new project", "Create", "Project", null, null)
 
 <table class="table">
     <tr>
@@ -79,11 +78,12 @@
 
 </table>
 
-@if (ViewBag.message != null)
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
+

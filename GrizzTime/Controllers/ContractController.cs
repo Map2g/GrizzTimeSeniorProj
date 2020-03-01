@@ -22,6 +22,14 @@ namespace GrizzTime.Controllers
             bool Status = false;
             string message;
 
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             //ensure that the model exists
             if (ModelState.IsValid)
             {
@@ -82,6 +90,14 @@ namespace GrizzTime.Controllers
 
         public ActionResult Edit(int? id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             using (Entities dc = new Entities())
             {
@@ -112,6 +128,14 @@ namespace GrizzTime.Controllers
         [HttpPost]
         public ActionResult Edit(int? id, Contract thisCon)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
 
             if (id == null)
@@ -194,11 +218,11 @@ namespace GrizzTime.Controllers
                 if (con == null)
                 {
                     message = "Contract not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("MyContracts", "Business");
                 }
 
-                ViewBag.message = message;
+                ViewBag.Message = message;
                 return View(con);
             }
         }
@@ -215,7 +239,7 @@ namespace GrizzTime.Controllers
                 if (con == null)
                 {
                     message = "Contract not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("MyContracts", "Business");
                 }
 
@@ -223,7 +247,7 @@ namespace GrizzTime.Controllers
                 dc.SaveChanges();
             }
 
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return RedirectToAction("MyContracts", "Business");
         }
     }

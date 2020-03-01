@@ -3,12 +3,20 @@
 
 @{
     ViewBag.Title = "Add new employee";
-
+    Layout = null;
 }
 
 <title>@ViewBag.Title</title>
 
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="small-button" id="btnShowModal" type="button">
+    <span>
+        <h2>
+            Add Employee
+        </h2>
+    </span>
+</div>
 
 <div>
     <fieldset>
@@ -16,12 +24,15 @@
             <div class="row">
                 <div class="col-xs-12">
 
-                    <button id="btnShowModal" type="button" class="btn btn-sm btn-default pull-left button button4">
-                        Add employee
-                    </button>
+                    @*<div class="small-button" id="btnShowModal" type="button">
+                        <span>
+                            <h2>
+                                Add Employee
+                            </h2>
+                        </span>
+                    </div>*@
 
-                    <div class="modal fade" tabindex="-1" id="loginModal"
-                         data-keyboard="false" data-backdrop="static">
+                    <div class="modal fade" tabindex="-1" id="loginModal" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -76,7 +87,7 @@
                                                 @Html.DropDownListFor(model => model.EmpType, Employee.JobTypes, "--Select--", new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.EmpType, "", new { @class = "text-danger" })
                                             </div>
-                                        </div>                                      
+                                        </div>
 
                                     </div>
                                     <div class="modal-footer">
@@ -98,14 +109,15 @@
 </div>
 
 @*Displays alert message telling user how the operation went.*@
-@if (ViewBag.message != null)
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
 

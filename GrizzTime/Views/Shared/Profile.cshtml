@@ -1,6 +1,13 @@
 ﻿@{
     GrizzTime.Models.Entities dc = new GrizzTime.Models.Entities();
+
+    if (Request.Cookies["UserID"].Value == null)
+    {
+        Url.Action("/Home/LandingPage/");
+    }
+
     int id = Int32.Parse(Request.Cookies["UserID"].Value);
+    
     if (dc.businesses.Find(id) != null)
     {
         var v = dc.businesses.Where(a => a.UserID == id).FirstOrDefault();
@@ -13,8 +20,7 @@
         ViewBag.Name = v.EmpFName + " " + v.EmpLName;
         ViewBag.Email = v.UserEmail;
     }
-
-    string type = ViewBag.Type;
+    string Role = Request.Cookies["Role"].Value;
 }
 
 @if (Request.IsAuthenticated)
@@ -51,7 +57,7 @@
                 <!-- Menu Footer-->
                 <li class="user-footer">
                     <div class="pull-left">
-                        <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
+                        <a href="@Url.Action("Details", (Role == "Business"? "Business" : "Employee"), new {id = id})" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
                     </div>
                     <div class="pull-right">
                         @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { @id = "logoutForm", @class = "navbar-right" }))
@@ -68,8 +74,7 @@ else
 {
     <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="~/assets/img/defaultuser.jpg" class="user-image" alt="User Image">
-            <span class="hidden-xs">Profile</span>
+            <span class="hidden-xs">Not logged in</span>
         </a>
     </li>
 }
