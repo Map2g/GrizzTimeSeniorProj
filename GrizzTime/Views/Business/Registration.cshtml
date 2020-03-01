@@ -6,8 +6,6 @@
     Layout = null;
 }
 
-@*<h2>Register your Business Account</h2>*@
-
 <link rel="stylesheet" href="~/StyleSheet.css" />
 
 @using (Html.BeginForm())
@@ -43,15 +41,15 @@
                      <label for="Password"> Password</label>
                      <input type="submit" value="Submit">
                 </div>*@
-        <div class="Login-Box-Container">
-            <div class="Login-Box" style="margin-top:50px">
+
+        <div class="Form-Box-Container">
+            <div class="Form-Box" style="margin-top:50px">
 
                 <div class="form-group">
                     <div class="label"> Email </div>
-                    @*@Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })*@
                     <div class="col-md-10">
                         @*htmlAttributes = new { @class = "form-control", @placeholder = "Your Email Here"*@
-                        @Html.EditorFor(model => model.UserEmail, new { @type="input" })
+                        @Html.EditorFor(model => model.UserEmail, new { @type = "input" })
                         @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
                         @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
                     </div>
