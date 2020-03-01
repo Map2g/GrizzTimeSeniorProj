@@ -9,11 +9,36 @@
     <h4>Employee - @ViewBag.EmployeeName </h4>
     <hr />
 
-    <p><a href="/employee/edit/@Request.Cookies["UserID"].Value">Edit employee</a></p>
+    @*<p><a href="/employee/edit/@Request.Cookies["UserID"].Value">Edit employee</a></p>
     @Html.ActionLink("See Timesheets", "List", "Timesheet")
-    <p><a href="/timesheets/list/">See timesheets</a></p>
+    <p><a href="/timesheets/list/">See timesheets</a></p>*@
 
 
+</div>
+<div class="db-Row-Button-Box">
+    <div class="db-Column-Button-Box">
+        <a href="/employee/edit/@Request.Cookies["UserID"].Value">
+            <div class="db-Page-Buttons">
+                <span>
+                    <h2>
+                        Edit Employee
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+
+    <div class="db-Column-Button-Box">
+        <a href="/Timesheet/List">
+            <div class="db-Page-Buttons">
+                <span>
+                    <h2>
+                        Time Sheets
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
 </div>
 
 

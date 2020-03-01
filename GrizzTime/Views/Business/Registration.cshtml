@@ -6,8 +6,6 @@
     Layout = null;
 }
 
-@*<h2>Register your Business Account</h2>*@
-
 <link rel="stylesheet" href="~/StyleSheet.css" />
 
 @using (Html.BeginForm())
@@ -18,9 +16,12 @@
 <div class="Column-1">
 
     <div class="form-horizontal">
-        <h4>Create Business Account</h4>
-        <hr />
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="Login-Box-Top">
+            <div class="Form-Titles">Create Business</div>
+        </div>
 
         @*<div class="form-horizontal">
             <h4>Create Business Account</h4>
@@ -41,54 +42,65 @@
                      <input type="submit" value="Submit">
                 </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control", @placeholder = "Your Email Here" }} )
-                @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
-                @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
-            </div>
-        </div>
+        <div class="Form-Box-Container">
+            <div class="Form-Box" style="margin-top:50px">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserPW, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-                @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    <div class="label"> Email </div>
+                    <div class="col-md-10">
+                        @*htmlAttributes = new { @class = "form-control", @placeholder = "Your Email Here"*@
+                        @Html.EditorFor(model => model.UserEmail, new { @type = "input" })
+                        @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+                        @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BusName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BusName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BusName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    <div class="label"> Password </div>
+                    @*@Html.LabelFor(model => model.UserPW, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                        @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BusAddress, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BusAddress, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BusAddress, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    <div class="label"> Business Name </div>
+                    @*@Html.LabelFor(model => model.BusName, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.BusName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.BusName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BusDesc, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.BusDesc, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BusDesc, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    <div class="label"> Business Address </div>
+                    @*@Html.LabelFor(model => model.BusAddress, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.BusAddress, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.BusAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <div class="form-group">
+                    <div class="label"> Business Description </div>
+                    @*@Html.LabelFor(model => model.BusDesc, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.BusDesc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.BusDesc, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
  }
 
 
