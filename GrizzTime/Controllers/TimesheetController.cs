@@ -74,7 +74,7 @@ namespace GrizzTime.Controllers
                 Entities dc = new Entities();
                 
                     int id = Int32.Parse(Request.Cookies["UserID"].Value);
-                    thisEmployeeTimesheet = dc.timesheets.Where(x => x.EmpID == id);               
+                    thisEmployeeTimesheet = dc.timesheets.Where(x => x.EmpID == id).ToList();               
 
                     if (thisEmployeeTimesheet.Any() == false)
                     {
@@ -97,7 +97,6 @@ namespace GrizzTime.Controllers
         }
 
         // View week entry (edit)
-        [HttpGet]
         public ActionResult Week(int? id)
         {
             ViewBag.UserID = Request.Cookies["UserID"].Value;
@@ -121,18 +120,15 @@ namespace GrizzTime.Controllers
                 return View(thisWeekTry);           
         }
 
-        // View AND edit: Specific timesheet week. id is the id of a timesheet
-        //[HttpPost]
-        //public ActionResult Week(int? id)
-        //{
-        //    return View();
-        //}
-
         //tid is timesheet id, wid is workentry id
         [HttpGet]
-        public ActionResult WeekEntry(int? tid, int? wid, string DOW)
+        public ActionResult WorkEntry(int? tid, int? wid, string DOW)
         {
             var message = "";
+            ViewBag.IsExist = false;
+            ViewBag.TimeSheetID = (int) tid;
+            ViewBag.UserID = Int32.Parse(Request.Cookies["UserID"].Value);
+
             Entities dc = new Entities();
 
             if (tid == null)
@@ -144,19 +140,116 @@ namespace GrizzTime.Controllers
             {
                 if (DOW != null) 
                 {
-                    workentry thisDay = new workentry()
+                    ViewBag.DayOfWeek = DOW;
+                    return View();              
+                }
+                else
+                {                  
+                    message = "Date of week not captured.";
+                    return HttpNotFound();
+                }
+            }
+            else //wid is not null
+            {
+                ViewBag.IsExist = true;
+                var w = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
+                WorkEntry thisWE = new WorkEntry()
+                {
+                    EmpID = w.EmpID,
+                    possibleProjects = Employee.GetProjects(w.EmpID),
+                    possibleTasks = Project.GetTasks(w.ProjID), 
+                    WorkDate = w.WorkDate,
+                    WorkHours = w.WorkHours,
+                    TimeSheetID = w.TimeSheetID,
+                    WorkEntryID = w.WorkEntryID,  
+                    ProjID = w.ProjID,
+                    TaskID = w.TaskID,                   
+                };
+                return View(thisWE);
+            }
+        }
+
+
+        // View AND edit: Specific timesheet week. id is the id of a timesheet
+        [HttpPost]
+        public ActionResult WorkEntry(int? tid, int? wid, WorkEntry thisDay)
+        {
+            string message = "";
+            ViewBag.IsExist = false;
+            ViewBag.TimeSheetID = (int)tid;
+            ViewBag.UserID = Int32.Parse(Request.Cookies["UserID"].Value);
+            using (Entities dc = new Entities())
+            {
+
+                if (tid == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                timesheet ts = dc.timesheets.Find(tid);
+
+                GrizzTime.Models.workentry we = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
+                if (we == null) //create new
+                {
+                    workentry w = new workentry()
                     {
                         EmpID = Int32.Parse(Request.Cookies["UserID"].Value),
+                        ProjID = thisDay.ProjID,
+                        TaskID = thisDay.TaskID,
+                        WorkDate = thisDay.WorkDate,
+                        WorkHours = thisDay.WorkHours,
                         TimeSheetID = (int)tid,
-                        WorkDate = DOW,    
+                    };
+                    dc.workentries.Add(w);
+
+                    WorkEntry thisWE = new WorkEntry()
+                    {
+                        EmpID = w.EmpID,
+                        possibleProjects = Employee.GetProjects(w.EmpID),
+                        possibleTasks = Project.GetTasks(w.ProjID),
+                        WorkDate = w.WorkDate,
+                        WorkHours = w.WorkHours,
+                        TimeSheetID = w.TimeSheetID,
+                        WorkEntryID = w.WorkEntryID,
+                        ProjID = w.ProjID,
+                        TaskID = w.TaskID,
                     };
 
-                    dc.workentries.Add(thisDay);
+                    //add try catch
+                    dc.SaveChanges();
 
+                    ViewBag.message = "Successfully saved.";
+                    //return View(thisWE);
+                    return Redirect("Week/" + tid);
+                }
+                else //edit existing
+                {
+                    ViewBag.IsExist = true;
+                    we.WorkHours = thisDay.WorkHours;
+                    we.ProjID = thisDay.ProjID;
+                    we.TaskID = thisDay.TaskID;
+
+                    WorkEntry thisWE = new WorkEntry()
+                    {
+                        EmpID = we.EmpID,
+                        possibleProjects = Employee.GetProjects(we.EmpID),
+                        possibleTasks = Project.GetTasks(we.ProjID),
+                        WorkDate = we.WorkDate,
+                        WorkHours = we.WorkHours,
+                        TimeSheetID = we.TimeSheetID,
+                        WorkEntryID = we.WorkEntryID,
+                        ProjID = we.ProjID,
+                        TaskID = we.TaskID,
+                    };
+
+                    dc.Entry(we).State = System.Data.Entity.EntityState.Modified;
                     try
                     {
                         dc.SaveChanges();
-                        return RedirectToAction("WeekEntry", "Timesheet", new { tid, wid = thisDay.WorkEntryID });
+                        message = "Time updated successfully.";
+                        ViewBag.Message = message;
+
+                        //return View(thisWE);
+                        return Redirect("Week/"+ tid );
                     }
                     catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
                     {
@@ -178,74 +271,7 @@ namespace GrizzTime.Controllers
                         //error for UI
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                         throw exception;
-                    }                   
-                }
-                else
-                {
-                    message = "Date of week not captured";
-                    return View();
-                }
-            }
-            else //wid is not null
-            {
-                var w = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
-                return View(w);
-            }
-        }
-
-
-        // View AND edit: Specific timesheet week. id is the id of a timesheet
-        [HttpPost]
-        public ActionResult WeekEntry(int? tid, int? wid, workentry thisDay)
-        {
-            string message = "";
-            ViewBag.UserID = Request.Cookies["UserID"].Value;
-            using (Entities dc = new Entities())
-            {
-
-                if (tid == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-
-                timesheet ts = dc.timesheets.Find(tid);
-
-                GrizzTime.Models.workentry we = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
-                if (thisDay == null)
-                    return HttpNotFound();
-
-                we.WorkHours = thisDay.WorkHours;
-                we.ProjID = thisDay.ProjID;
-                we.TaskID = thisDay.TaskID;
-
-                dc.Entry(we).State = System.Data.Entity.EntityState.Modified;
-                try
-                {
-                    dc.SaveChanges();
-                    message = "Timesheet updated successfully.";
-                    ViewBag.Message = message;
-                    return RedirectToAction("Week", "Timesheet", new { id = tid });
-                }
-                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                {
-                    //more descriptive error for validation problems
-                    Exception exception = dbEx;
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            string message1 = string.Format("{0}:{1}",
-                                validationErrors.Entry.Entity.ToString(),
-                                validationError.ErrorMessage);
-
-                            //create a new exception inserting the current one
-                            //as the InnerException
-                            exception = new InvalidOperationException(message1, exception);
-                        }
                     }
-                    //error for UI
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    throw exception;
                 }
             }
         }
@@ -254,6 +280,27 @@ namespace GrizzTime.Controllers
         public ActionResult Submit()
         {
             return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult LoadTasksForProject(string projId)
+        {
+            int pID = Int32.Parse(projId);
+            List<SelectListItem> taskList = new List<SelectListItem>();
+
+            List<task> tasklist_l = Project.GetTasks(pID);
+
+            //convert task list to a select list
+            taskList = tasklist_l.ConvertAll(a =>
+            {
+                return new SelectListItem()
+                {
+                    Text = a.TaskName,
+                    Value = a.TaskID.ToString()
+                };
+            });
+
+            return Json(taskList, JsonRequestBehavior.AllowGet);
         }
     }
 }

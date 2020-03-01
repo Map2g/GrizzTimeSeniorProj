@@ -26,6 +26,12 @@ public partial class project
 
         this.tasks = new HashSet<task>();
 
+        this.workentries = new HashSet<workentry>();
+
+        this.expenseentries = new HashSet<expenseentry>();
+
+        this.workentries1 = new HashSet<workentry>();
+
     }
 
 
@@ -58,6 +64,18 @@ public partial class project
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<task> tasks { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<workentry> workentries { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<expenseentry> expenseentries { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<workentry> workentries1 { get; set; }
 
 }
 

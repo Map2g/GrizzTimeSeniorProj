@@ -111,9 +111,9 @@ namespace GrizzTime.ViewModels
             using (Entities dc = new Entities())
             {
                 //Get contracts belonging to business
-                int busContracts = (from c in dc.contracts
+                var busContracts = (from c in dc.contracts
                                     where c.BusID == id
-                                    select c.ConID).First();
+                                    select c.ConID).ToList();
 
                 //get projects in those contracts
                 var thisBusProjects = (from p in dc.projects
@@ -121,7 +121,7 @@ namespace GrizzTime.ViewModels
                                        on p.ProjManID equals e.UserID
                                        join c in dc.contracts
                                        on p.ConID equals c.ConID
-                                       where c.ConID == busContracts
+                                       where busContracts.Contains(c.ConID)
                                        select new { p.ProjName, p.ProjDesc, p.ProjStartDate, p.ProjEndDate, p.ProjStatus, p.ProjID, e.EmpFName, e.EmpLName, c.ConName }
                                 ).ToList();
 
@@ -177,7 +177,8 @@ namespace GrizzTime.ViewModels
             }
         }
 
-        public static List<task> GetTasks(int id)
+        //id is project id
+        public static List<task> GetTasks(int projid)
         {
             using (Entities dc = new Entities())
             {
@@ -185,7 +186,7 @@ namespace GrizzTime.ViewModels
                 var thisProjectTasks = (from p in dc.projects
                                       join t in dc.tasks
                                       on p.ProjID equals t.ProjID
-                                      where p.ProjID == id
+                                      where p.ProjID == projid
                                       select new { p.ProjID, p.ProjName, t.TaskName, t.TaskID, t.BillableRate }
                             ).ToList();
 

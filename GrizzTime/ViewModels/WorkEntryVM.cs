@@ -9,6 +9,12 @@ namespace GrizzTime.ViewModels
 {
     public class WorkEntry
     {
+        public WorkEntry()
+        {
+            this.possibleProjects = new List<Project>();
+            this.possibleTasks = new List<GrizzTime.Models.task>();
+        }
+
         public int WorkEntryID { get; set; }
 
         public int EmpID { get; set; }
@@ -30,26 +36,11 @@ namespace GrizzTime.ViewModels
 
         public string TaskName { get; set; }
 
-
-        //public virtual timesheet timesheet { get; set; }
+        public List<Project> possibleProjects { get; set; }
+        public List<GrizzTime.Models.task> possibleTasks { get; set; }
 
         //public virtual task task { get; set; }
 
-        public static List<SelectListItem> TaskTypes = new List<SelectListItem>()
-        {
-            new SelectListItem() {Text="Administration", Value="Administration" },
-            new SelectListItem() {Text="Development", Value="Development" },
-            new SelectListItem() {Text="Helpdesk & Support", Value="Helpdesk & Support" },
-            new SelectListItem() {Text="Management", Value="Management" },
-            new SelectListItem() {Text="Quality Assurance", Value="Quality Assurance" },
-            new SelectListItem() {Text="Design", Value="Design" },
-            new SelectListItem() {Text="Requirements Capture", Value="Requirements Capture" },
-            new SelectListItem() {Text="Accounting", Value="Accounting" },
-            new SelectListItem() {Text="Business Development", Value="Business Development" },
-            new SelectListItem() {Text="Research", Value="Research" },
-            new SelectListItem() {Text="Deployment", Value="Deployment" },
-            new SelectListItem() {Text="Maintenance", Value="Maintenance" },
-        };
     }
 
 }

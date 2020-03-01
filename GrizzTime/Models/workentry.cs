@@ -24,7 +24,7 @@ public partial class workentry
 
     public int ProjID { get; set; }
 
-    public String WorkDate { get; set; }
+    public string WorkDate { get; set; }
 
     public decimal WorkHours { get; set; }
 
@@ -37,6 +37,10 @@ public partial class workentry
     public virtual timesheet timesheet { get; set; }
 
     public virtual task task { get; set; }
+
+    public virtual project project { get; set; }
+
+    public virtual project project1 { get; set; }
 
 }
 

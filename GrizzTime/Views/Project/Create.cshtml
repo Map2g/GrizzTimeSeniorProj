@@ -6,6 +6,22 @@
 
 @{
     ViewBag.Title = "Create a new project";
+
+    //Remove non-pms from list.
+    List<Employee> employees = Employee.EmployeeList(ViewBag.UserID);
+    employees.RemoveAll(x => x.EmpType != "Project Manager");
+
+    //convert employee list to selectlist
+    List<SelectListItem> pmList = employees.ConvertAll(a =>
+    {
+        return new SelectListItem()
+        {
+            Text = a.EmpFName + " " + a.EmpLName,
+            Value = a.UserID.ToString()
+        };
+    });
+
+
 }
 
 <h2>Create</h2>
@@ -54,7 +70,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjManID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProjManID, Employee.EmployeeList(ViewBag.UserID) as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.ProjManID, (pmList.Any() ? new SelectList(pmList, "Value", "Text") : new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text")), "--Select--", new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ProjManID, "", new { @class = "text-danger" })
             </div>
         </div>

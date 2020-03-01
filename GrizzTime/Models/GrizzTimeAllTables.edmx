@@ -295,6 +295,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_expentry_project">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="expenseentry" Type="Self.expenseentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="ProjID" />
+            </Principal>
+            <Dependent Role="expenseentry">
+              <PropertyRef Name="ProjID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_project_contract">
           <End Role="contract" Type="Self.contract" Multiplicity="1" />
           <End Role="project" Type="Self.project" Multiplicity="*" />
@@ -333,7 +345,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_WorkTask">
+        <Association Name="FK_workentry_project">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="workentry" Type="Self.workentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="ProjID" />
+            </Principal>
+            <Dependent Role="workentry">
+              <PropertyRef Name="ProjID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Workentry_Task">
           <End Role="task" Type="Self.task" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -344,6 +368,18 @@
             </Principal>
             <Dependent Role="workentry">
               <PropertyRef Name="TaskID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_workentry_TimeSheetID">
+          <End Role="timesheet" Type="Self.timesheet" Multiplicity="1" />
+          <End Role="workentry" Type="Self.workentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="timesheet">
+              <PropertyRef Name="TimeSheetID" />
+            </Principal>
+            <Dependent Role="workentry">
+              <PropertyRef Name="TimeSheetID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -392,18 +428,6 @@
             </Principal>
             <Dependent Role="timesheet">
               <PropertyRef Name="EmpID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="workentry$TimeSheetID">
-          <End Role="timesheet" Type="Self.timesheet" Multiplicity="1" />
-          <End Role="workentry" Type="Self.workentry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="timesheet">
-              <PropertyRef Name="TimeSheetID" />
-            </Principal>
-            <Dependent Role="workentry">
-              <PropertyRef Name="TimeSheetID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -463,6 +487,10 @@
             <End Role="task" EntitySet="task" />
             <End Role="expenseentry" EntitySet="expenseentry" />
           </AssociationSet>
+          <AssociationSet Name="FK_expentry_project" Association="Self.FK_expentry_project">
+            <End Role="project" EntitySet="project" />
+            <End Role="expenseentry" EntitySet="expenseentry" />
+          </AssociationSet>
           <AssociationSet Name="FK_project_contract" Association="Self.FK_project_contract">
             <End Role="contract" EntitySet="contract" />
             <End Role="project" EntitySet="project" />
@@ -475,8 +503,16 @@
             <End Role="employee" EntitySet="employee" />
             <End Role="project" EntitySet="project" />
           </AssociationSet>
-          <AssociationSet Name="FK_WorkTask" Association="Self.FK_WorkTask">
+          <AssociationSet Name="FK_workentry_project" Association="Self.FK_workentry_project">
+            <End Role="project" EntitySet="project" />
+            <End Role="workentry" EntitySet="workentry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Workentry_Task" Association="Self.FK_Workentry_Task">
             <End Role="task" EntitySet="task" />
+            <End Role="workentry" EntitySet="workentry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_workentry_TimeSheetID" Association="Self.FK_workentry_TimeSheetID">
+            <End Role="timesheet" EntitySet="timesheet" />
             <End Role="workentry" EntitySet="workentry" />
           </AssociationSet>
           <AssociationSet Name="ptorequest$FK_PTO_EmpID" Association="Self.ptorequest$FK_PTO_EmpID">
@@ -494,10 +530,6 @@
           <AssociationSet Name="timesheet$FK_TimeSheet_EmpID" Association="Self.timesheet$FK_TimeSheet_EmpID">
             <End Role="employee" EntitySet="employee" />
             <End Role="timesheet" EntitySet="timesheet" />
-          </AssociationSet>
-          <AssociationSet Name="workentry$TimeSheetID" Association="Self.workentry$TimeSheetID">
-            <End Role="timesheet" EntitySet="timesheet" />
-            <End Role="workentry" EntitySet="workentry" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -583,12 +615,13 @@
           <Property Name="ExpEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EmpID" Type="Int32" Nullable="false" />
           <Property Name="ProjID" Type="Int32" Nullable="false" />
-          <Property Name="ExpDate" Type="String" Nullable="false" />
+          <Property Name="ExpDate" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="ExpDollarAmt" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="ExpSheetID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="expensesheet" Relationship="Self.expenseentry_ExpSheetID" FromRole="expenseentry" ToRole="expensesheet" />
           <Property Name="TaskID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="task" Relationship="GrizzTime_dbModel.FK_ExpenseTask" FromRole="expenseentry" ToRole="task" />
+          <NavigationProperty Name="project" Relationship="GrizzTime_dbModel.FK_expentry_project" FromRole="expenseentry" ToRole="project" />
         </EntityType>
         <EntityType Name="expensesheet">
           <Key>
@@ -633,6 +666,9 @@
           <Property Name="ProjManID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="employee" Relationship="GrizzTime_dbModel.FK_projman_project" FromRole="project" ToRole="employee" />
           <NavigationProperty Name="tasks" Relationship="GrizzTime_dbModel.FK_ProjectTask" FromRole="project" ToRole="task" />
+          <!--<NavigationProperty Name="workentries" Relationship="GrizzTime_dbModel.workentryproject" FromRole="project" ToRole="workentry" />-->
+          <NavigationProperty Name="expenseentries" Relationship="GrizzTime_dbModel.FK_expentry_project" FromRole="project" ToRole="expenseentry" />
+          <NavigationProperty Name="workentries1" Relationship="GrizzTime_dbModel.FK_workentry_project" FromRole="project" ToRole="workentry" />
         </EntityType>
         <EntityType Name="ptorequest">
           <Key>
@@ -679,12 +715,14 @@
           <Property Name="WorkEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EmpID" Type="Int32" Nullable="false" />
           <Property Name="ProjID" Type="Int32" Nullable="false" />
-          <Property Name="WorkDate" Type="String" Nullable="false" />
+          <Property Name="WorkDate" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="WorkHours" Type="Decimal" Precision="13" Scale="1" Nullable="false" />         
           <Property Name="TimeSheetID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="timesheet" Relationship="Self.workentry_TimeSheetID" FromRole="workentry" ToRole="timesheet" />
           <Property Name="TaskID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="task" Relationship="GrizzTime_dbModel.FK_WorkTask" FromRole="workentry" ToRole="task" />
+          <!--<NavigationProperty Name="project" Relationship="GrizzTime_dbModel.workentryproject" FromRole="workentry" ToRole="project" />-->
+          <NavigationProperty Name="project1" Relationship="GrizzTime_dbModel.FK_workentry_project" FromRole="workentry" ToRole="project" />
         </EntityType>
         <Association Name="FK__employee__BusCod__55F4C372">
           <End Role="business" Type="Self.business" Multiplicity="1" />
@@ -934,6 +972,18 @@
             <End Role="task" EntitySet="tasks" />
             <End Role="workentry" EntitySet="workentries" />
           </AssociationSet>
+          <!--<AssociationSet Name="workentryproject" Association="GrizzTime_dbModel.workentryproject">
+            <End Role="workentry" EntitySet="workentries" />
+            <End Role="project" EntitySet="projects" />
+          </AssociationSet>-->
+          <AssociationSet Name="FK_expentry_project" Association="GrizzTime_dbModel.FK_expentry_project">
+            <End Role="project" EntitySet="projects" />
+            <End Role="expenseentry" EntitySet="expenseentries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_workentry_project" Association="GrizzTime_dbModel.FK_workentry_project">
+            <End Role="project" EntitySet="projects" />
+            <End Role="workentry" EntitySet="workentries" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="contract">
           <Key>
@@ -1035,6 +1085,34 @@
             </Principal>
             <Dependent Role="workentry">
               <PropertyRef Name="TaskID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--<Association Name="workentryproject">
+          <End Type="GrizzTime_dbModel.workentry" Role="workentry" Multiplicity="*" />
+          <End Type="GrizzTime_dbModel.project" Role="project" Multiplicity="1" />
+        </Association>-->
+        <Association Name="FK_expentry_project">
+          <End Type="GrizzTime_dbModel.project" Role="project" Multiplicity="1" />
+          <End Type="GrizzTime_dbModel.expenseentry" Role="expenseentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="ProjID" />
+            </Principal>
+            <Dependent Role="expenseentry">
+              <PropertyRef Name="ProjID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_workentry_project">
+          <End Type="GrizzTime_dbModel.project" Role="project" Multiplicity="1" />
+          <End Type="GrizzTime_dbModel.workentry" Role="workentry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="ProjID" />
+            </Principal>
+            <Dependent Role="workentry">
+              <PropertyRef Name="ProjID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
