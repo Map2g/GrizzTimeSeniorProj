@@ -132,6 +132,15 @@ namespace GrizzTime.Controllers
 
         public ActionResult AddEmployeePopUp()
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find business id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+
             return View();
         }
 
@@ -150,6 +159,7 @@ namespace GrizzTime.Controllers
             }
 
             int id = Int32.Parse(Request.Cookies["UserID"].Value);
+            
 
             ModelState.Remove("UserPW");
             ModelState.Remove("ConfirmPassword");
@@ -167,13 +177,13 @@ namespace GrizzTime.Controllers
 
                 using (Entities dc = new Entities())
                 {
-                    GrizzTime.Models.employee emp = new GrizzTime.Models.employee();
+                    GrizzTime.Models.employee emp = new GrizzTime.Models.employee();                   
                     emp.UserEmail = thisEmp.UserEmail;
                     emp.EmpFName = thisEmp.EmpFName;
                     emp.EmpLName = thisEmp.EmpLName;
                     emp.EmpPhone = thisEmp.EmpPhone;
                     emp.EmpType = thisEmp.EmpType;
-
+                    emp.SupervisorID = thisEmp.SupervisorID;
                     emp.BusCode = id;
                     emp.UserStatus = "Registered";
 
@@ -290,7 +300,7 @@ namespace GrizzTime.Controllers
             }
             else
             {
-                message = "Invalid Request";
+                message = "Couldn't complete request.";
             }
 
             SendVerificationEMail(thisEmp.UserEmail);
@@ -326,6 +336,7 @@ namespace GrizzTime.Controllers
                     EmpPayRate = emp.EmpPayRate,
                     EmpPhone = emp.EmpPhone,
                     UserID = emp.UserID,
+                    SupervisorID = emp.SupervisorID,
                 };
 
                 if (emp == null)
@@ -362,11 +373,14 @@ namespace GrizzTime.Controllers
                 Employee viewEmp = new Employee()
                 {
                     UserEmail = emp.UserEmail,
-                    UserPW = emp.UserPW,
+                    UserID = emp.UserID,                 
                     EmpFName = emp.EmpFName,
                     EmpLName = emp.EmpLName,
                     EmpPhone = emp.EmpPhone,
                     EmpType = emp.EmpType,
+                    BusCode = emp.BusCode,
+                    //UserPW = emp.UserPW, //Move to its own form
+                    SupervisorID = emp.SupervisorID,
                 };
 
                 if (emp == null)
@@ -376,7 +390,6 @@ namespace GrizzTime.Controllers
 
                 return View(viewEmp);
             }
-
         }
 
         // POST: User/Edit/5
@@ -407,6 +420,7 @@ namespace GrizzTime.Controllers
             //ModelState.Remove("EmpLName");
             //ModelState.Remove("EmpPhone");
             ModelState.Remove("ConfirmPassword");
+            ModelState.Remove("UserPW");
 
             if (ModelState.IsValid)
             {
@@ -417,11 +431,12 @@ namespace GrizzTime.Controllers
                         return HttpNotFound();
 
                     emp.UserEmail = thisEmp.UserEmail;
-                    emp.UserPW = Hash(thisEmp.UserPW);
+                    //emp.UserPW = Hash(thisEmp.UserPW); //move to its own form
                     emp.EmpFName = thisEmp.EmpFName;
                     emp.EmpLName = thisEmp.EmpLName;
                     emp.EmpPhone = thisEmp.EmpPhone;
-                    emp.EmpType = thisEmp.EmpType;                  
+                    emp.EmpType = thisEmp.EmpType;
+                    emp.SupervisorID = thisEmp.SupervisorID;
 
                     dc.Entry(emp).State = System.Data.Entity.EntityState.Modified;
                     try

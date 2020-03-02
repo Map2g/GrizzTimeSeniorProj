@@ -57,6 +57,7 @@
         <AssociationConnector Association="GrizzTime_dbModel.workentryproject" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_expentry_project" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_workentry_project" />
+        <AssociationConnector Association="GrizzTime_dbModel.FK_Employee_employee" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

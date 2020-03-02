@@ -34,7 +34,7 @@
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserEmail" Type="nvarchar" MaxLength="45" Nullable="false" />
-          <Property Name="UserPW" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserPW" Type="nvarchar" MaxLength="300" />
           <Property Name="UserStatus" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="EmpFName" Type="nvarchar" MaxLength="45" Nullable="false" />
           <Property Name="EmpLName" Type="nvarchar" MaxLength="45" Nullable="false" />
@@ -43,6 +43,7 @@
           <Property Name="EmpPayRate" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="EmpPhone" Type="nvarchar" MaxLength="10" />
           <Property Name="RememberMe" Type="bit" Nullable="false" />
+          <Property Name="SupervisorID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="employee_project">
           <Key>
@@ -269,6 +270,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employee_employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employee1" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee1">
+              <PropertyRef Name="SupervisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_empproj_project">
           <End Role="project" Type="Self.project" Multiplicity="1" />
           <End Role="employee_project" Type="Self.employee_project" Multiplicity="*" />
@@ -431,6 +444,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="GrizzTime_dbModelStoreContainer">
           <EntitySet Name="business" EntityType="Self.business" Schema="grizztime" store:Type="Tables" />
           <EntitySet Name="contract" EntityType="Self.contract" Schema="grizztime" store:Type="Tables" />
@@ -478,6 +522,10 @@
           <AssociationSet Name="FK_Contract_Business" Association="Self.FK_Contract_Business">
             <End Role="business" EntitySet="business" />
             <End Role="contract" EntitySet="contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_employee" Association="Self.FK_Employee_employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employee1" EntitySet="employee" />
           </AssociationSet>
           <AssociationSet Name="FK_empproj_project" Association="Self.FK_empproj_project">
             <End Role="project" EntitySet="project" />
@@ -557,7 +605,7 @@
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserEmail" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserPW" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserPW" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="UserStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmpFName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmpLName" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
@@ -574,6 +622,9 @@
           <NavigationProperty Name="timesheets" Relationship="Self.timesheet_FK_TimeSheet_EmpID" FromRole="employee" ToRole="timesheet" />
           <Property Name="RememberMe" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="projects" Relationship="GrizzTime_dbModel.FK_projman_project" FromRole="employee" ToRole="project" />
+          <Property Name="SupervisorID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="employee1" Relationship="GrizzTime_dbModel.FK_Employee_employee" FromRole="employee" ToRole="employee1" />
+          <NavigationProperty Name="employee2" Relationship="GrizzTime_dbModel.FK_Employee_employee" FromRole="employee1" ToRole="employee" />
         </EntityType>
         <EntityType Name="employee_project">
           <Key>
@@ -984,6 +1035,40 @@
             <End Role="project" EntitySet="projects" />
             <End Role="workentry" EntitySet="workentries" />
           </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(GrizzTime_dbModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(GrizzTime_dbModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <AssociationSet Name="FK_Employee_employee" Association="GrizzTime_dbModel.FK_Employee_employee">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="employee1" EntitySet="employees" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="contract">
           <Key>
@@ -1116,6 +1201,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <Association Name="FK_Employee_employee">
+          <End Type="GrizzTime_dbModel.employee" Role="employee" Multiplicity="1" />
+          <End Type="GrizzTime_dbModel.employee" Role="employee1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="employee1">
+              <PropertyRef Name="SupervisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1139,6 +1247,7 @@
           <EntitySetMapping Name="employees">
             <EntityTypeMapping TypeName="GrizzTime_dbModel.employee">
               <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
                 <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
@@ -1303,6 +1412,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="GrizzTime_dbModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="GrizzTime_dbModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="GrizzTime_dbModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="GrizzTime_dbModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GrizzTime_dbModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="GrizzTime_dbModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GrizzTime_dbModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="GrizzTime_dbModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="GrizzTime_dbModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

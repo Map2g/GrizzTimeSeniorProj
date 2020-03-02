@@ -151,6 +151,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\task.cs">
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
@@ -669,6 +675,8 @@
     <Content Include="Views\Project\AddTask.cshtml" />
     <Content Include="Views\Timesheet\WorkEntry.cshtml" />
     <Content Include="Views\Business\Details.cshtml" />
+    <Content Include="Views\Timesheet\PendingApprovals.cshtml" />
+    <Content Include="Views\Contract\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

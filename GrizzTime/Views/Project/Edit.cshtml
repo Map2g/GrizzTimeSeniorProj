@@ -22,7 +22,74 @@
         };
     });
 
+    foreach (SelectListItem item in pmList)
+    {
+        if (item.Value == Model.ProjManID)
+        {
+            item.Selected = true;
+            break;
+        }
+    }
+
 }
+
+<!--#region CHECK BOX CSS-->
+<style>
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+</style>
+<!--#endregion-->
 
 @using (Html.BeginForm())
 {
@@ -34,7 +101,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ProjName, new { htmlAttributes = new { @class = "input-md" } })
                 @Html.ValidationMessageFor(model => model.ProjName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -42,7 +109,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjDesc, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.ProjDesc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.ProjDesc, new { htmlAttributes = new { @class = "input-md" } })
                 @Html.ValidationMessageFor(model => model.ProjDesc, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -50,7 +117,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                @Html.EditorFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "input-md", @type="date" } })
                 @Html.ValidationMessageFor(model => model.ProjStartDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -58,7 +125,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @class = "input-md", @type="date" } })
                 @Html.ValidationMessageFor(model => model.ProjEndDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -66,7 +133,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ConID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ConID, Contract.ContractList(ViewBag.UserID) as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ContractName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly", @disabled = "disabled" } })
                 @Html.ValidationMessageFor(model => model.ConID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -74,14 +141,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjManID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProjManID, pmList as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.ProjManID, pmList, new { htmlAttributes = new { @class = "select2-dropdown" } })
                 @Html.ValidationMessageFor(model => model.ProjManID, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.IsEnded, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.CheckBoxFor(model => model.IsEnded, new { htmlAttributes = new { @class = "form-control" } })
+            <span class="checkbox-inline">
+                @Html.CheckBoxFor(model => model.IsEnded)
+            </span>
         </div>
 
         <div class="form-group">
@@ -92,45 +161,23 @@
     </div>
 }
 
-<div class="db-Row-Button-Box">
-    <div class="db-Column-Button-Box">
-        <a href="@Request.UrlReferrer">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Back
-                    </h2>
-                </span>
-            </div>
+<div class="row">
+    <div class="col-md-4">
+            <a class="btn btn-lg btn-default button button4" type="button" href="@Request.UrlReferrer" >
+                 Back
+            </a>
+    </div>
+    <div class="col-md-4">
+        <a href="@Url.Action( "AddTask", new { id = Model.ProjID })" class="btn btn-lg btn-default button button4" type="button">
+            Add Tasks
         </a>
     </div>
-    <div class="db-Column-Button-Box">
-        <a href="@Url.Action( "AddTask", new { id = Model.ProjID })">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Add Tasks
-                    </h2>
-                </span>
-            </div>
-        </a>
-    </div>
-    <div class="db-Column-Button-Box">
-        <a href="@Url.Action("AddEmpToProject", new { id = Model.ProjID })">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Assign Employees
-                    </h2>
-                </span>
-            </div>
+    <div class="col-md-4">
+        <a href="@Url.Action("AddEmpToProject", new { id = Model.ProjID })" class="btn btn-lg btn-default button button4" type="button">
+            Assign Employees
         </a>
     </div>
 </div>
-
-@Html.ActionLink("Assign employees to this project", "AddEmpToProject", new { id = Model.ProjID })
-<br />
-@Html.ActionLink("Add tasks", "AddTask", new { id = Model.ProjID })
 
 @*Displays alert message telling user how the operation went.*@
 @if (ViewBag.Message != null)

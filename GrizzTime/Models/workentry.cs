@@ -38,8 +38,6 @@ public partial class workentry
 
     public virtual task task { get; set; }
 
-    public virtual project project { get; set; }
-
     public virtual project project1 { get; set; }
 
 }

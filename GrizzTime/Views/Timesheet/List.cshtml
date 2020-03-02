@@ -10,28 +10,16 @@
     {
         foreach (var item in Model)
         {
-            if ( item.payrollcycle.PayrollCycleStart.Date == System.DateTime.Now.StartOfWeek(DayOfWeek.Monday) )
+            if (item.payrollcycle.PayrollCycleStart.Date == System.DateTime.Now.StartOfWeek(DayOfWeek.Monday))
             {
                 currentWeekExists = true;
             }
         }
     }
 
-    //List<GrizzTime.Models.task> tasklist_l = Project.GetTasks(Int32.Parse(ViewBag.));
-
-    ////convert task list to selectlist
-    //List<SelectListItem> taskList = tasklist_l.ConvertAll(a =>
-    //{
-    //    return new SelectListItem()
-    //    {
-    //        Text = a.TaskName,
-    //        Value = a.TaskID.ToString()
-    //    };
-    //});
 
 }
-
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Week</th>
@@ -42,31 +30,45 @@
         </tr>
     </thead>
     <tbody>
-            @*Don't display this block if the current week is already in the DB*@
-            <tr style="@(currentWeekExists? "display:none" : "display:block")"> 
-                <td>@System.DateTime.Now.StartOfWeek(DayOfWeek.Monday)</td>
-                <td>0.00</td>
-                <td>---</td>
-                <td>---</td>
-                <td>
-                    @Html.ActionLink("View Week", "Create")
-                </td>
-            </tr>
+        @*Don't display this block if the current week is already in the DB*@
+        <tr style="@(currentWeekExists? "display:none" : "")">
+            <td>@System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).ToShortDateString()</td>
+            <td>0.00</td>
+            <td>---</td>
+            <td>New</td>
+            <td>
+                @Html.ActionLink("View Week", "Create", "Timesheet", null, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            </td>
+        </tr>
         @if (Model != null)
         {
-        foreach (var item in Model)
-        {
-            <tr>
-                <th scope="row">@item.payrollcycle.PayrollCycleStart.Date</th>
-                <td>@item.TimeSheetTotalHr</td>
-                <td>@item.employee.EmpFName @item.employee.EmpLName Placeholder</td>
-                <td>@item.TimeSheetStatus</td>
-                <td>
-                    @Html.ActionLink("View Week", "Week", new { id = item.TimeSheetID }) |
-                    @Html.ActionLink("Submit for Approval", "Submit", new { id = item.TimeSheetID })
-                </td>
-            </tr>
-        }
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.payrollcycle.PayrollCycleStart.Date.ToShortDateString()</td>
+                    <td>@item.TimeSheetTotalHr</td>
+                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName </td>
+                    <td>@item.TimeSheetStatus</td>
+                    <td>
+                        <div>
+                            @Html.ActionLink("View Week", "Week", "Timesheet", new { id = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                        </div>
+
+                        <div>
+                            @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                        </div>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
+
+@if (@TempData["message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["message"]");
+        };
+    </script>
+}

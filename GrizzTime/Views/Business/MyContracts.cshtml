@@ -5,8 +5,6 @@
     ViewBag.Title = "My Contracts";
 }
 
-<h2>Details</h2>
-
 @*Link name, controller name, action method, route argument, html details*@
 @*@Html.ActionLink("Add a new contract", "Create", "Contract", null, null)*@
 <a href="/contract/create">
@@ -16,8 +14,9 @@
         </span>
     </div>
 </a>
+<br />
 
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th>
             @Html.DisplayName("Name")
@@ -52,7 +51,7 @@
             <td>
                 @*Link name, controller name, action method, route argument, html details*@
                 @Html.ActionLink("Edit", "Edit", "Contract", new { id = item.ConID }, null) |
-                @Html.ActionLink("Details", "Details", new { id = item.ConID }) |
+                @Html.ActionLink("Details", "Details", "Contract", new { id = item.ConID }, null) |
                 @Html.ActionLink("Delete", "Delete", "Contract", new { id = item.ConID }, null)
             </td>
         </tr>

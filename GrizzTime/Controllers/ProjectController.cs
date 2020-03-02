@@ -175,9 +175,11 @@ namespace GrizzTime.Controllers
                     ProjStartDate = proj.ProjStartDate,
                     ProjEndDate = proj.ProjEndDate,
                     ProjManID = proj.ProjManID.ToString(),
+                    ProjManName = proj.employee.EmpFName + proj.employee.EmpLName,
                     ProjID = proj.ProjID,
                     ProjStatus = proj.ProjStatus,
                     ConID = proj.ConID.ToString(),
+                    ContractName = proj.contract.ConName,
                     IsEnded = proj.ProjStatus.Equals("Ended"),
                 };
 

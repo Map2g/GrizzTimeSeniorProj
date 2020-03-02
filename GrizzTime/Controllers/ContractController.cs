@@ -82,9 +82,40 @@ namespace GrizzTime.Controllers
         }
 
         // GET: Contract/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+            using (Entities dc = new Entities())
+            {
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                contract con = dc.contracts.Find(id);
+                Contract viewCon = new Contract()
+                {
+                    ConName = con.ConName,
+                    ConAllottedHours = con.ConAllottedHours,
+                    ConHoursRemaining = con.ConHoursRemaining,
+                };
+
+                if (con == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(viewCon);
+            }
         }
 
 

@@ -2,6 +2,8 @@
 @using GrizzTime.ViewModels
 
 @{
+    
+
     GrizzTime.Models.workentry mon = null;
     GrizzTime.Models.workentry tue = null;
     GrizzTime.Models.workentry wed = null;
@@ -11,6 +13,8 @@
     GrizzTime.Models.workentry sun = null;
 
     int tID = ViewBag.TimeSheetID;
+    bool IsChangeable = ViewBag.IsChangeable;
+
 
     if (Model != null)
     {
@@ -44,6 +48,7 @@
     }
 }
 
+<!--#region GRID STYLE-->
 <style>
     .grid-container {
         display: grid;
@@ -116,6 +121,7 @@
         grid-area: submit;
     }
 </style>
+<!--#endregion-->
 
 <div class="grid-container">
     <div>
@@ -124,7 +130,7 @@
         Hours worked
     </div>
     <div>
-        Edit details
+        Details
     </div>
     <div class="Mon">Monday</div>
     <div class="Mon-form">
@@ -141,11 +147,11 @@
     <div>
         @if (mon != null)
         {
-            @Html.ActionLink("Edit", "WorkEntry", "Timesheet", new { tid = tID, wid = mon.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", "Timesheet", new { tid = tID, wid = mon.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
         }
         else
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, DOW = "Monday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Monday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
         }
     </div>
     <div class="Tues">Tuesday</div>
@@ -163,11 +169,11 @@
     <div>
         @if (tue != null)
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, wid = tue.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" });
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = tue.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" });
         }
         else
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, DOW = "Tuesday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Tuesday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
         }
     </div>
     <div class="Wed">Wednesday</div>
@@ -185,11 +191,11 @@
     <div>
         @if (wed != null)
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, wid = wed.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = wed.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
         }
         else
         {
-            @Html.ActionLink("Edit","WorkEntry", new { tid = tID, DOW = "Wednesday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Wednesday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
         }
     </div>
     <div class="Thurs">Thursday</div>
@@ -207,11 +213,11 @@
     <div>
         @if (thu != null)
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, wid = thu.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = thu.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
         }
         else
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, DOW = "Thursday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Thursday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
         }
     </div>
     <div class="Fri">Friday</div>
@@ -229,11 +235,11 @@
     <div>
         @if (fri != null)
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, wid = fri.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = fri.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
         }
         else
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, DOW = "Friday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Friday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
         }
     </div>
     <div class="Sat">Saturday</div>
@@ -251,11 +257,11 @@
     <div>
         @if (sat != null)
         {
-            @Html.ActionLink("Edit","WorkEntry", new { tid = tID, wid = sat.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = sat.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4"})
         }
         else
         {
-            @Html.ActionLink("Edit","WorkEntry", new { tid = tID, DOW = "Saturday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Saturday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
         }
     </div>
     <div class="Sun">Sunday</div>
@@ -273,21 +279,31 @@
     <div>
         @if (sun != null)
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = tID, wid = sun.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { id = tID, wid = sun.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
         }
         else
         {
-            @Html.ActionLink("Edit", "WorkEntry", new { tid = @ViewBag.TimeSheetID, DOW = "Sunday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { id = @ViewBag.TimeSheetID, DOW = "Sunday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
         }
     </div>
     <div class="Action"></div>
-    <div class="submit"><button>Submit</button></div>
+    <div class="submit">
+        @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = @ViewBag.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button2", @style = (IsChangeable ? "display:block" : "display:none") })
+    </div>
 </div>
 
-<hr /> 
+<hr />
 
-<div>
-    @Html.ActionLink("All Timesheets", "List")
+<div class="db-Row-Button-Box">
+    <a href="@Request.UrlReferrer">
+        <div class="small-button">
+            <span>
+                <h2>
+                    Back
+                </h2>
+            </span>
+        </div>
+    </a>
 </div>
 
 

@@ -28,7 +28,7 @@ namespace GrizzTime.ViewModels
                 MinRequiredPasswordLength = 8,
                 ErrorMessage = "Your password must be at least 8 characters long and must contain at least one symbol (!, @, #, etc)."
         )]
-        [DataType(DataType.Password)]
+        //[DataType(DataType.Password)]
         [Required(ErrorMessage = "This field is required. ")]
         public string UserPW { get; set; }
 
@@ -44,7 +44,13 @@ namespace GrizzTime.ViewModels
         [Required(ErrorMessage = "This field is required. ")]
         public string EmpType { get; set; }
 
-        public int BusCode { get; }
+        public int SupervisorID { get; set; }
+
+        [Display(Name = "Supervisor")]
+        //[Required(ErrorMessage = "This field is required. ")]
+        public string SupervisorName { get; set; }
+
+        public int BusCode { get; set; }
 
         public string BusinessName { get; }
 

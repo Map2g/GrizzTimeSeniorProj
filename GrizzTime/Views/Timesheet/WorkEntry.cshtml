@@ -4,7 +4,17 @@
 @{
 
     string DayOfWeek = ViewBag.DayOfWeek;
-    ViewBag.Title = "Enter hours for " + DayOfWeek;
+    bool IsChangeable = ViewBag.IsChangeable;
+
+    if (IsChangeable)
+    {
+        ViewBag.Title = "Enter work for " + DayOfWeek;
+    }
+    else
+    {
+        ViewBag.Title = "View work for " + DayOfWeek;
+    }
+
 
     List<Project> projlist_l = Employee.GetProjects(ViewBag.UserID);
 
@@ -52,41 +62,44 @@
 @* </div> *@
 @using (Html.BeginForm())
 {
-    <div class="modal-body">
+<div class="form-horizontal">
 
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.Label("Hours worked:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.WorkHours, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.WorkHours, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.Label("Hours worked:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.WorkHours, new { htmlAttributes = new { @class = "input-lg", @type="number", @id = "workhours", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.WorkHours, "", new { @class = "text-danger" })
         </div>
-
-        <div class="form-group">
-            @Html.Label("Project:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProjID, projectList, "--Select--", new { @class = "form-control", @id = "projectlist" })
-                @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Task:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.TaskID, (isExist ? new SelectList(taskList, "Value", "Text") : new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text")), "--Select--", new { @id = "tasklist", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TaskID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @Html.Hidden("WorkDate", DayOfWeek)
-
     </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary button button4">Save</button>
+
+    <div class="form-group">
+        @Html.Label("Project:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ProjID, projectList, "--Select--", new { @class = "select2", @id = "projectlist", @disabled = "true" })
+            @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
+        </div>
     </div>
+
+    <div class="form-group">
+        @Html.Label("Task:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.TaskID, (isExist ? new SelectList(taskList, "Value", "Text") : new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text")), "--Select--", new { @id = "tasklist", @class = "select2", @disabled = "true" })
+            @Html.ValidationMessageFor(model => model.TaskID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.Hidden("WorkDate", DayOfWeek)
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit" class="small-button" style=@(IsChangeable ? "display:block" : "display:none")>Save</button>
+        </div>
+    </div>
+
+</div>
 }
 
 @*</div>
@@ -142,4 +155,20 @@
                 });
         });
     });
+
+    //Toggle readonly and disabled properties
+    window.onload = function () {
+        var myBool;       
+        myBool = "@ViewBag.IsChangeable.ToString()";
+
+        if (myBool == "True") {
+            document.getElementById('workhours').removeAttribute('readonly');
+             document.getElementById('tasklist').removeAttribute("disabled");
+             document.getElementById('projectlist').removeAttribute("disabled");
+         }else{
+            document.getElementById('workhours').setAttribute("readonly", "true");
+             document.getElementById('tasklist').setAttribute("disabled", "true");
+             document.getElementById('projectlist').setAttribute("disabled", "true");
+         }
+    }
 </script>

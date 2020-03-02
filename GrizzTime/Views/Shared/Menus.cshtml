@@ -14,7 +14,7 @@
         <li style="@(Role == "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("MyEmployees","Business" ))">
                 <i class="fa fa-users"></i><span>View my Employees</span>
-</a>
+            </a>
         </li>
         <li style="@(Role == "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("MyProjects","Business" ))">
@@ -27,7 +27,6 @@
             </a>
         </li>
         <!--end-->
-
         <!--Regular employee navigation links-->
         <li style="@(Role != "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("Dashboard","Employee" ))">
@@ -39,8 +38,12 @@
                 <i class="fa fa-calendar"></i><span>My Timesheets</span>
             </a>
         </li>
+        <li style="@(Role != "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("PendingApprovals","Timesheet" ))">
+                <i class="fa fa-check"></i><span>Timesheets to Review</span>
+            </a>
+        </li>
         <!--end-->
-
         <!--Common-->
         <li>
             <a href="@(Url.Action("About","Home"))">

@@ -36,6 +36,8 @@ public partial class employee
 
         this.projects = new HashSet<project>();
 
+        this.employee1 = new HashSet<employee>();
+
     }
 
 
@@ -60,6 +62,8 @@ public partial class employee
     public string EmpPhone { get; set; }
 
     public bool RememberMe { get; set; }
+
+    public int SupervisorID { get; set; }
 
 
 
@@ -92,6 +96,12 @@ public partial class employee
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<project> projects { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<employee> employee1 { get; set; }
+
+    public virtual employee employee2 { get; set; }
 
 }
 
