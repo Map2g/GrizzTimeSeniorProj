@@ -24,7 +24,7 @@ public partial class expenseentry
 
     public int ProjID { get; set; }
 
-    public String ExpDate { get; set; }
+    public string ExpDate { get; set; }
 
     public decimal ExpDollarAmt { get; set; }
 
@@ -37,6 +37,8 @@ public partial class expenseentry
     public virtual expensesheet expensesheet { get; set; }
 
     public virtual task task { get; set; }
+
+    public virtual project project { get; set; }
 
 }
 

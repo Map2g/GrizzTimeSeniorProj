@@ -1,0 +1,174 @@
+﻿@using GrizzTime.ViewModels
+@model WorkEntry
+
+@{
+
+    string DayOfWeek = ViewBag.DayOfWeek;
+    bool IsChangeable = ViewBag.IsChangeable;
+
+    if (IsChangeable)
+    {
+        ViewBag.Title = "Enter work for " + DayOfWeek;
+    }
+    else
+    {
+        ViewBag.Title = "View work for " + DayOfWeek;
+    }
+
+
+    List<Project> projlist_l = Employee.GetProjects(ViewBag.UserID);
+
+    //convert project list to a select list
+    List<SelectListItem> projectList = projlist_l.ConvertAll(a =>
+    {
+        return new SelectListItem()
+        {
+            Text = a.ProjName,
+            Value = a.ProjID.ToString()
+        };
+    });
+
+    bool isExist = ViewBag.IsExist;
+    List<SelectListItem> taskList = new List<SelectListItem>();
+    if (isExist)
+    {
+        List<GrizzTime.Models.task> tasklist_l = Model.possibleTasks;
+        taskList = tasklist_l.ConvertAll(a =>
+        {
+            return new SelectListItem()
+            {
+                Text = a.TaskName,
+                Value = a.TaskID.ToString()
+            };
+        });
+        var selected = taskList.Where(x => x.Value == Model.TaskID.ToString()).First();
+        selected.Selected = true;
+    }
+
+}
+
+<title>Edit details for @DayOfWeek</title>
+
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+@*<div class="modal fade" tabindex="-1" id="loginModal"
+        data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    ×
+                </button>*@
+@* </div> *@
+@using (Html.BeginForm())
+{
+<div class="form-horizontal">
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.Label("Hours worked:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.WorkHours, new { htmlAttributes = new { @class = "input-lg", @type="number", @id = "workhours", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.WorkHours, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Project:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ProjID, projectList, "--Select--", new { @class = "select2", @id = "projectlist", @disabled = "true" })
+            @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Task:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.TaskID, (isExist ? new SelectList(taskList, "Value", "Text") : new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text")), "--Select--", new { @id = "tasklist", @class = "select2", @disabled = "true" })
+            @Html.ValidationMessageFor(model => model.TaskID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.Hidden("WorkDate", DayOfWeek)
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit" class="small-button" style=@(IsChangeable ? "display:block" : "display:none")>Save</button>
+        </div>
+    </div>
+
+</div>
+}
+
+@*</div>
+        </div>
+    </div>*@
+
+
+@*Displays alert message telling user how the operation went.*@
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.Message");
+        };
+    </script>
+}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+
+</script>
+<script src="scripts/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#loginModal").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#loginModal").modal('hide');
+        });
+    });
+
+    $(document).ready(function () {
+        $("#projectlist").change(function () {
+            var pID = $(this).val();
+            $.getJSON("/Timesheet/LoadTasksForProject/", { projId: pID },
+                function (data) {
+                    var select = $("#tasklist");
+                    select.empty();
+                    //select.append($('<option/>', {
+                    //    value: 0,
+                    //    text: "--Select--"
+                    //}));
+                    $.each(data, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                });
+        });
+    });
+
+    //Toggle readonly and disabled properties
+    window.onload = function () {
+        var myBool;       
+        myBool = "@ViewBag.IsChangeable.ToString()";
+
+        if (myBool == "True") {
+            document.getElementById('workhours').removeAttribute('readonly');
+             document.getElementById('tasklist').removeAttribute("disabled");
+             document.getElementById('projectlist').removeAttribute("disabled");
+         }else{
+            document.getElementById('workhours').setAttribute("readonly", "true");
+             document.getElementById('tasklist').setAttribute("disabled", "true");
+             document.getElementById('projectlist').setAttribute("disabled", "true");
+         }
+    }
+</script>

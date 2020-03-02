@@ -17,6 +17,14 @@ namespace GrizzTime.Controllers
         {
             string message;
 
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             //ensure that the model exists
             if (ModelState.IsValid)
             {
@@ -25,8 +33,8 @@ namespace GrizzTime.Controllers
                 using (Entities dc = new Entities())
                 {
                     GrizzTime.Models.payrollcycle pc = new GrizzTime.Models.payrollcycle();
-                    pc.PayrollCycleStart = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
-                    pc.PayrollCycleEnd = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7);
+                    pc.PayrollCycleStart = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).Date;
+                    pc.PayrollCycleEnd = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7).Date;
                     pc.PayrollCycleYear = (short)System.DateTime.Now.Year;
 
                     dc.payrollcycles.Add(pc);
@@ -35,6 +43,7 @@ namespace GrizzTime.Controllers
                     GrizzTime.Models.timesheet ts = new GrizzTime.Models.timesheet();
                     ts.PayrollCycleID = pc.PayrollCycleID;
                     ts.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
+                    ts.TimeSheetStatus = "In Progress";
 
                     dc.timesheets.Add(ts);
                     dc.SaveChanges();
@@ -64,293 +73,476 @@ namespace GrizzTime.Controllers
 
         // View: All weeks for this employee Timesheet
         [HttpGet]
-        public ActionResult List()
+        public ActionResult List(string m)
         {
-            string message = "";
+            string message = m;
+
+            if (!Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                //Redirect to login if it can't find user id
+                message = "Please log in.";
+                ViewBag.Message = message;
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             try
             {
                 IEnumerable<timesheet> thisEmployeeTimesheet;
-
                 Entities dc = new Entities();
                 
                     int id = Int32.Parse(Request.Cookies["UserID"].Value);
-                    thisEmployeeTimesheet = dc.timesheets.Where(x => x.EmpID == id);               
+                    thisEmployeeTimesheet = dc.timesheets.Where(x => x.EmpID == id).OrderByDescending(p=>p.payrollcycle.PayrollCycleStart).ToList();               
 
                     if (thisEmployeeTimesheet.Any() == false)
                     {
                         message = "You don't have any timesheets yet!";
+                        ViewBag.Message = message;
                         return View();
                     }
                     else
                     {
+                        ViewBag.Message = message;
                         return View(thisEmployeeTimesheet);
                     }
                 
             }
             catch (Exception ex)
             {
-                message = "something happened";                      
+                message = "something happened";
+                ViewBag.Message = message;
                 return View();
                 throw ex;
             }
-
+            
         }
 
         // View week entry (edit)
-        [HttpGet]
         public ActionResult Week(int? id)
         {
+            ViewBag.IsChangeable = true;
+            //if (!Response.Cookies.AllKeys.Contains("UserID"))
+            //{
+            //    //Redirect to login if it can't find user id
+            //    ViewBag.Message = "Please log in.";
+            //    System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+            //    return RedirectToAction("LandingPage", "Home");
+            //}
 
             ViewBag.UserID = Request.Cookies["UserID"].Value;
-            Entities dc = new Entities();
+
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.TimeSheetID = (int) id;
+
+            Entities dc = new Entities();          
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            timesheet ts = dc.timesheets.Find(id);   
             
+            //disable edit buttons
+            if (ts.TimeSheetStatus != "In Progress")
+            {
+                bool changeable = false;
+                ViewBag.IsChangeable = changeable;
+            }
 
-                if (id == null)
+            ICollection<workentry> thisWeekTry = ts.workentries;
+
+            if (ts == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(thisWeekTry);           
+        }
+
+        //tid is timesheet id, wid is workentry id
+        [HttpGet]
+        public ActionResult WorkEntry(int? tid, int? wid, string DOW)
+        {
+
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
+            var message = "";
+            ViewBag.IsExist = false;
+            ViewBag.TimeSheetID = (int) tid;
+            ViewBag.UserID = Int32.Parse(Request.Cookies["UserID"].Value);
+
+            Entities dc = new Entities();
+
+            if (tid == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (wid == null)
+            {
+                if (DOW != null) 
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    ViewBag.DayOfWeek = DOW;
+                    return View();              
                 }
-
-                timesheet ts = dc.timesheets.Find(id);               
-                ICollection<workentry> thisWeekTry = ts.workentries;
-
-                //if (thisWeekTry == null)
-                //{
-                //    //string message = "";
-                //    ViewBag.UserID = Request.Cookies["UserID"].Value;                                  
-
-                //        workentry mondayWE = new workentry();
-                //        mondayWE.TimeSheetID = ts.TimeSheetID;
-                //        mondayWE.WorkDate = DayOfWeek.Monday.ToString();
-                //        mondayWE.WorkHours = 0;
-                //        mondayWE.ProjID = null;
-                //        mondayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        mondayWE.TaskID = null;
-
-                //        workentry tuesdayWE = new workentry();
-                //        tuesdayWE.TimeSheetID = ts.TimeSheetID;
-                //        tuesdayWE.WorkDate = DayOfWeek.Tuesday.ToString();
-                //        tuesdayWE.WorkHours = 0;
-                //        tuesdayWE.ProjID = thisWeek[1].ProjID;
-                //        tuesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        tuesdayWE.TaskID = thisWeek[1].TaskID;
-
-                //        workentry wednesdayWE = new workentry();
-                //        wednesdayWE.TimeSheetID = ts.TimeSheetID;
-                //        wednesdayWE.WorkDate = DayOfWeek.Wednesday.ToString();
-                //        wednesdayWE.WorkHours = thisWeek[2].WorkHours;
-                //        wednesdayWE.ProjID = thisWeek[2].ProjID;
-                //        wednesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        wednesdayWE.TaskID = thisWeek[2].TaskID;
-
-                //        workentry thursdayWE = new workentry();
-                //        thursdayWE.TimeSheetID = ts.TimeSheetID;
-                //        thursdayWE.WorkDate = DayOfWeek.Thursday.ToString();
-                //        thursdayWE.WorkHours = thisWeek[3].WorkHours;
-                //        thursdayWE.ProjID = thisWeek[3].ProjID;
-                //        thursdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        thursdayWE.TaskID = thisWeek[3].TaskID;
-
-                //        workentry fridayWE = new workentry();
-                //        fridayWE.TimeSheetID = ts.TimeSheetID;
-                //        fridayWE.WorkDate = DayOfWeek.Friday.ToString();
-                //        fridayWE.WorkHours = thisWeek[4].WorkHours;
-                //        fridayWE.ProjID = thisWeek[4].ProjID;
-                //        fridayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        fridayWE.TaskID = thisWeek[4].TaskID;
-
-                //        workentry saturdayWE = new workentry();
-                //        saturdayWE.TimeSheetID = ts.TimeSheetID;
-                //        saturdayWE.WorkDate = DayOfWeek.Saturday.ToString();
-                //        saturdayWE.WorkHours = thisWeek[5].WorkHours;
-                //        saturdayWE.ProjID = thisWeek[5].ProjID;
-                //        saturdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        saturdayWE.TaskID = thisWeek[5].TaskID;
-
-                //        workentry sundayWE = new workentry();
-                //        sundayWE.TimeSheetID = ts.TimeSheetID;
-                //        sundayWE.WorkDate = DayOfWeek.Sunday.ToString();
-                //        sundayWE.WorkHours = thisWeek[6].WorkHours;
-                //        sundayWE.ProjID = thisWeek[6].ProjID;
-                //        sundayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                //        sundayWE.TaskID = thisWeek[6].TaskID;
-
-                //        dc.workentries.Add(mondayWE);
-                //        dc.workentries.Add(tuesdayWE);
-                //        dc.workentries.Add(wednesdayWE);
-                //        dc.workentries.Add(thursdayWE);
-                //        dc.workentries.Add(fridayWE);
-                //        dc.workentries.Add(saturdayWE);
-                //        dc.workentries.Add(sundayWE);
-
-
-                //        try
-                //        {
-                //            dc.SaveChanges();
-                //            message = "Timesheet updated successfully.";
-                //            ViewBag.Message = message;
-                //            return Redirect("List");
-                //        }
-                //        catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                //        {
-                //            //more descriptive error for validation problems
-                //            Exception exception = dbEx;
-                //            foreach (var validationErrors in dbEx.EntityValidationErrors)
-                //            {
-                //                foreach (var validationError in validationErrors.ValidationErrors)
-                //                {
-                //                    string message1 = string.Format("{0}:{1}",
-                //                        validationErrors.Entry.Entity.ToString(),
-                //                        validationError.ErrorMessage);
-
-                //                    //create a new exception inserting the current one
-                //                    //as the InnerException
-                //                    exception = new InvalidOperationException(message1, exception);
-                //                }
-                //            }
-                //            //error for UI
-                //            ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                //            throw exception;
-
-                //        }
-                //    }
-
-
-                if (ts == null)
-                {
+                else
+                {                                     
+                    message = "Date of week not captured.";
                     return HttpNotFound();
                 }
+            }
+            else //wid is not null
+            {
+                ViewBag.IsExist = true;
+                ViewBag.IsChangeable = true;              
 
-                return View(thisWeekTry);           
+                timesheet ts = dc.timesheets.Find(tid);
+                if (ts.TimeSheetStatus != "In Progress")
+                {
+                    bool changeable = false;
+                    ViewBag.IsChangeable = changeable;
+                }
 
+                var w = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
+                WorkEntry thisWE = new WorkEntry()
+                {
+                    EmpID = w.EmpID,
+                    possibleProjects = Employee.GetProjects(w.EmpID),
+                    possibleTasks = Project.GetTasks(w.ProjID), 
+                    WorkDate = w.WorkDate,
+                    WorkHours = w.WorkHours,
+                    TimeSheetID = w.TimeSheetID,
+                    WorkEntryID = w.WorkEntryID,  
+                    ProjID = w.ProjID,
+                    TaskID = w.TaskID,                   
+                };
+                ViewBag.DayOfWeek = thisWE.WorkDate;
+                return View(thisWE);
+            }
         }
+
 
         // View AND edit: Specific timesheet week. id is the id of a timesheet
         [HttpPost]
-        public ActionResult Week(int? id, workentry[] thisWeek)
+        public ActionResult WorkEntry(int? tid, int? wid, WorkEntry thisDay)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             string message = "";
-            ViewBag.UserID = Request.Cookies["UserID"].Value;
+            ViewBag.IsExist = false;
+            ViewBag.TimeSheetID = (int)tid;
+            ViewBag.UserID = Int32.Parse(Request.Cookies["UserID"].Value);
             using (Entities dc = new Entities())
             {
 
-                if (id == null)
+                if (tid == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
+                timesheet ts = dc.timesheets.Find(tid);
 
-                timesheet ts = dc.timesheets.Find(id);
-
-                //TO DO: Fix below: I will not want to create seven entries for every TS if they didn't work seven days a week.
-                //I want to create entries only for the days of the week that they worked.
-                workentry mondayWE = new workentry();
-                mondayWE.TimeSheetID = ts.TimeSheetID;
-                mondayWE.WorkDate = DayOfWeek.Monday.ToString();
-                mondayWE.WorkHours = thisWeek[0].WorkHours;
-                mondayWE.ProjID = thisWeek[0].ProjID;
-                mondayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                mondayWE.TaskID = thisWeek[0].TaskID;
-
-                workentry tuesdayWE = new workentry();
-                tuesdayWE.TimeSheetID = ts.TimeSheetID;
-                tuesdayWE.WorkDate = DayOfWeek.Tuesday.ToString();
-                tuesdayWE.WorkHours = thisWeek[1].WorkHours;
-                tuesdayWE.ProjID = thisWeek[1].ProjID;
-                tuesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                tuesdayWE.TaskID = thisWeek[1].TaskID;
-
-                workentry wednesdayWE = new workentry();
-                wednesdayWE.TimeSheetID = ts.TimeSheetID;
-                wednesdayWE.WorkDate = DayOfWeek.Wednesday.ToString();
-                wednesdayWE.WorkHours = thisWeek[2].WorkHours;
-                wednesdayWE.ProjID = thisWeek[2].ProjID;
-                wednesdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                wednesdayWE.TaskID = thisWeek[2].TaskID;
-
-                workentry thursdayWE = new workentry();
-                thursdayWE.TimeSheetID = ts.TimeSheetID;
-                thursdayWE.WorkDate = DayOfWeek.Thursday.ToString();
-                thursdayWE.WorkHours = thisWeek[3].WorkHours;
-                thursdayWE.ProjID = thisWeek[3].ProjID;
-                thursdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                thursdayWE.TaskID = thisWeek[3].TaskID;
-
-                workentry fridayWE = new workentry();
-                fridayWE.TimeSheetID = ts.TimeSheetID;
-                fridayWE.WorkDate = DayOfWeek.Friday.ToString();
-                fridayWE.WorkHours = thisWeek[4].WorkHours;
-                fridayWE.ProjID = thisWeek[4].ProjID;
-                fridayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                fridayWE.TaskID = thisWeek[4].TaskID;
-
-                workentry saturdayWE = new workentry();
-                saturdayWE.TimeSheetID = ts.TimeSheetID;
-                saturdayWE.WorkDate = DayOfWeek.Saturday.ToString();
-                saturdayWE.WorkHours = thisWeek[5].WorkHours;
-                saturdayWE.ProjID = thisWeek[5].ProjID;
-                saturdayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                saturdayWE.TaskID = thisWeek[5].TaskID;
-
-                workentry sundayWE = new workentry();
-                sundayWE.TimeSheetID = ts.TimeSheetID;
-                sundayWE.WorkDate = DayOfWeek.Sunday.ToString();
-                sundayWE.WorkHours = thisWeek[6].WorkHours;
-                sundayWE.ProjID = thisWeek[6].ProjID;
-                sundayWE.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                sundayWE.TaskID = thisWeek[6].TaskID;
-
-                dc.workentries.Add(mondayWE);
-                dc.workentries.Add(tuesdayWE);
-                dc.workentries.Add(wednesdayWE);
-                dc.workentries.Add(thursdayWE);
-                dc.workentries.Add(fridayWE);
-                dc.workentries.Add(saturdayWE);
-                dc.workentries.Add(sundayWE);
-
-
-                try
+                GrizzTime.Models.workentry we = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
+                if (we == null) //create new
                 {
-                    dc.SaveChanges();
-                    message = "Timesheet updated successfully.";
-                    ViewBag.Message = message;
-                    return Redirect("List");
-                }
-                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                {
-                    //more descriptive error for validation problems
-                    Exception exception = dbEx;
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    workentry w = new workentry()
                     {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            string message1 = string.Format("{0}:{1}",
-                                validationErrors.Entry.Entity.ToString(),
-                                validationError.ErrorMessage);
+                        EmpID = Int32.Parse(Request.Cookies["UserID"].Value),
+                        ProjID = thisDay.ProjID,
+                        TaskID = thisDay.TaskID,
+                        WorkDate = thisDay.WorkDate,
+                        WorkHours = thisDay.WorkHours,
+                        TimeSheetID = (int)tid,
+                    };
+                    dc.workentries.Add(w);
 
-                            //create a new exception inserting the current one
-                            //as the InnerException
-                            exception = new InvalidOperationException(message1, exception);
-                        }
-                    }
-                    //error for UI
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    throw exception;
+                    WorkEntry thisWE = new WorkEntry()
+                    {
+                        EmpID = w.EmpID,
+                        possibleProjects = Employee.GetProjects(w.EmpID),
+                        possibleTasks = Project.GetTasks(w.ProjID),
+                        WorkDate = w.WorkDate,
+                        WorkHours = w.WorkHours,
+                        TimeSheetID = w.TimeSheetID,
+                        WorkEntryID = w.WorkEntryID,
+                        ProjID = w.ProjID,
+                        TaskID = w.TaskID,
+                    };
 
+                    //add try catch
+                    dc.SaveChanges();
+
+                    ViewBag.Message = "Successfully saved.";
+                    //return View(thisWE);
+                    return Redirect("Week/" + tid);
                 }
-
-                if (ts == null)
+                else //edit existing
                 {
-                    return HttpNotFound();
+                    ViewBag.IsExist = true;
+                    we.WorkHours = thisDay.WorkHours;
+                    we.ProjID = thisDay.ProjID;
+                    we.TaskID = thisDay.TaskID;
+
+                    WorkEntry thisWE = new WorkEntry()
+                    {
+                        EmpID = we.EmpID,
+                        possibleProjects = Employee.GetProjects(we.EmpID),
+                        possibleTasks = Project.GetTasks(we.ProjID),
+                        WorkDate = we.WorkDate,
+                        WorkHours = we.WorkHours,
+                        TimeSheetID = we.TimeSheetID,
+                        WorkEntryID = we.WorkEntryID,
+                        ProjID = we.ProjID,
+                        TaskID = we.TaskID,
+                    };
+
+                    dc.Entry(we).State = System.Data.Entity.EntityState.Modified;
+                    try
+                    {
+                        dc.SaveChanges();
+                        message = "Time updated successfully.";
+                        ViewBag.Message = message;
+
+                        //return View(thisWE);
+                        return Redirect("Week/"+ tid );
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        //more descriptive error for validation problems
+                        Exception exception = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
+
+                                //create a new exception inserting the current one
+                                //as the InnerException
+                                exception = new InvalidOperationException(message1, exception);
+                            }
+                        }
+                        //error for UI
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                        throw exception;
+                    }
                 }
-
-                return View(thisWeek);
             }
-
         }
 
         // Submit: Timesheet
-        public ActionResult Submit()
+        public ActionResult Submit(int? tid)
         {
-            return View();
+            Entities dc = new Entities();
+
+            timesheet ts = dc.timesheets.Find(tid);
+
+            if (ts.TimeSheetStatus != "In Progress")
+            {
+                TempData["message"] = "Timesheet already submitted!";
+                return RedirectToAction("List");
+            }
+
+            ts.TimeSheetStatus = "Pending";
+            ts.TimeSheetSubmitTime = System.DateTime.Now;
+
+            dc.Entry(ts).State = System.Data.Entity.EntityState.Modified;
+            try
+            {
+                dc.SaveChanges();
+                TempData["message"] = "Timesheet submitted successfully!";
+                return Redirect("List");
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                //more descriptive error for validation problems
+                Exception exception = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message1 = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+
+                        //create a new exception inserting the current one as the InnerException
+                        exception = new InvalidOperationException(message1, exception);
+                    }
+                }
+                //error for UI
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                throw exception;
+            }
+        }
+
+        public ActionResult Approve(int? tid)
+        {
+            Entities dc = new Entities();
+
+            timesheet ts = dc.timesheets.Find(tid);
+
+            if (ts.TimeSheetStatus != "Pending")
+            {
+                TempData["message"] = "Action was already taken.";
+                return RedirectToAction("PendingApprovals");
+            }
+
+            ts.TimeSheetStatus = "Approved";
+            ts.TimeSheetApproveTime = System.DateTime.Now;
+
+            dc.Entry(ts).State = System.Data.Entity.EntityState.Modified;
+            try
+            {
+                dc.SaveChanges();
+                TempData["message"] = "Timesheet approved successfully";
+                return Redirect("PendingApprovals");
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                //more descriptive error for validation problems
+                Exception exception = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message1 = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+
+                        //create a new exception inserting the current one as the InnerException
+                        exception = new InvalidOperationException(message1, exception);
+                    }
+                }
+                //error for UI
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                throw exception;
+            }
+        }
+
+        public ActionResult Deny(int? tid)
+        {
+            Entities dc = new Entities();
+
+            timesheet ts = dc.timesheets.Find(tid);
+
+            if (ts.TimeSheetStatus != "Pending")
+            {
+                TempData["message"] = "Action already taken.";
+                return RedirectToAction("PendingApprovals");
+            }
+
+            ts.TimeSheetStatus = "Denied";
+            ts.TimeSheetApproveTime = System.DateTime.Now; //maybe change this column?
+
+            dc.Entry(ts).State = System.Data.Entity.EntityState.Modified;
+            try
+            {
+                dc.SaveChanges();
+                TempData["message"] = "Timesheet denied successfully.";
+                return Redirect("PendingApprovals");
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                //more descriptive error for validation problems
+                Exception exception = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message1 = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+
+                        //create a new exception inserting the current one as the InnerException
+                        exception = new InvalidOperationException(message1, exception);
+                    }
+                }
+                //error for UI
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                throw exception;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult PendingApprovals()
+        {
+            string message = "";
+
+            if (!Request.Cookies.AllKeys.Contains("UserID"))
+            {
+                //Redirect to login if it can't find user id
+                message = "Please log in.";
+                TempData["message"] = message;
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
+            try
+            {
+                IEnumerable<timesheet> pendingApprovals;
+                Entities dc = new Entities();
+
+                int id = Int32.Parse(Request.Cookies["UserID"].Value);
+                //employee.employee2 is submitting employee's supervisor
+                pendingApprovals = dc.timesheets.Where(x => x.employee.employee2.UserID == id && x.TimeSheetStatus == "Pending").OrderByDescending(p => p.payrollcycle.PayrollCycleStart).ToList();
+
+                if (pendingApprovals.Any() == false)
+                {
+                    message = "No timesheets to approve.";
+                    TempData["message"] = message;
+                    return View();
+                }
+                else
+                {
+                    return View(pendingApprovals);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                message = "something happened";
+                TempData["message"] = message;
+                return View();
+                throw ex;
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult LoadTasksForProject(string projId)
+        {
+            int pID = Int32.Parse(projId);
+            List<SelectListItem> taskList = new List<SelectListItem>();
+
+            List<task> tasklist_l = Project.GetTasks(pID);
+
+            //convert task list to a select list
+            taskList = tasklist_l.ConvertAll(a =>
+            {
+                return new SelectListItem()
+                {
+                    Text = a.TaskName,
+                    Value = a.TaskID.ToString()
+                };
+            });
+
+            return Json(taskList, JsonRequestBehavior.AllowGet);
         }
     }
 }

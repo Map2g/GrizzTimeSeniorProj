@@ -15,9 +15,9 @@
             <div class="Column-Button-Box">
                 <a href="~/Business/Login">
                     <div class="Landing-Page-Buttons">
-                            <h2>
-                                Business Login
-                            </h2>
+                        <h2>
+                            Business Login
+                        </h2>
                     </div>
                 </a>
             </div>
@@ -34,3 +34,13 @@
         </div>
     </div>
 </div>
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.Message");
+        };
+    </script>
+}
+

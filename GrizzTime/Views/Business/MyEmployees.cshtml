@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GrizzTime.Models.employee>
+﻿@model List<GrizzTime.ViewModels.Employee>
 @using GrizzTime.ViewModels
 
 @{
@@ -9,7 +9,9 @@
 
 @Html.Action("AddEmployeePopUp", "Employee")
 
-<table class="table">
+<hr />
+
+<table class="table table-striped">
     <tr>
         <th>
             @Html.DisplayName("Email")
@@ -22,9 +24,6 @@
         </th>
         <th>
             @Html.DisplayName("Title")
-        </th>
-        <th>
-            @Html.DisplayName("Pay Rate")
         </th>
         <th></th>
     </tr>
@@ -45,12 +44,9 @@
                 @Html.DisplayFor(modelItem => item.EmpType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EmpPayRate)
-            </td>
-            <td>
                 @*Link name, controller name, action method, route argument, html details*@
                 @Html.ActionLink("Edit", "Edit", "Employee", new { id = item.UserID }, null) |
-                @Html.ActionLink("Edit Pay Rate", "EditPayRate", "Employee", new { id = item.UserID }, null) |
+                @*@Html.ActionLink("Edit Pay Rate", "EditPayRate", "Employee", new { id = item.UserID }, null) | *@
                 @Html.ActionLink("Details", "Details", "Employee", new { id = item.UserID }, null) |
                 @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.UserID }, null)
             </td>
@@ -59,11 +55,27 @@
 
 </table>
 
-@if (ViewBag.message != null)
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
+
+<script src="scripts/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#loginModal").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#loginModal").modal('hide');
+        });
+    });
+
+</script>

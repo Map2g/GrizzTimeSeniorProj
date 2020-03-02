@@ -5,6 +5,7 @@
 
 @{
     ViewBag.Title = "Project Details";
+    int pid = Model.ProjID;
 }
 
 <h2>Details</h2>
@@ -16,35 +17,42 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ProjName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.ProjName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.ProjName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.ProjDesc, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.ProjDesc, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.ProjDesc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.ProjStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly"} })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProjEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.ContractName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.ContractName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.ContractName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.ProjManName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.ProjManName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.ProjManName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
     </div>
 
@@ -83,15 +91,44 @@
 
 </div>
 
+<hr />
+<br />
+
+<div class="db-Row-Button-Box">
+    <div class="db-Column-Button-Box">
+        <a href="@Request.UrlReferrer">
+            <div class="small-button">
+                <span>
+                    <h2>
+                        Back
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+    <div class="db-Column-Button-Box">
+        <a href="/project/edit/@pid">
+            <div class="small-button">
+                <span>
+                    <h2>
+                        Edit
+                    </h2>
+                </span>
+            </div>
+        </a>
+    </div>
+</div>
+
 @*Displays alert message telling user how the operation went.*@
-@if (ViewBag.message != null)
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
+
 
 <div>
     @Html.ActionLink("Back to List", "MyProjects", "Business")

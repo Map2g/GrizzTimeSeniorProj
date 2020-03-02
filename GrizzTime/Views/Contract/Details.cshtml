@@ -2,8 +2,9 @@
 @model Contract
 
 @{
-    ViewBag.Title = "Add a contract";
+    ViewBag.Title = "View " + Model.ConName;
 }
+
 
 
 @using (Html.BeginForm())
@@ -16,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ConName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ConName, new { htmlAttributes = new { @class = "input-md" } })
+                @Html.EditorFor(model => model.ConName, new { htmlAttributes = new { @class = "input-md", @readonly="readonly" } })
                 @Html.ValidationMessageFor(model => model.ConName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,31 +25,25 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ConAllottedHours, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ConAllottedHours, new { htmlAttributes = new { @class = "input-md" } })
+                @Html.EditorFor(model => model.ConAllottedHours, new { htmlAttributes = new { @class = "input-md", @readonly="readonly" } })
                 @Html.ValidationMessageFor(model => model.ConAllottedHours, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-
-
-    <div class="db-Row-Button-Box">
-        <a href="@Request.UrlReferrer">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Back
-                    </h2>
-                </span>
-            </div>
-        </a>
     </div>
 }
+
+<div class="db-Row-Button-Box">
+    <a href="@Request.UrlReferrer">
+        <div class="small-button">
+            <span>
+                <h2>
+                    Back
+                </h2>
+            </span>
+        </div>
+    </a>
+</div>
 
 @if (ViewBag.Message != null)
 {

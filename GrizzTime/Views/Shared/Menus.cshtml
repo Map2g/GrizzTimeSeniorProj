@@ -5,46 +5,57 @@
 <section class="sidebar">
     <ul class="sidebar-menu">
         <li class="header">Menu Navigation</li>
-        <li>
-            <a href="@(Url.Action("Index","Home"))">
-                <i class="fa fa-home fa-fw"></i> <span>Home</span>
-            </a>
-        </li>
-        <li>
-            <a href="@(Url.Action("About","Home"))">
-                <span>About</span>
-            </a>
-        </li>
-        <li>
-            <a href="@(Url.Action("Contact","Home"))">
-                <span>Contact</span>
-            </a>
-        </li>
+        <!--Business navigation links-->
         <li style="@(Role == "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("Dashboard","Business"))">
-                <span>Dashboard</span>
+                <i class="fa fa-home"></i><span>Dashboard</span>
             </a>
         </li>
         <li style="@(Role == "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("MyEmployees","Business" ))">
-                <span>View my Employees</span>
+                <i class="fa fa-users"></i><span>View my Employees</span>
             </a>
         </li>
         <li style="@(Role == "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("MyProjects","Business" ))">
-                <span>View my Projects</span>
+                <i class="fa fa-tasks"></i><span>View my Projects</span>
             </a>
         </li>
         <li style="@(Role == "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("MyContracts","Business" ))">
-                <span>View my Contracts</span>
+                <i class="fa fa-suitcase"></i><span>View my Contracts</span>
+            </a>
+        </li>
+        <!--end-->
+        <!--Regular employee navigation links-->
+        <li style="@(Role != "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("Dashboard","Employee" ))">
+                <i class="fa fa-home"></i><span>Dashboard</span>
             </a>
         </li>
         <li style="@(Role != "Business"? "display:block" : "display:none")">
-            <a href="@(Url.Action("Dashboard","Employee" ))">
-                <span>Dashboard</span>
+            <a href="@(Url.Action("List","Timesheet" ))">
+                <i class="fa fa-calendar"></i><span>My Timesheets</span>
             </a>
         </li>
+        <li style="@(Role != "Business"? "display:block" : "display:none")">
+            <a href="@(Url.Action("PendingApprovals","Timesheet" ))">
+                <i class="fa fa-check"></i><span>Timesheets to Review</span>
+            </a>
+        </li>
+        <!--end-->
+        <!--Common-->
+        <li>
+            <a href="@(Url.Action("About","Home"))">
+                <i class="fa fa-question-circle"></i><span>About</span>
+            </a>
+        </li>
+        <li>
+            <a href="@(Url.Action("Contact","Home"))">
+                <i class="fa fa-envelope"></i><span>Contact</span>
+            </a>
+        </li>
+        <!--end-->
 
 
 

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<GrizzTime.Models.business>
+
+@{
+    ViewBag.Title = "All Businesses";
+}
+
+<h2>All GrizzTime Businesses</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Business")
+        </th>
+        <th>
+            @Html.DisplayName("Business Code")
+        </th>
+        <th>
+            @Html.DisplayName("Email Address")
+        </th>
+        <th>
+            @Html.DisplayName("Password")
+        </th>
+        <th>
+            @Html.DisplayName("Address")
+        </th>
+        <th>
+            @Html.DisplayName("Description")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.BusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserPW)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusDesc)
+            </td>
+            <td>
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.UserID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.Message");
+        };
+    </script>
+}
+

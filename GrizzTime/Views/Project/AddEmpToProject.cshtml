@@ -4,7 +4,7 @@
 
 
 @{
-    ViewBag.Title = "Add employee";
+    ViewBag.Title = "Add employee to " + ViewBag.ProjectName;
     int ProjManID = ViewBag.ProjectManager;
     int ProjID = ViewBag.ProjectID;
 
@@ -37,7 +37,6 @@
 
 }
 
-<h2>Assign employee to @ViewBag.ProjectName</h2>
 
 @using (Html.BeginForm())
 {
@@ -47,10 +46,12 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.UserID, employeelist as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-group">
+            <div class="col-md-3">
+                @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-9">
+                @Html.DropDownListFor(model => model.UserID, employeelist as List<SelectListItem>, "--Select--", new { htmlAttributes = new { @class = "select2" } })
                 @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -64,15 +65,24 @@
 }
 
 @*Displays alert message telling user how the operation went.*@
-@if (ViewBag.message != null)
+@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.message");
+            alert("@ViewBag.Message");
         };
     </script>
 }
 
-<div>
-    @Html.ActionLink("Back to Project", "Details", "Project", new { id = ProjID }, null)
+
+<div class="db-Row-Button-Box">
+    <a href="@Request.UrlReferrer">
+        <div class="small-button">
+            <span>
+                <h2>
+                    Back
+                </h2>
+            </span>
+        </div>
+    </a>
 </div>

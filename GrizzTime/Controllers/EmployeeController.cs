@@ -93,23 +93,33 @@ namespace GrizzTime.Controllers
         public ActionResult Dashboard()
         {
             string message = "";
-            try
+            if (Request.Cookies["UserID"].Value == null)
             {
-                Entities dc = new Entities();
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
                 int id = Int32.Parse(Request.Cookies["UserID"].Value);
-                var v = dc.employees.Where(a => a.UserID == id).FirstOrDefault();
+            
+                try
+                {
+                    Entities dc = new Entities();
+                    //int id = Int32.Parse(Request.Cookies["UserID"].Value);
+                    var v = dc.employees.Where(a => a.UserID == id).FirstOrDefault();
 
-                ViewBag.EmployeeName = v.EmpFName + " " + v.EmpLName;
-                ViewBag.BusID = v.BusCode;
-                ViewBag.UserID = v.UserID;
+                    ViewBag.EmployeeName = v.EmpFName + " " + v.EmpLName;
+                    ViewBag.BusID = v.BusCode;
+                    ViewBag.UserID = v.UserID;
 
-            }
-            catch (NullReferenceException e)
-            { //Redirect to login if it can't find business name
-                message = "User not logged in. Redirecting to login page.\n" + Request.Cookies["UserID"].Value;
-                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n" + e.Message + Request.Cookies["UserID"].Value);
-                return RedirectToAction("Login", "Employee");
-            }
+                }
+                catch (NullReferenceException e)
+                { //Redirect to login if it can't find business name
+                    message = "Employee object not found.";
+                    System.Diagnostics.Debug.WriteLine("User is logged in, but employee is not found." + e.Message);
+                    return HttpNotFound();
+                }           
 
             return View();
 
@@ -120,14 +130,17 @@ namespace GrizzTime.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public ActionResult Timesheet()
-        {
-            return View();
-        }
-
         public ActionResult AddEmployeePopUp()
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find business id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
+
             return View();
         }
 
@@ -136,6 +149,17 @@ namespace GrizzTime.Controllers
         {
             bool Status = false;
             string message;
+
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find business id
+                message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
+            int id = Int32.Parse(Request.Cookies["UserID"].Value);
+            
 
             ModelState.Remove("UserPW");
             ModelState.Remove("ConfirmPassword");
@@ -153,14 +177,14 @@ namespace GrizzTime.Controllers
 
                 using (Entities dc = new Entities())
                 {
-                    GrizzTime.Models.employee emp = new GrizzTime.Models.employee();
+                    GrizzTime.Models.employee emp = new GrizzTime.Models.employee();                   
                     emp.UserEmail = thisEmp.UserEmail;
                     emp.EmpFName = thisEmp.EmpFName;
                     emp.EmpLName = thisEmp.EmpLName;
                     emp.EmpPhone = thisEmp.EmpPhone;
                     emp.EmpType = thisEmp.EmpType;
-
-                    emp.BusCode = Int32.Parse(Request.Cookies["UserID"].Value);
+                    emp.SupervisorID = thisEmp.SupervisorID;
+                    emp.BusCode = id;
                     emp.UserStatus = "Registered";
 
                     dc.employees.Add(emp);
@@ -196,7 +220,7 @@ namespace GrizzTime.Controllers
                 }
 
                 employee employee = dc.employees.Find(id);
-                Employee viewEmp = new Employee()
+             Employee viewEmp = new Employee()
                 {
                     UserEmail = employee.UserEmail,
                     EmpFName = employee.EmpFName,
@@ -276,7 +300,7 @@ namespace GrizzTime.Controllers
             }
             else
             {
-                message = "Invalid Request";
+                message = "Couldn't complete request.";
             }
 
             SendVerificationEMail(thisEmp.UserEmail);
@@ -284,13 +308,6 @@ namespace GrizzTime.Controllers
             ViewBag.Status = Status;
             return View(thisEmp);
         }
-
-        //[Authorize]
-        //public ActionResult Logout()
-        //{
-        //    FormsAuthentication.SignOut();
-        //    return RedirectToAction("Login", "Employee");
-        //}
 
         [AllowAnonymous]
         public ActionResult AllEmployees()
@@ -319,6 +336,7 @@ namespace GrizzTime.Controllers
                     EmpPayRate = emp.EmpPayRate,
                     EmpPhone = emp.EmpPhone,
                     UserID = emp.UserID,
+                    SupervisorID = emp.SupervisorID,
                 };
 
                 if (emp == null)
@@ -333,6 +351,14 @@ namespace GrizzTime.Controllers
         // GET: User/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find employee
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }                     
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
 
             using (Entities dc = new Entities())
@@ -347,11 +373,14 @@ namespace GrizzTime.Controllers
                 Employee viewEmp = new Employee()
                 {
                     UserEmail = emp.UserEmail,
-                    UserPW = emp.UserPW,
+                    UserID = emp.UserID,                 
                     EmpFName = emp.EmpFName,
                     EmpLName = emp.EmpLName,
                     EmpPhone = emp.EmpPhone,
                     EmpType = emp.EmpType,
+                    BusCode = emp.BusCode,
+                    //UserPW = emp.UserPW, //Move to its own form
+                    SupervisorID = emp.SupervisorID,
                 };
 
                 if (emp == null)
@@ -361,13 +390,20 @@ namespace GrizzTime.Controllers
 
                 return View(viewEmp);
             }
-
         }
 
         // POST: User/Edit/5
         [HttpPost]
         public ActionResult Edit(int? id, Employee thisEmp)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find employee id
+                ViewBag.Message = "Please log in";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
 
             if (id == null)
@@ -384,6 +420,7 @@ namespace GrizzTime.Controllers
             //ModelState.Remove("EmpLName");
             //ModelState.Remove("EmpPhone");
             ModelState.Remove("ConfirmPassword");
+            ModelState.Remove("UserPW");
 
             if (ModelState.IsValid)
             {
@@ -394,11 +431,12 @@ namespace GrizzTime.Controllers
                         return HttpNotFound();
 
                     emp.UserEmail = thisEmp.UserEmail;
-                    emp.UserPW = Hash(thisEmp.UserPW);
+                    //emp.UserPW = Hash(thisEmp.UserPW); //move to its own form
                     emp.EmpFName = thisEmp.EmpFName;
                     emp.EmpLName = thisEmp.EmpLName;
                     emp.EmpPhone = thisEmp.EmpPhone;
-                    emp.EmpType = thisEmp.EmpType;                  
+                    emp.EmpType = thisEmp.EmpType;
+                    emp.SupervisorID = thisEmp.SupervisorID;
 
                     dc.Entry(emp).State = System.Data.Entity.EntityState.Modified;
                     try
@@ -446,6 +484,14 @@ namespace GrizzTime.Controllers
         [HttpGet]
         public ActionResult EditPayRate(int? id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             using (Entities dc = new Entities())
             {
@@ -473,6 +519,14 @@ namespace GrizzTime.Controllers
         [HttpPost]
         public ActionResult EditPayRate(int? id, Employee thisEmp)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
 
             if (id == null)
@@ -553,11 +607,11 @@ namespace GrizzTime.Controllers
                 if (emp == null)
                 {
                     message = "Employee not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("MyEmployees", "Business");
                 }
 
-                ViewBag.message = message;
+                ViewBag.Message = message;
                 return View(emp);
             }
         }
@@ -573,7 +627,7 @@ namespace GrizzTime.Controllers
                 if (employee == null)
                 {
                     message = "Employee not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("MyEmployees", "Business");
                 }
 
@@ -581,7 +635,7 @@ namespace GrizzTime.Controllers
                 dc.SaveChanges();
                 message = "Employee successfully deleted.";
             }
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return RedirectToAction("MyEmployees", "Business");
         }
 

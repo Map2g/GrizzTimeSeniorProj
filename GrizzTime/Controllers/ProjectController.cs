@@ -20,6 +20,14 @@ namespace GrizzTime.Controllers
         // GET: Project/Details/5
         public ActionResult Details(int? id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             using (Entities dc = new Entities())
             {
@@ -54,6 +62,14 @@ namespace GrizzTime.Controllers
         // GET: Project/Create
         public ActionResult Create()
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             //Can be a business user or a employee user
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             return View();
@@ -65,6 +81,14 @@ namespace GrizzTime.Controllers
         {
             bool Status = false;
             string message = "";
+
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
 
             //Can be a business user or a employee user
             ViewBag.UserID = Request.Cookies["UserID"].Value;
@@ -126,6 +150,14 @@ namespace GrizzTime.Controllers
         // GET: Project/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             using (Entities dc = new Entities())
             {
@@ -143,9 +175,11 @@ namespace GrizzTime.Controllers
                     ProjStartDate = proj.ProjStartDate,
                     ProjEndDate = proj.ProjEndDate,
                     ProjManID = proj.ProjManID.ToString(),
+                    ProjManName = proj.employee.EmpFName + proj.employee.EmpLName,
                     ProjID = proj.ProjID,
                     ProjStatus = proj.ProjStatus,
                     ConID = proj.ConID.ToString(),
+                    ContractName = proj.contract.ConName,
                     IsEnded = proj.ProjStatus.Equals("Ended"),
                 };
 
@@ -162,6 +196,14 @@ namespace GrizzTime.Controllers
         [HttpPost]
         public ActionResult Edit(int? id, Project thisProj)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
 
             if (id == null)
@@ -256,10 +298,10 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("MyProjects", "Business");
                 }
-                ViewBag.message = message;
+                ViewBag.Message = message;
                 return View(proj);
             }
         }
@@ -276,19 +318,27 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("MyProjects", "Business");
                 }
 
                 dc.projects.Remove(proj);
                 dc.SaveChanges();
             }
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return RedirectToAction("MyProjects", "Business");
         }
 
         public ActionResult AddTask(int id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             //BusID
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             //string message = "";
@@ -298,13 +348,21 @@ namespace GrizzTime.Controllers
                 ViewBag.ProjectName = proj.ProjName;
                 ViewBag.ProjectID = proj.ProjID;
             }
-            //ViewBag.message = message;
+            //ViewBag.Message = message;
             return View();
         }
 
         [HttpPost]
         public ActionResult AddTask(int id, task addTask)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             string message = "";
             using (Entities dc = new Entities())
@@ -315,7 +373,7 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     //TODO: Redirect to somewhere more general.
                     return RedirectToAction("MyProjects", "Business");
                 }
@@ -354,7 +412,7 @@ namespace GrizzTime.Controllers
                 }
             }
             message = "Task added successfully.";
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return View();
         }
 
@@ -368,7 +426,7 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     return RedirectToAction("MyProjects", "Business");
                 }
 
@@ -378,12 +436,20 @@ namespace GrizzTime.Controllers
                 dc.Entry(proj).State = System.Data.Entity.EntityState.Modified;
                 dc.SaveChanges();
             }
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return RedirectToAction("MyProjects", "Business");
         }
 
         public ActionResult AddEmpToProject(int id)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             //Business ID
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             //string message = "";
@@ -394,13 +460,21 @@ namespace GrizzTime.Controllers
                 ViewBag.ProjectID = proj.ProjID;
                 ViewBag.ProjectManager = proj.ProjManID; 
             }
-            //ViewBag.message = message;
+            //ViewBag.Message = message;
             return View();
         }
 
         [HttpPost]
         public ActionResult AddEmpToProject(int id, Employee addEmp)
         {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                ViewBag.Message = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
             ViewBag.UserID = Request.Cookies["UserID"].Value;
             string message = "";
             using (Entities dc = new Entities())
@@ -412,7 +486,7 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.message = message;
+                    ViewBag.Message = message;
                     //TODO: Redirect to somewhere more general.
                     return RedirectToAction("MyProjects", "Business");
                 }
@@ -450,7 +524,7 @@ namespace GrizzTime.Controllers
                 }
             }
             message = "Employee added successfully.";
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return View();
         }
 
@@ -490,7 +564,7 @@ namespace GrizzTime.Controllers
                 }
             }
             message = "Employee removed successfully.";
-            ViewBag.message = message;
+            ViewBag.Message = message;
             return RedirectToAction("Details", new {id = pid });
         }
     }
