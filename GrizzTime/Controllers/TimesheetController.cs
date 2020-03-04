@@ -194,6 +194,7 @@ namespace GrizzTime.Controllers
                 if (DOW != null) 
                 {
                     ViewBag.DayOfWeek = DOW;
+                    ViewBag.IsChangeable = true;
                     return View();              
                 }
                 else
@@ -295,6 +296,14 @@ namespace GrizzTime.Controllers
                 else //edit existing
                 {
                     ViewBag.IsExist = true;
+                    ViewBag.IsChangeable = true;
+
+                    if (ts.TimeSheetStatus != "In Progress")
+                    {
+                        bool changeable = false;
+                        ViewBag.IsChangeable = changeable;
+                    }
+
                     we.WorkHours = thisDay.WorkHours;
                     we.ProjID = thisDay.ProjID;
                     we.TaskID = thisDay.TaskID;
