@@ -589,18 +589,19 @@ namespace GrizzTime.Controllers
             }
         }
 
+        //Does not send link?
         [NonAction]
         public void SendVerificationEMail(string email)
         {
-            var verifyUrl = "/employee/registration/";
-            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+            //var verifyUrl = "/employee/registration/";
+            //var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
             var toEmail = new MailAddress(email);
             var fromEmailPassword = "WinterSemester";
             string subject = "Your account hase been succesfully created!";
 
-            string body = "Congratulations, your business account has been created! GrizzTime Senior Project testing.";
+            string body = "Congratulations, your business account has been created!";
 
             var smtp = new SmtpClient
             {
@@ -623,7 +624,7 @@ namespace GrizzTime.Controllers
         [NonAction]
         public void SendRegistrationEMail(string email, int employeeId)
         {
-            var completeRegister = "/employee/registration/" + employeeId.ToString();
+            var completeRegister = Url.Action("ResetPassword", "Employee", new { id = employeeId});/*"/employee/registration/" + employeeId.ToString();*/
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, completeRegister);
 
             var fromEmail = new MailAddress("grizztimenotification@gmail.com", "GrizzTime Do Not Reply");

@@ -248,7 +248,7 @@ namespace GrizzTime.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Registration(int? id)
+        public ActionResult ResetPassword(int? id)
         {
             using (Entities dc = new Entities())
             {
@@ -280,7 +280,7 @@ namespace GrizzTime.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Registration(Employee thisEmp, int? id)
+        public ActionResult ResetPassword(Employee thisEmp, int? id)
         {
             if (id == null)
             {
@@ -720,7 +720,7 @@ namespace GrizzTime.Controllers
         [NonAction]
         public void SendRegistrationEMail(string email, int employeeId)
         {
-            var completeRegister = "/employee/registration/" + employeeId.ToString();
+            var completeRegister = Url.Action("ResetPassword", "Employee", new { id = employeeId }); /*"/employee/registration/" + employeeId.ToString(); */
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, completeRegister);
 
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
@@ -751,7 +751,7 @@ namespace GrizzTime.Controllers
         [NonAction]
         public void ForgotPasswordEmail(string email, int employeeId)
         {
-            var forgotPassword = "/employee/registration/" + employeeId.ToString();
+            var forgotPassword = Url.Action("ResetPassword", "Employee", new { id = employeeId });/*"/employee/registration/" + employeeId.ToString();*/
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, forgotPassword);
 
             //Try to make secure later.

@@ -48,12 +48,11 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Login" class="btn btn-default" />
-                    @*<input type="submit" value="Register" href="~/Employee/Registration"/>*@
                 </div>
             </div>
 
             <div class="form-group">
-                <a href="/employee/forgotpassword" style="color:aliceblue">
+                <a href="@Url.Action("ForgotPassword", "Employee")" style="color:aliceblue">
                     Forgot password?
                 </a>
             </div>
