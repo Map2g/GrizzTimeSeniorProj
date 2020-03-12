@@ -35,11 +35,12 @@
     </div>
 </div>
 
-@if (ViewBag.Message != null)
+@*Displays alert message telling user how the operation went.*@
+@if (@TempData["message"] != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.Message");
+            alert("@TempData["message"]");
         };
     </script>
 }

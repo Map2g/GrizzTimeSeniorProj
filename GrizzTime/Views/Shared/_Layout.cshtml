@@ -58,7 +58,7 @@
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                            @Html.Partial("Profile")
+                        @Html.Partial("Profile")
                     </ul>
                 </div>
             </nav>
@@ -85,15 +85,15 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-        @*<footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> @ViewContext.Controller.GetType().Assembly.GetName().Version
-            </div>
-            <strong>Copyright &copy; @DateTime.Now.Year <a href="https://www.facebook.com/erikson.gomes">Erikson Melgarejo</a>.</strong>
-        </footer>*@
+            @*<footer class="main-footer">
+                    <div class="pull-right hidden-xs">
+                        <b>Version</b> @ViewContext.Controller.GetType().Assembly.GetName().Version
+                    </div>
+                    <strong>Copyright &copy; @DateTime.Now.Year <a href="https://www.facebook.com/erikson.gomes">Erikson Melgarejo</a>.</strong>
+                </footer>*@
     </div>
     <!-- ./wrapper -->
-    <link href="~/StyleSheet.css" rel="stylesheet" > 
+    <link href="~/StyleSheet.css" rel="stylesheet">
     <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/assets/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/assets/css/AdminLTE.min.css" rel="stylesheet" />
@@ -125,7 +125,17 @@
         //        });
         //})
     </script>
-    @RenderSection("scripts", required: false)
+
+    @if (@TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                window.onload = function () {
+                    alert("@TempData["message"]");
+                };
+            </script>
+        }
+
+    @*@RenderSection("scripts", required: false)
     @{
         if (ViewBag.Erro != null)
         {
@@ -167,6 +177,15 @@
             }
         }
 
-    }
+        if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                window.onload = function () {
+                alert(@TempData["message"]);
+            };
+            </script>
+        }
+
+    }*@
 </body>
 </html>

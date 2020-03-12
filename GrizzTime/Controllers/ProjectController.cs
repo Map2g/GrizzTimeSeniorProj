@@ -23,7 +23,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -65,7 +65,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -85,7 +85,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -141,7 +141,7 @@ namespace GrizzTime.Controllers
             {
                 message = "Invalid Request";
             }
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
 
             return View(thisProj);
@@ -153,7 +153,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -199,7 +199,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -273,7 +273,7 @@ namespace GrizzTime.Controllers
                 }
                 message = "Project updated successfully.";
                 Status = true;
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 ViewBag.Status = Status;
                 return RedirectToAction("MyProjects", "Business");
             }
@@ -282,7 +282,7 @@ namespace GrizzTime.Controllers
                 message = "Invalid Request";
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
             return View(thisProj);
         }
@@ -298,10 +298,10 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("MyProjects", "Business");
                 }
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 return View(proj);
             }
         }
@@ -318,14 +318,14 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("MyProjects", "Business");
                 }
 
                 dc.projects.Remove(proj);
                 dc.SaveChanges();
             }
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return RedirectToAction("MyProjects", "Business");
         }
 
@@ -334,7 +334,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -348,7 +348,7 @@ namespace GrizzTime.Controllers
                 ViewBag.ProjectName = proj.ProjName;
                 ViewBag.ProjectID = proj.ProjID;
             }
-            //ViewBag.Message = message;
+            //TempData["message"] = message;
             return View();
         }
 
@@ -358,7 +358,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -373,7 +373,7 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     //TODO: Redirect to somewhere more general.
                     return RedirectToAction("MyProjects", "Business");
                 }
@@ -412,7 +412,7 @@ namespace GrizzTime.Controllers
                 }
             }
             message = "Task added successfully.";
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return View();
         }
 
@@ -426,7 +426,7 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("MyProjects", "Business");
                 }
 
@@ -436,7 +436,7 @@ namespace GrizzTime.Controllers
                 dc.Entry(proj).State = System.Data.Entity.EntityState.Modified;
                 dc.SaveChanges();
             }
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return RedirectToAction("MyProjects", "Business");
         }
 
@@ -445,7 +445,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -460,7 +460,7 @@ namespace GrizzTime.Controllers
                 ViewBag.ProjectID = proj.ProjID;
                 ViewBag.ProjectManager = proj.ProjManID; 
             }
-            //ViewBag.Message = message;
+            //TempData["message"] = message;
             return View();
         }
 
@@ -470,7 +470,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -486,7 +486,7 @@ namespace GrizzTime.Controllers
                 if (proj == null)
                 {
                     message = "Project not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     //TODO: Redirect to somewhere more general.
                     return RedirectToAction("MyProjects", "Business");
                 }
@@ -524,7 +524,7 @@ namespace GrizzTime.Controllers
                 }
             }
             message = "Employee added successfully.";
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return View();
         }
 
@@ -564,7 +564,7 @@ namespace GrizzTime.Controllers
                 }
             }
             message = "Employee removed successfully.";
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return RedirectToAction("Details", new {id = pid });
         }
     }

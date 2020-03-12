@@ -554,6 +554,7 @@
     <Content Include="Content\tether\tether-theme-basic.min.css" />
     <Content Include="Content\tether\tether.css" />
     <Content Include="Content\tether\tether.min.css" />
+    <Content Include="emailTemplates\forgotpassword.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -677,6 +678,9 @@
     <Content Include="Views\Business\Details.cshtml" />
     <Content Include="Views\Timesheet\PendingApprovals.cshtml" />
     <Content Include="Views\Contract\Details.cshtml" />
+    <Content Include="Views\Employee\ForgotPassword.cshtml" />
+    <Content Include="Views\Business\ForgotPassword.cshtml" />
+    <Content Include="Views\Business\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
