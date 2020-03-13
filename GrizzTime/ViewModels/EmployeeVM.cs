@@ -85,25 +85,50 @@ namespace GrizzTime.ViewModels
             new SelectListItem() {Text="Intern", Value="Intern" },
         };
 
-        ////Gets a list of employees in a specific business. ID should be UserID of a business
-        //public static List<SelectListItem> EmployeeList(string id)
+
+        //--------------Used in invoices--------------------------------------
+        [Display(Name = "Earned")]
+        public decimal YearTotalEarned { get; set; }
+
+        [Display(Name = "Hours")]
+        public decimal YearTotalHours { get; set; }
+
+        public List<Project> EmployeeProjects { get; set; }
+
+        //public List<EmployeeInvProject> EmployeeInvProjects { get; set; }
+
+        //public class EmployeeInvProject
         //{
-        //    string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
+        //    public string ProjectName { get; set; }
 
-        //    Entities dc = new Entities();
-        //    IEnumerable<employee> thisBusinessEmployees = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
+        //    public string ProjectManagerName { get; set; }
 
-        //    List<SelectListItem> AllEmployees = new List<SelectListItem>();
+        //    public decimal TotalEarned { get; set; }
 
-        //    foreach (var item in thisBusinessEmployees)
-        //    {
-        //        AllEmployees.Add(new SelectListItem() { Text = item.EmpFName + " " + item.EmpLName, Value = item.UserID.ToString() });
-        //    };
+        //    public decimal TotalHours { get; set; }
 
-        //    return AllEmployees;
+        //    public decimal TotalExpense { get; set; }
         //}
 
-        public static List<Employee> EmployeeList(string id)
+    ////Gets a list of employees in a specific business. ID should be UserID of a business
+    //public static List<SelectListItem> EmployeeList(string id)
+    //{
+    //    string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
+
+    //    Entities dc = new Entities();
+    //    IEnumerable<employee> thisBusinessEmployees = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
+
+    //    List<SelectListItem> AllEmployees = new List<SelectListItem>();
+
+    //    foreach (var item in thisBusinessEmployees)
+    //    {
+    //        AllEmployees.Add(new SelectListItem() { Text = item.EmpFName + " " + item.EmpLName, Value = item.UserID.ToString() });
+    //    };
+
+    //    return AllEmployees;
+    //}
+
+    public static List<Employee> EmployeeList(string id)
         {
             string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
 
@@ -130,28 +155,58 @@ namespace GrizzTime.ViewModels
 
         }
 
+        //takes employee id, returns all projects for an employee
         public static List<Project> GetProjects(int id)
         {
             using (Entities dc = new Entities())
             {
                 //get projects for this employee
-                var thisPMProjects = (from e in dc.employees
+                var thisEmpProjects = (from e in dc.employees
                                       join p in dc.employee_project                                     
                                       on e.UserID equals p.EmpID
                                       join q in dc.projects
                                       on p.ProjID equals q.ProjID
                                       where e.UserID == id
-                                      select new { q.ProjName, q.ProjID }
+                                      select new { q.ProjName, q.ProjID, q.contract, q.workentries1, q.tasks, q.employee, q.ProjStartDate }
                             ).ToList();
+
 
                 List<Project> tryIt = new List<Project>();
 
-                foreach (var item in thisPMProjects)
+                //Will repeat for every one of this employee's projects.
+                foreach (var item in thisEmpProjects)
                 {
+                    decimal projectHours = 0;
+                    decimal projectAmt = 0;
+                    decimal taskHours = 0;
+                    decimal taskAmt = 0;
+
+                    //Will repeat for every workentry for this project
+                    foreach (var workitem in item.workentries1)
+                    {
+                        if (workitem.EmpID == id)
+                        {
+                            projectHours += workitem.WorkHours;
+
+                            if (workitem.task.IsBillable == true)
+                            {
+                                projectAmt += (workitem.WorkHours * (decimal)workitem.task.BillableRate);
+                            }
+                            
+
+
+                        }
+                    }
+
                     tryIt.Add(new Project()
                     {
                         ProjName = item.ProjName,
                         ProjID = item.ProjID,
+                        ContractName = item.contract.ConName,
+                        ProjManName = item.employee.EmpFName + " " + item.employee.EmpLName,
+                        EmpTotalHr = projectHours,
+                        EmpTotalAmt = projectAmt,
+                        ProjStartDate = item.ProjStartDate,
                     });
                 }
                 return tryIt;

@@ -30,13 +30,11 @@ public partial class expenseentry
 
     public int ExpSheetID { get; set; }
 
-    public int TaskID { get; set; }
+    public string ExpCategory { get; set; }
 
 
 
     public virtual expensesheet expensesheet { get; set; }
-
-    public virtual task task { get; set; }
 
     public virtual project project { get; set; }
 

@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BusinessVM.cs" />
+    <Compile Include="ViewModels\EmployeeInvoiceVM.cs" />
     <Compile Include="ViewModels\TimesheetVM.cs" />
     <Compile Include="ViewModels\ContractVM.cs" />
     <Compile Include="ViewModels\ProjectVM.cs" />
@@ -719,10 +720,10 @@
     <Content Include="Views\Business\ForgotPassword.cshtml" />
     <Content Include="Views\Business\ResetPassword.cshtml" />
     <Content Include="Views\Employee\ResetPassword.cshtml" />
+    <Content Include="Views\Invoice\EmployeeInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Invoice\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

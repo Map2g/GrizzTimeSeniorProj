@@ -41,6 +41,8 @@ public partial class timesheet
 
     public Nullable<System.DateTime> TimeSheetApproveTime { get; set; }
 
+    public decimal TimeSheetTotalAmt { get; set; }
+
 
 
     public virtual employee employee { get; set; }

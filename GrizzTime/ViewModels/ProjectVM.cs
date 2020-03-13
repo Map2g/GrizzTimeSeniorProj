@@ -48,6 +48,17 @@ namespace GrizzTime.ViewModels
         [Display(Name = "Mark as ended: ")]
         public bool IsEnded { get; set; }
 
+        //Used in employee invoices, should be individual to one employee when created
+        public decimal EmpTotalHr { get; set; }
+
+        public decimal EmpTotalAmt { get; set; }
+
+        public List<Task> EmpProjTask { get; set; }
+
+        //-----------------------------------------------------------------------------
+
+
+
         //Gets all the projects belonging to a specific contract.
         public static List<SelectListItem> ConProjList(string id)
         {
@@ -146,6 +157,7 @@ namespace GrizzTime.ViewModels
 
         }
 
+        //Gets all projects belonging to project manager
         public static List<Project> PMProjList(int id)
         {
             using (Entities dc = new Entities())

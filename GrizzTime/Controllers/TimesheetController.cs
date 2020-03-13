@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 
 namespace GrizzTime.Controllers
 {
+    [Authorize]
     public class TimesheetController : Controller
     {
         // GET: Timesheet
@@ -176,7 +177,6 @@ namespace GrizzTime.Controllers
                 return RedirectToAction("LandingPage", "Home");
             }
 
-            var message = "";
             ViewBag.IsExist = false;
             ViewBag.TimeSheetID = (int) tid;
             ViewBag.UserID = Int32.Parse(Request.Cookies["UserID"].Value);
@@ -198,7 +198,7 @@ namespace GrizzTime.Controllers
                 }
                 else
                 {                                     
-                    message = "Date of week not captured.";
+                    TempData["message"] = "Date of week not captured.";
                     return HttpNotFound();
                 }
             }
@@ -518,7 +518,7 @@ namespace GrizzTime.Controllers
                 int id = Int32.Parse(Request.Cookies["UserID"].Value);
                 //employee.employee2 is submitting employee's supervisor
                 //pendingApprovals = dc.timesheets.Where(x => x.employee.employee2.UserID == id && x.TimeSheetStatus == "Pending").OrderByDescending(p => p.payrollcycle.PayrollCycleStart).ToList();
-                pendingApprovals = dc.timesheets.Where(x => x.employee.employee2.UserID == id).OrderByDescending(p => p.payrollcycle.PayrollCycleStart).ToList();
+                pendingApprovals = dc.timesheets.Where(x => x.employee.employee2.UserID == id & x.TimeSheetStatus != "In Progress").OrderByDescending(p => p.payrollcycle.PayrollCycleStart).ToList();
 
                 if (pendingApprovals.Any() == false)
                 {
