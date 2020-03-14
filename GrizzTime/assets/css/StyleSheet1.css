@@ -52,7 +52,7 @@ html {
     -webkit-tap-highlight-color: transparent
 }
 
-article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+article, aside, figcaption, figure, footer, header, hgroup, main, /*nav,*/ section {
     display: block
 }
 
@@ -4036,6 +4036,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     }
 }
 
+/*
 .nav {
     display: -ms-flexbox;
     display: flex;
@@ -4045,6 +4046,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     margin-bottom: 0;
     list-style: none
 }
+
 
 .nav-link {
     display: block;
@@ -4128,7 +4130,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     display: block
 }
 
-.navbar {
+/*.navbar {
     position: relative;
     display: -ms-flexbox;
     display: flex;
@@ -4538,7 +4540,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
         .navbar-dark .navbar-text a:focus, .navbar-dark .navbar-text a:hover {
             color: #fff
-        }
+        }*/
 
 .card {
     position: relative;
@@ -10184,9 +10186,11 @@ a.text-dark:focus, a.text-dark:hover {
         min-width: 992px !important
     }
 
+    /*
     .navbar {
         display: none
     }
+    */
 
     .badge {
         border: 1px solid #000
@@ -10255,6 +10259,7 @@ html {
     height: calc(100vh - (2.93725rem + 1px))
 }
 
+/*
 .layout-navbar-fixed.layout-fixed .wrapper .control-sidebar {
     top: calc(3.5rem + 1px)
 }
@@ -11309,7 +11314,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar {
         margin-top: 0
     }
 }
-
+    */
 .layout-footer-fixed .wrapper .control-sidebar {
     bottom: 0
 }
@@ -11437,7 +11442,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar {
         position: static
     }
 }
-
+/*
 .layout-top-nav .wrapper {
     margin-left: 0
 }
@@ -11504,13 +11509,13 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .content-wrapper,
         margin-left: 4.6rem
     }
 }
-
+    
 @media (max-width:991.98px) {
     .sidebar-mini-md .content-wrapper, .sidebar-mini-md .content-wrapper::before, .sidebar-mini-md .main-footer, .sidebar-mini-md .main-footer::before, .sidebar-mini-md .main-header, .sidebar-mini-md .main-header::before {
         margin-left: 4.6rem
     }
 }
-
+    */
 .content-wrapper {
     background: #f4f6f9
 }
@@ -11628,6 +11633,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .content-wrapper,
     transition: none !important
 }
 
+/*
 .main-header {
     border-bottom: 1px solid #dee2e6;
     z-index: 1034
@@ -11646,7 +11652,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .content-wrapper,
         .main-header.text-sm .nav-link > .fa, .main-header.text-sm .nav-link > .fab, .main-header.text-sm .nav-link > .far, .main-header.text-sm .nav-link > .fas, .main-header.text-sm .nav-link > .glyphicon, .main-header.text-sm .nav-link > .ion, .text-sm .main-header .nav-link > .fa, .text-sm .main-header .nav-link > .fab, .text-sm .main-header .nav-link > .far, .text-sm .main-header .nav-link > .fas, .text-sm .main-header .nav-link > .glyphicon, .text-sm .main-header .nav-link > .ion {
             font-size: .875rem
         }
-
+        /*
     .main-header .navbar-nav .nav-item {
         margin: 0
     }
@@ -11764,6 +11770,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .content-wrapper,
         border: 0 !important;
         color: #343a40
     }
+            
 
 .brand-link {
     display: block;
@@ -12714,7 +12721,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .content-wrapper,
     [class*=sidebar-light] .btn-sidebar:focus {
         background: #e6e6e6
     }
-
+            
 .logo-xl, .logo-xs {
     opacity: 1;
     position: absolute;
@@ -13195,7 +13202,7 @@ body.text-sm .control-sidebar {
     background: #fff;
     border-left: 1px solid #dee2e6
 }
-
+            */
 .text-sm .dropdown-menu {
     font-size: .875rem !important
 }
@@ -13351,7 +13358,7 @@ body.text-sm .control-sidebar {
         transform: perspective(400px)
     }
 }
-
+/*
 .navbar-custom-menu > .navbar-nav > li {
     position: relative
 }
@@ -13653,7 +13660,7 @@ body.text-sm .control-sidebar {
 .navbar-gray-dark {
     background-color: #343a40
 }
-
+    */
 .form-group.has-icon {
     position: relative
 }

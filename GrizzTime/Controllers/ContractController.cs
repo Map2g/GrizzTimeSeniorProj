@@ -105,7 +105,7 @@ namespace GrizzTime.Controllers
                 Contract viewCon = new Contract()
                 {
                     ConName = con.ConName,
-                    ConAllottedHours = con.ConAllottedHours,
+                    ConAllottedHours = (decimal) con.ConAllottedHours,
                     ConHoursRemaining = con.ConHoursRemaining,
                 };
 
@@ -142,7 +142,7 @@ namespace GrizzTime.Controllers
                 Contract viewCon = new Contract()
                 {
                     ConName = con.ConName,
-                    ConAllottedHours = con.ConAllottedHours,
+                    ConAllottedHours = (decimal) con.ConAllottedHours,
                     ConHoursRemaining = con.ConHoursRemaining,
                 };
 
@@ -196,7 +196,7 @@ namespace GrizzTime.Controllers
                     con.ConName = thisCon.ConName;
 
                     var oldHoursRemaining = con.ConHoursRemaining;
-                    con.ConHoursRemaining = thisCon.ConAllottedHours - (con.ConAllottedHours - oldHoursRemaining);
+                    con.ConHoursRemaining = thisCon.ConAllottedHours - ((decimal) con.ConAllottedHours - oldHoursRemaining);
 
                     con.ConAllottedHours = thisCon.ConAllottedHours;
 

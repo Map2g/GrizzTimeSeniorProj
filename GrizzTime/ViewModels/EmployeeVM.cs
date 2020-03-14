@@ -58,6 +58,8 @@ namespace GrizzTime.ViewModels
         public decimal EmpPayRate { get; set; }
 
         [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        [DisplayFormat(DataFormatString = "{0:###-###-####}")]
         [StringLength(10, MinimumLength = 10, ErrorMessage = "Phone number is invalid.")]
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Phone number is invalid. (e.g. 2485550712)")]
         public string EmpPhone { get; set; }
@@ -88,6 +90,7 @@ namespace GrizzTime.ViewModels
 
         //--------------Used in invoices--------------------------------------
         [Display(Name = "Earned")]
+        [DataType(DataType.Currency)]
         public decimal YearTotalEarned { get; set; }
 
         [Display(Name = "Hours")]
@@ -156,6 +159,7 @@ namespace GrizzTime.ViewModels
         }
 
         //takes employee id, returns all projects for an employee
+        //Lots of good info in this method
         public static List<Project> GetProjects(int id)
         {
             using (Entities dc = new Entities())
@@ -167,20 +171,18 @@ namespace GrizzTime.ViewModels
                                       join q in dc.projects
                                       on p.ProjID equals q.ProjID
                                       where e.UserID == id
-                                      select new { q.ProjName, q.ProjID, q.contract, q.workentries1, q.tasks, q.employee, q.ProjStartDate }
+                                      select new { q.ProjName, q.ProjID, q.contract, q.workentries1, q.employee, q.ProjStartDate }
                             ).ToList();
-
-
-                List<Project> tryIt = new List<Project>();
+                
+                List<Project> tryIt = new List<Project>();               
 
                 //Will repeat for every one of this employee's projects.
                 foreach (var item in thisEmpProjects)
                 {
                     decimal projectHours = 0;
                     decimal projectAmt = 0;
-                    decimal taskHours = 0;
-                    decimal taskAmt = 0;
 
+                    List<Task> taskView = new List<Task>();
                     //Will repeat for every workentry for this project
                     foreach (var workitem in item.workentries1)
                     {
@@ -192,8 +194,26 @@ namespace GrizzTime.ViewModels
                             {
                                 projectAmt += (workitem.WorkHours * (decimal)workitem.task.BillableRate);
                             }
-                            
 
+                            //Build totals for tasks:
+
+                            //If this workentry's task is already in the task list, create a new task in the task list. If not, edit total work hours and amount
+                            Task thisTask = taskView.Find(x => x.TaskID == workitem.TaskID);
+                            if (thisTask == null)
+                            {
+                                taskView.Add(new Task()
+                                {
+                                    TaskID = workitem.TaskID,
+                                    TaskName = workitem.task.TaskName,
+                                    EmpTaskAmt = (workitem.WorkHours * (decimal)workitem.task.BillableRate),
+                                    EmpTaskHours = workitem.WorkHours
+                                });
+                            }
+                            else
+                            {
+                                thisTask.EmpTaskAmt += (workitem.WorkHours * (decimal)workitem.task.BillableRate);
+                                thisTask.EmpTaskHours += workitem.WorkHours;
+                            }
 
                         }
                     }
@@ -207,6 +227,7 @@ namespace GrizzTime.ViewModels
                         EmpTotalHr = projectHours,
                         EmpTotalAmt = projectAmt,
                         ProjStartDate = item.ProjStartDate,
+                        EmpProjTask = taskView
                     });
                 }
                 return tryIt;

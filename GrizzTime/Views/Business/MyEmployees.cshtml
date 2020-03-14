@@ -31,11 +31,13 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td>               
                 @Html.DisplayFor(modelItem => item.UserEmail)
             </td>
             <td>
+                <a href="@Url.Action("EmployeeInvoice", "Invoice", new { eid = item.UserID, year = 2020 })">
                 @Html.DisplayFor(modelItem => item.EmpFName) @Html.DisplayFor(modelItem => item.EmpLName)
+                </a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EmpPhone)

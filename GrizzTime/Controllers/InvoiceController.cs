@@ -11,6 +11,7 @@ namespace GrizzTime.Controllers
 {
     public class InvoiceController : Controller
     {
+        [HttpGet]
         public ActionResult EmployeeInvoice(int? eid, string year)
         {
             using (Entities dc = new Entities())
@@ -42,10 +43,12 @@ namespace GrizzTime.Controllers
 
                 foreach (var item in thisEmpTimesheets)
                 {
-                    totalHours = totalHours + item.TimeSheetTotalHr;
-                    //totalEarned = totalEarned + item.payrollcycle;
+                    totalHours += item.TimeSheetTotalHr;
+                    totalEarned += item.TimeSheetTotalAmt;
                 }
-                
+
+
+
 
                 //------------------------------------------------------------------------
                 Employee viewEmpInv = new Employee()
@@ -57,7 +60,10 @@ namespace GrizzTime.Controllers
                     EmpPhone = emp.EmpPhone,
                     UserID = emp.UserID,
                     SupervisorID = emp.SupervisorID,
-                    
+                    YearTotalEarned = totalEarned,
+                    YearTotalHours = totalHours,
+                    //Below contains all the individual totals and data for this employee's projects and tasks
+                    EmployeeProjects = Employee.GetProjects(emp.UserID)
                 };
 
                 if (emp == null)

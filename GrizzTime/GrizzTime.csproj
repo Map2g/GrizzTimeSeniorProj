@@ -163,7 +163,7 @@
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BusinessVM.cs" />
-    <Compile Include="ViewModels\EmployeeInvoiceVM.cs" />
+    <Compile Include="ViewModels\TaskVM.cs" />
     <Compile Include="ViewModels\TimesheetVM.cs" />
     <Compile Include="ViewModels\ContractVM.cs" />
     <Compile Include="ViewModels\ProjectVM.cs" />
