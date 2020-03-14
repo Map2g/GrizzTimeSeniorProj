@@ -721,6 +721,7 @@
     <Content Include="Views\Business\ResetPassword.cshtml" />
     <Content Include="Views\Employee\ResetPassword.cshtml" />
     <Content Include="Views\Invoice\EmployeeInvoice.cshtml" />
+    <Content Include="Views\Invoice\EmployeeInvoice_print.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,11 +9,13 @@ using System.Web.Mvc;
 
 namespace GrizzTime.Controllers
 {
+    [Authorize]
     public class InvoiceController : Controller
     {
         [HttpGet]
         public ActionResult EmployeeInvoice(int? eid, string year)
         {
+            ViewBag.year = year;
             using (Entities dc = new Entities())
             {
 
@@ -29,7 +31,9 @@ namespace GrizzTime.Controllers
 
                 //Timesheet information
                 List<timesheet> thisEmpTimesheets;
-                thisEmpTimesheets = dc.timesheets.Where(x => ((x.EmpID == eid) & (x.payrollcycle.PayrollCycleYear.ToString() == year)) ).ToList();
+
+                //Get all this employee's timesheets for the selected year , order by newest first in the list and oldest last in the list.
+                thisEmpTimesheets = dc.timesheets.Where(x => ((x.EmpID == eid) & (x.payrollcycle.PayrollCycleYear.ToString() == year)) ).OrderByDescending(x=> x.payrollcycle.PayrollCycleStart).ToList();
 
                 if (thisEmpTimesheets.Any() == false)
                 {
@@ -37,6 +41,12 @@ namespace GrizzTime.Controllers
                     TempData["message"] = "How could it have come to this??";
                     return View();
                 }
+
+                string latest = thisEmpTimesheets.First().payrollcycle.PayrollCycleStart.ToShortDateString();
+                string earliest = thisEmpTimesheets.Last().payrollcycle.PayrollCycleStart.ToShortDateString();
+
+                ViewBag.earliest = earliest;
+                ViewBag.latest = latest;
 
                 decimal totalHours = 0;
                 decimal totalEarned = 0;
@@ -47,9 +57,6 @@ namespace GrizzTime.Controllers
                     totalEarned += item.TimeSheetTotalAmt;
                 }
 
-
-
-
                 //------------------------------------------------------------------------
                 Employee viewEmpInv = new Employee()
                 {
@@ -59,7 +66,11 @@ namespace GrizzTime.Controllers
                     UserEmail = emp.UserEmail,
                     EmpPhone = emp.EmpPhone,
                     UserID = emp.UserID,
-                    SupervisorID = emp.SupervisorID,
+                    Supervisor = new Employee() { UserID = emp.employee2.UserID, 
+                                                    EmpPhone = emp.employee2.EmpPhone, 
+                                                    EmpFName = emp.employee2.EmpFName, 
+                                                    EmpLName = emp.employee2.EmpLName, 
+                                                    UserEmail = emp.employee2.UserEmail },               
                     YearTotalEarned = totalEarned,
                     YearTotalHours = totalHours,
                     //Below contains all the individual totals and data for this employee's projects and tasks
@@ -73,6 +84,12 @@ namespace GrizzTime.Controllers
 
                 return View(viewEmpInv);
             }
+        }
+
+        [HttpGet]
+        public ActionResult EmployeeInvoice_Print(int? eid, string year)
+        {
+            return EmployeeInvoice(eid, year);
         }
 
         public ActionResult ProjectInvoice(int pid)

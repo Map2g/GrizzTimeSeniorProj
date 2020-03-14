@@ -46,6 +46,8 @@ namespace GrizzTime.ViewModels
 
         public int SupervisorID { get; set; }
 
+        public Employee Supervisor { get; set; }
+
         [Display(Name = "Supervisor")]
         //[Required(ErrorMessage = "This field is required. ")]
         public string SupervisorName { get; set; }
@@ -205,6 +207,7 @@ namespace GrizzTime.ViewModels
                                 {
                                     TaskID = workitem.TaskID,
                                     TaskName = workitem.task.TaskName,
+                                    BillableRate = (decimal) workitem.task.BillableRate,
                                     EmpTaskAmt = (workitem.WorkHours * (decimal)workitem.task.BillableRate),
                                     EmpTaskHours = workitem.WorkHours
                                 });
