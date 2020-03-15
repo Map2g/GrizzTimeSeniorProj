@@ -554,30 +554,6 @@ namespace GrizzTime.Controllers
             return View(thisBusinessEmployee);
         }
 
-        public ActionResult MyProjects()
-        {
-            if (Request.Cookies["UserID"].Value == null)
-            {
-                //Redirect to login if it can't find user id
-                TempData["message"] = "Please log in.";
-                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
-                return RedirectToAction("LandingPage", "Home");
-            }
-
-            int id = Int32.Parse(Request.Cookies["UserID"].Value);
-            List<Project> theseProjects = Project.BusProjList(id);
-
-            //string query = "SELECT * FROM grizztime.project " +
-            //                "INNER JOIN grizztime.employee ON grizztime.project.ProjManID = grizztime.employee.UserID " +
-            //                    "WHERE ConID = (SELECT ConID FROM grizztime.contract WHERE BusID = @id)";
-            //Entities dc = new Entities();
-
-            //IEnumerable<project> thisBusinessProject = dc.Database.SqlQuery<project>.(query, new SqlParameter("@id", id));
-
-            return View(theseProjects);
-
-        }
-
         [NonAction]
         public bool IsEmailExist(string emailID)
         {

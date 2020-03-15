@@ -20,6 +20,8 @@ namespace GrizzTime.ViewModels
         [Display(Name = "Billable Rate")]
         public decimal BillableRate { get; set; }
 
+        public Project BelongsToProject { get; set; }
+
         //---------To be used in Employee Invoice-------------------
         public decimal EmpTaskHours { get; set; }
 

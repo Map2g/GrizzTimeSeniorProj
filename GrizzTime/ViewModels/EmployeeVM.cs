@@ -173,7 +173,7 @@ namespace GrizzTime.ViewModels
                                       join q in dc.projects
                                       on p.ProjID equals q.ProjID
                                       where e.UserID == id
-                                      select new { q.ProjName, q.ProjID, q.contract, q.workentries1, q.employee, q.ProjStartDate }
+                                      select new { q.ProjName, q.ProjDesc, q.ProjID, q.contract, q.workentries1, q.employee, q.ProjStartDate, q.ProjEndDate, q.ProjStatus }
                             ).ToList();
                 
                 List<Project> tryIt = new List<Project>();               
@@ -230,7 +230,10 @@ namespace GrizzTime.ViewModels
                         EmpTotalHr = projectHours,
                         EmpTotalAmt = projectAmt,
                         ProjStartDate = item.ProjStartDate,
-                        EmpProjTask = taskView
+                        ProjEndDate = item.ProjEndDate,
+                        ProjStatus = item.ProjStatus,
+                        EmpProjTask = taskView,
+                        ProjDesc = item.ProjDesc
                     });
                 }
                 return tryIt;

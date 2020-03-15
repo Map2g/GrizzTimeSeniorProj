@@ -306,7 +306,7 @@
     <Content Include="admin-lte\js\demo.js" />
     <Content Include="admin-lte\js\pages\dashboard.js" />
     <Content Include="admin-lte\js\pages\dashboard2.js" />
-    <Content Include="assets\css\AdminLTE.min.css" />
+    <Content Include="assets\css\AdminLTE.min_notusing.css" />
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\Fontes.css" />
@@ -314,9 +314,9 @@
     <Content Include="assets\css\skin-blue.css" />
     <Content Include="assets\css\skin-blue.min.css" />
     <Content Include="assets\css\EmpDashboardStyle.css" />
-    <Content Include="assets\css\StyleSheet1.css" />
+    <Content Include="assets\css\AdminLTE.min.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\img\defaultuser.jpg" />
+    <Content Include="assets\img\defaultuser.png" />
     <Content Include="assets\js\AdminLTE.js" />
     <Content Include="assets\js\app.min.js" />
     <Content Include="assets\js\bootstrap.bundle.min.js" />
@@ -646,6 +646,7 @@
     <Content Include="assets\plugins\fontawesome-free\webfonts\fa-solid-900.woff" />
     <Content Include="assets\plugins\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="assets\plugins\icheck-bootstrap\LICENSE" />
+    <Content Include="assets\css\_info-box.scss" />
     <None Include="Properties\PublishProfiles\GrizzTime - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -694,7 +695,6 @@
     <Content Include="Views\Contract\Create.cshtml" />
     <Content Include="Views\Business\MyContracts.cshtml" />
     <Content Include="Views\Business\MyEmployees.cshtml" />
-    <Content Include="Views\Business\MyProjects.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Delete.cshtml" />
     <Content Include="Views\Contract\Edit.cshtml" />
@@ -722,6 +722,8 @@
     <Content Include="Views\Employee\ResetPassword.cshtml" />
     <Content Include="Views\Invoice\EmployeeInvoice.cshtml" />
     <Content Include="Views\Invoice\EmployeeInvoice_print.cshtml" />
+    <Content Include="Views\Project\EditTask.cshtml" />
+    <Content Include="Views\Home\MyProjects.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

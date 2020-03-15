@@ -17,11 +17,6 @@
             </a>
         </li>
         <li style="@(Role == "Business"? "display:block" : "display:none")">
-            <a href="@(Url.Action("MyProjects","Business" ))">
-                <i class="fa fa-tasks"></i><span>View my Projects</span>
-            </a>
-        </li>
-        <li style="@(Role == "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("MyContracts","Business" ))">
                 <i class="fa fa-suitcase"></i><span>View my Contracts</span>
             </a>
@@ -31,6 +26,11 @@
         <li style="@(Role != "Business"? "display:block" : "display:none")">
             <a href="@(Url.Action("Dashboard","Employee" ))">
                 <i class="fa fa-home"></i><span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="@(Url.Action("MyProjects","Home" ))">
+                <i class="fa fa-tasks"></i><span>My Projects</span>
             </a>
         </li>
         <li style="@(Role != "Business"? "display:block" : "display:none")">
