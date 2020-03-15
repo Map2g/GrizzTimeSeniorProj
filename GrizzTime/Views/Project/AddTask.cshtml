@@ -43,17 +43,6 @@
     </div>
 }
 
-@*Displays alert message telling user how the operation went.*@
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewBag.Message");
-        };
-    </script>
-}
-
-
 <div class="db-Row-Button-Box">
     <a href="@Request.UrlReferrer">
         <div class="small-button">

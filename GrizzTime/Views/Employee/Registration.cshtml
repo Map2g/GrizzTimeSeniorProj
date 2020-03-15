@@ -6,7 +6,7 @@
     Layout = null;
 }
 
-    <link rel="stylesheet" href="~/StyleSheet.css" />
+<link rel="stylesheet" href="~/StyleSheet.css" />
 
 @using (Html.BeginForm())
 {
@@ -79,14 +79,23 @@
         </div>
     </div>
 }
+
+
+
+<div>
+    <p><a href="/home/index">Back to Home &raquo;</a></p>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
-
-    <div>
-        <p><a href="/home/index">Back to Home &raquo;</a></p>
-    </div>
-
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+@*Displays alert message telling user how the operation went.*@
+@if (@TempData["message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["message"]");
+        };
+    </script>
+}

@@ -28,6 +28,11 @@ namespace GrizzTime.ViewModels
         [DataType(DataType.Password)]
         public string UserPW { get; set; }
 
+        [DataType("Password")]
+        [System.ComponentModel.DataAnnotations.Compare("UserPW", ErrorMessage = "The passwords do not match.")]
+        [Required(ErrorMessage = "Confirm password is required. ")]
+        public string ConfirmPassword { get; set; }
+
         [Display(Name = "Business Name")]
         [Required(ErrorMessage = "Business name is required. ")]
         public string BusName { get; set; }

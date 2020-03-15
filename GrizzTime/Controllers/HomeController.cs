@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Data;
+using GrizzTime.ViewModels;
+using GrizzTime.Models;
 
 namespace GrizzTime.Controllers
 {
@@ -49,17 +51,41 @@ namespace GrizzTime.Controllers
         }
 
         public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
+        {         
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
+        }
+
+        public ActionResult MyProjects()
+        {
+            if (Request.Cookies["UserID"].Value == null)
+            {
+                //Redirect to login if it can't find user id
+                TempData["message"] = "Please log in.";
+                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+                return RedirectToAction("LandingPage", "Home");
+            }
+
+            int id = Int32.Parse(Request.Cookies["UserID"].Value);
+            Entities dc = new Entities();
+
+            List<Project> theseProjects;
+            if (dc.businesses.Where(x => x.UserID == id).Any()){
+                theseProjects = Project.BusProjList(id);
+                ViewBag.isBusiness = true;
+            }
+            else
+            {
+                theseProjects = Project.PMProjList(id);
+                theseProjects.AddRange(Employee.GetProjects(id));
+                ViewBag.isBusiness = false;
+            }          
+
+            return View(theseProjects);
         }
 
         private void ExpireAllCookies()

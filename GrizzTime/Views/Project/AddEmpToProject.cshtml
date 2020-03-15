@@ -46,7 +46,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
+        <div class="form-group">
             <div class="col-md-3">
                 @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label" })
             </div>
@@ -64,17 +64,6 @@
     </div>
 }
 
-@*Displays alert message telling user how the operation went.*@
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewBag.Message");
-        };
-    </script>
-}
-
-
 <div class="db-Row-Button-Box">
     <a href="@Request.UrlReferrer">
         <div class="small-button">
@@ -86,3 +75,13 @@
         </div>
     </a>
 </div>
+
+@*Displays alert message telling user how the operation went.*@
+@if (@TempData["message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["message"]");
+        };
+    </script>
+}

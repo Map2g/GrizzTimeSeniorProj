@@ -50,6 +50,13 @@
                     <input type="submit" value="Login" class="btn btn-default" />
                 </div>
             </div>
+
+            <div class="form-group">
+                <a href="/business/forgotpassword" style="color:aliceblue">
+                    Forgot password?
+                </a>
+            </div>
+
         </div>
     </div>
 
@@ -91,14 +98,16 @@
 }
 
 <div>
-    <p><a href="/home/index">Back to Home &raquo;</a></p>
+    <p><a href="/home/landingpage">Back to Home &raquo;</a></p>
 </div>
 
-@if (ViewBag.Message != null)
+@*Displays alert message telling user how the operation went.*@
+@if (@TempData["message"] != null)
 {
     <script type="text/javascript">
+
         window.onload = function () {
-            alert("@ViewBag.Message");
+            alert("@TempData["message"]");
         };
     </script>
 }

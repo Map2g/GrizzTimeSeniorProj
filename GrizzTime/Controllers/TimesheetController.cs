@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 
 namespace GrizzTime.Controllers
 {
+    [Authorize]
     public class TimesheetController : Controller
     {
         // GET: Timesheet
@@ -20,7 +21,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -52,14 +53,14 @@ namespace GrizzTime.Controllers
 
 
                     message = "New Timesheet and payroll cycle created.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("Week", "Timesheet", new { id = tsID });
                 }
             }
             else
             {
                 message = "Something messed up.";
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 return RedirectToAction("Week");
             }
             
@@ -73,15 +74,15 @@ namespace GrizzTime.Controllers
 
         // View: All weeks for this employee Timesheet
         [HttpGet]
-        public ActionResult List(string m)
+        public ActionResult List()
         {
-            string message = m;
+            string message;
 
             if (!Request.Cookies.AllKeys.Contains("UserID"))
             {
                 //Redirect to login if it can't find user id
                 message = "Please log in.";
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -91,26 +92,25 @@ namespace GrizzTime.Controllers
                 IEnumerable<timesheet> thisEmployeeTimesheet;
                 Entities dc = new Entities();
                 
-                    int id = Int32.Parse(Request.Cookies["UserID"].Value);
-                    thisEmployeeTimesheet = dc.timesheets.Where(x => x.EmpID == id).OrderByDescending(p=>p.payrollcycle.PayrollCycleStart).ToList();               
+                int id = Int32.Parse(Request.Cookies["UserID"].Value);
+                thisEmployeeTimesheet = dc.timesheets.Where(x => x.EmpID == id).OrderByDescending(p=>p.payrollcycle.PayrollCycleStart).ToList();               
 
-                    if (thisEmployeeTimesheet.Any() == false)
-                    {
-                        message = "You don't have any timesheets yet!";
-                        ViewBag.Message = message;
-                        return View();
-                    }
-                    else
-                    {
-                        ViewBag.Message = message;
-                        return View(thisEmployeeTimesheet);
-                    }
+                if (thisEmployeeTimesheet.Any() == false)
+                {
+                    message = "You don't have any timesheets yet.";
+                    TempData["message"] = message;
+                    return View();
+                }
+                else
+                {
+                    return View(thisEmployeeTimesheet);
+                }
                 
             }
             catch (Exception ex)
             {
                 message = "something happened";
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 return View();
                 throw ex;
             }
@@ -124,7 +124,7 @@ namespace GrizzTime.Controllers
             //if (!Response.Cookies.AllKeys.Contains("UserID"))
             //{
             //    //Redirect to login if it can't find user id
-            //    ViewBag.Message = "Please log in.";
+            //    TempData["message"] = "Please log in.";
             //    System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
             //    return RedirectToAction("LandingPage", "Home");
             //}
@@ -148,7 +148,7 @@ namespace GrizzTime.Controllers
             timesheet ts = dc.timesheets.Find(id);   
             
             //disable edit buttons
-            if (ts.TimeSheetStatus != "In Progress")
+            if ((ts.TimeSheetStatus != "In Progress") & (ts.TimeSheetStatus != "Denied"))
             {
                 bool changeable = false;
                 ViewBag.IsChangeable = changeable;
@@ -172,12 +172,11 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
 
-            var message = "";
             ViewBag.IsExist = false;
             ViewBag.TimeSheetID = (int) tid;
             ViewBag.UserID = Int32.Parse(Request.Cookies["UserID"].Value);
@@ -194,11 +193,12 @@ namespace GrizzTime.Controllers
                 if (DOW != null) 
                 {
                     ViewBag.DayOfWeek = DOW;
+                    ViewBag.IsChangeable = true;
                     return View();              
                 }
                 else
                 {                                     
-                    message = "Date of week not captured.";
+                    TempData["message"] = "Date of week not captured.";
                     return HttpNotFound();
                 }
             }
@@ -208,7 +208,7 @@ namespace GrizzTime.Controllers
                 ViewBag.IsChangeable = true;              
 
                 timesheet ts = dc.timesheets.Find(tid);
-                if (ts.TimeSheetStatus != "In Progress")
+                if ((ts.TimeSheetStatus != "In Progress") & (ts.TimeSheetStatus != "Denied"))
                 {
                     bool changeable = false;
                     ViewBag.IsChangeable = changeable;
@@ -225,7 +225,7 @@ namespace GrizzTime.Controllers
                     TimeSheetID = w.TimeSheetID,
                     WorkEntryID = w.WorkEntryID,  
                     ProjID = w.ProjID,
-                    TaskID = w.TaskID,                   
+                    TaskID = w.TaskID
                 };
                 ViewBag.DayOfWeek = thisWE.WorkDate;
                 return View(thisWE);
@@ -240,12 +240,12 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
 
-            string message = "";
+            string message;
             ViewBag.IsExist = false;
             ViewBag.TimeSheetID = (int)tid;
             ViewBag.UserID = Int32.Parse(Request.Cookies["UserID"].Value);
@@ -256,6 +256,7 @@ namespace GrizzTime.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
+
                 timesheet ts = dc.timesheets.Find(tid);
 
                 GrizzTime.Models.workentry we = dc.workentries.FirstOrDefault(p => p.WorkEntryID == wid);
@@ -285,16 +286,30 @@ namespace GrizzTime.Controllers
                         TaskID = w.TaskID,
                     };
 
+                    if (ts.TimeSheetStatus == "Denied")
+                        ts.TimeSheetStatus = "In Progress";
+
                     //add try catch
                     dc.SaveChanges();
 
-                    ViewBag.Message = "Successfully saved.";
+                    TempData["message"] = "Successfully saved.";
                     //return View(thisWE);
                     return Redirect("Week/" + tid);
                 }
                 else //edit existing
                 {
                     ViewBag.IsExist = true;
+                    ViewBag.IsChangeable = true;
+
+                    if ((ts.TimeSheetStatus != "In Progress") & (ts.TimeSheetStatus != "Denied"))
+                    {
+                        bool changeable = false;
+                        ViewBag.IsChangeable = changeable;
+                    }
+
+                    if (ts.TimeSheetStatus == "Denied")
+                        ts.TimeSheetStatus = "In Progress";
+
                     we.WorkHours = thisDay.WorkHours;
                     we.ProjID = thisDay.ProjID;
                     we.TaskID = thisDay.TaskID;
@@ -312,12 +327,13 @@ namespace GrizzTime.Controllers
                         TaskID = we.TaskID,
                     };
 
+                    //dc.Entry(ts).State = System.Data.Entity.EntityState.Modified;
                     dc.Entry(we).State = System.Data.Entity.EntityState.Modified;
                     try
                     {
                         dc.SaveChanges();
                         message = "Time updated successfully.";
-                        ViewBag.Message = message;
+                        TempData["message"] = message;
 
                         //return View(thisWE);
                         return Redirect("Week/"+ tid );
@@ -357,7 +373,7 @@ namespace GrizzTime.Controllers
             if (ts.TimeSheetStatus != "In Progress")
             {
                 TempData["message"] = "Timesheet already submitted!";
-                return RedirectToAction("List");
+                return Redirect("List");
             }
 
             ts.TimeSheetStatus = "Pending";
@@ -501,7 +517,8 @@ namespace GrizzTime.Controllers
 
                 int id = Int32.Parse(Request.Cookies["UserID"].Value);
                 //employee.employee2 is submitting employee's supervisor
-                pendingApprovals = dc.timesheets.Where(x => x.employee.employee2.UserID == id && x.TimeSheetStatus == "Pending").OrderByDescending(p => p.payrollcycle.PayrollCycleStart).ToList();
+                //pendingApprovals = dc.timesheets.Where(x => x.employee.employee2.UserID == id && x.TimeSheetStatus == "Pending").OrderByDescending(p => p.payrollcycle.PayrollCycleStart).ToList();
+                pendingApprovals = dc.timesheets.Where(x => x.employee.employee2.UserID == id & x.TimeSheetStatus != "In Progress").OrderByDescending(p => p.payrollcycle.PayrollCycleStart).ToList();
 
                 if (pendingApprovals.Any() == false)
                 {

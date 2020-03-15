@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
@@ -162,6 +163,7 @@
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BusinessVM.cs" />
+    <Compile Include="ViewModels\TaskVM.cs" />
     <Compile Include="ViewModels\TimesheetVM.cs" />
     <Compile Include="ViewModels\ContractVM.cs" />
     <Compile Include="ViewModels\ProjectVM.cs" />
@@ -304,21 +306,25 @@
     <Content Include="admin-lte\js\demo.js" />
     <Content Include="admin-lte\js\pages\dashboard.js" />
     <Content Include="admin-lte\js\pages\dashboard2.js" />
-    <Content Include="assets\css\AdminLTE.min.css" />
+    <Content Include="assets\css\AdminLTE.min_notusing.css" />
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\Fontes.css" />
     <Content Include="assets\css\please-wait.css" />
     <Content Include="assets\css\skin-blue.css" />
     <Content Include="assets\css\skin-blue.min.css" />
+    <Content Include="assets\css\EmpDashboardStyle.css" />
+    <Content Include="assets\css\AdminLTE.min.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\img\defaultuser.jpg" />
+    <Content Include="assets\img\defaultuser.png" />
     <Content Include="assets\js\AdminLTE.js" />
     <Content Include="assets\js\app.min.js" />
+    <Content Include="assets\js\bootstrap.bundle.min.js" />
     <Content Include="assets\js\bootstrap.min.js" />
     <Content Include="assets\js\demo.js" />
     <Content Include="assets\js\html5shiv.min.js" />
     <Content Include="assets\js\jquery.js" />
+    <Content Include="assets\js\jquery.min.js" />
     <Content Include="assets\js\jquery.validate.min.js" />
     <Content Include="assets\js\jquery.validate.unobtrusive.min.js" />
     <Content Include="assets\js\modernizr.js" />
@@ -512,6 +518,25 @@
     <Content Include="assets\plugins\datatables\jquery.dataTables_themeroller.css" />
     <Content Include="assets\plugins\fastclick\fastclick.js" />
     <Content Include="assets\plugins\fastclick\fastclick.min.js" />
+    <Content Include="assets\plugins\fontawesome-free\css\all.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\all.min.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\brands.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\brands.min.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\fontawesome.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\fontawesome.min.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\regular.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\regular.min.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\solid.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\solid.min.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\svg-with-js.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\svg-with-js.min.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\v4-shims.css" />
+    <Content Include="assets\plugins\fontawesome-free\css\v4-shims.min.css" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-brands-400.svg" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-regular-400.svg" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-solid-900.svg" />
+    <Content Include="assets\plugins\icheck-bootstrap\icheck-bootstrap.css" />
+    <Content Include="assets\plugins\icheck-bootstrap\icheck-bootstrap.min.css" />
     <Content Include="assets\plugins\iCheck\flat\blue%402x.png" />
     <Content Include="assets\plugins\iCheck\flat\blue.css" />
     <Content Include="assets\plugins\iCheck\flat\blue.png" />
@@ -554,6 +579,7 @@
     <Content Include="Content\tether\tether-theme-basic.min.css" />
     <Content Include="Content\tether\tether.css" />
     <Content Include="Content\tether\tether.min.css" />
+    <Content Include="emailTemplates\forgotpassword.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -607,6 +633,20 @@
     <Content Include="assets\fonts\fontawesome-webfont.woff" />
     <Content Include="assets\fonts\fontawesome-webfont.ttf" />
     <Content Include="assets\fonts\fontawesome-webfont.eot" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-brands-400.eot" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-brands-400.ttf" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-brands-400.woff" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-brands-400.woff2" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-regular-400.eot" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-regular-400.ttf" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-regular-400.woff" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-regular-400.woff2" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-solid-900.eot" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-solid-900.ttf" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-solid-900.woff" />
+    <Content Include="assets\plugins\fontawesome-free\webfonts\fa-solid-900.woff2" />
+    <Content Include="assets\plugins\icheck-bootstrap\LICENSE" />
+    <Content Include="assets\css\_info-box.scss" />
     <None Include="Properties\PublishProfiles\GrizzTime - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -655,7 +695,6 @@
     <Content Include="Views\Contract\Create.cshtml" />
     <Content Include="Views\Business\MyContracts.cshtml" />
     <Content Include="Views\Business\MyEmployees.cshtml" />
-    <Content Include="Views\Business\MyProjects.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Delete.cshtml" />
     <Content Include="Views\Contract\Edit.cshtml" />
@@ -677,6 +716,14 @@
     <Content Include="Views\Business\Details.cshtml" />
     <Content Include="Views\Timesheet\PendingApprovals.cshtml" />
     <Content Include="Views\Contract\Details.cshtml" />
+    <Content Include="Views\Employee\ForgotPassword.cshtml" />
+    <Content Include="Views\Business\ForgotPassword.cshtml" />
+    <Content Include="Views\Business\ResetPassword.cshtml" />
+    <Content Include="Views\Employee\ResetPassword.cshtml" />
+    <Content Include="Views\Invoice\EmployeeInvoice.cshtml" />
+    <Content Include="Views\Invoice\EmployeeInvoice_print.cshtml" />
+    <Content Include="Views\Project\EditTask.cshtml" />
+    <Content Include="Views\Home\MyProjects.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

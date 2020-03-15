@@ -13,7 +13,7 @@ using GrizzTime.Models;
 using GrizzTime.ViewModels;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
-
+using System.IO;
 
 namespace GrizzTime.Controllers
 {
@@ -90,6 +90,139 @@ namespace GrizzTime.Controllers
 
             ViewBag.Message = message;
             return RedirectToAction("Dashboard");
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword(string UserEmail)
+        {
+
+            //Email already exists
+            var isExist = IsEmailExist(UserEmail);
+            if (isExist)
+            {
+                using (Entities dc = new Entities())
+                {
+                    var bus = dc.businesses.Where(a => a.UserEmail == UserEmail).FirstOrDefault();
+
+                    if (bus == null)
+                    {
+                        TempData["message"] = "Something went wrong with SQL query.";
+                        return View();
+                    }
+
+                    ForgotPasswordEmail(UserEmail, bus.UserID);
+                    TempData["message"] = "An email was sent to " + UserEmail + ". Please check your email.";
+                }
+            }
+            else
+            {
+                TempData["message"] = "There is no account registered with that email address!";
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword(int? id)
+        {
+            using (Entities dc = new Entities())
+            {
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                business business = dc.businesses.Find(id);
+                Business viewBus = new Business()
+                {
+                    UserEmail = business.UserEmail,
+                    BusName = business.BusName,
+                };
+
+                if (business == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(viewBus);
+            }
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ResetPassword(Business thisBus, int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            string message = "";
+
+            //Don't check include in validation check
+            ModelState.Remove("UserEmail");
+            ModelState.Remove("BusName");
+            ModelState.Remove("BusDesc");
+            ModelState.Remove("BusAddress");
+
+            if (ModelState.IsValid)
+            {
+
+                using (Entities dc = new Entities())
+                {
+                    GrizzTime.Models.business bus = dc.businesses.FirstOrDefault(p => p.UserID == id);
+                    if (thisBus == null)
+                        return HttpNotFound();
+
+                    bus.UserPW = Hash(thisBus.UserPW);
+
+                    dc.Entry(bus).State = System.Data.Entity.EntityState.Modified;
+                    try
+                    {
+                        dc.SaveChanges();
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        Exception exception = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
+
+                                //create a new exception inserting the current one
+                                //as the InnerException
+                                exception = new InvalidOperationException(message1, exception);
+                            }
+                        }
+                        throw exception;
+                    }
+
+                }
+                TempData["message"] = "Success! Please log in.";
+                return RedirectToAction("Login", "Business");
+            }
+            else
+            {
+                message = "Couldn't complete request.";
+            }
+
+            //SendVerificationEMail(thisEmp.UserEmail);
+            TempData["message"] = message;
+            return View(thisBus);
         }
 
         public ActionResult Dashboard()
@@ -371,7 +504,7 @@ namespace GrizzTime.Controllers
                 if (business == null)
                 {
                     message = "Business not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("Details");
                 }
 
@@ -379,7 +512,7 @@ namespace GrizzTime.Controllers
                 dc.SaveChanges();
                 message = "Business successfully deleted.";
             }
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return View("Details");
         }
 
@@ -388,7 +521,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -406,7 +539,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -421,30 +554,6 @@ namespace GrizzTime.Controllers
             return View(thisBusinessEmployee);
         }
 
-        public ActionResult MyProjects()
-        {
-            if (Request.Cookies["UserID"].Value == null)
-            {
-                //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
-                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
-                return RedirectToAction("LandingPage", "Home");
-            }
-
-            int id = Int32.Parse(Request.Cookies["UserID"].Value);
-            List<Project> theseProjects = Project.BusProjList(id);
-
-            //string query = "SELECT * FROM grizztime.project " +
-            //                "INNER JOIN grizztime.employee ON grizztime.project.ProjManID = grizztime.employee.UserID " +
-            //                    "WHERE ConID = (SELECT ConID FROM grizztime.contract WHERE BusID = @id)";
-            //Entities dc = new Entities();
-
-            //IEnumerable<project> thisBusinessProject = dc.Database.SqlQuery<project>.(query, new SqlParameter("@id", id));
-
-            return View(theseProjects);
-
-        }
-
         [NonAction]
         public bool IsEmailExist(string emailID)
         {
@@ -456,18 +565,19 @@ namespace GrizzTime.Controllers
             }
         }
 
+        //Does not send link?
         [NonAction]
         public void SendVerificationEMail(string email)
         {
-            var verifyUrl = "/employee/registration/";
-            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+            //var verifyUrl = "/employee/registration/";
+            //var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
             var toEmail = new MailAddress(email);
             var fromEmailPassword = "WinterSemester";
             string subject = "Your account hase been succesfully created!";
 
-            string body = "Congratulations, your business account has been created! GrizzTime Senior Project testing.";
+            string body = "Congratulations, your business account has been created!";
 
             var smtp = new SmtpClient
             {
@@ -490,10 +600,10 @@ namespace GrizzTime.Controllers
         [NonAction]
         public void SendRegistrationEMail(string email, int employeeId)
         {
-            var completeRegister = "/employee/registration/" + employeeId.ToString();
+            var completeRegister = Url.Action("ResetPassword", "Employee", new { id = employeeId});/*"/employee/registration/" + employeeId.ToString();*/
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, completeRegister);
 
-            var fromEmail = new MailAddress("grizztimenotification@gmail.com");
+            var fromEmail = new MailAddress("grizztimenotification@gmail.com", "GrizzTime Do Not Reply");
             var toEmail = new MailAddress(email);
             var fromEmailPassword = "WinterSemester";
             string subject = "Your account has been succesfully created!";
@@ -516,6 +626,48 @@ namespace GrizzTime.Controllers
                 IsBodyHtml = true
             })
                 smtp.Send(message);
+        }
+
+        [NonAction]
+        public void ForgotPasswordEmail(string email, int businessId)
+        {
+            var completeRegister = "/business/ResetPassword/" + businessId.ToString();
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, completeRegister);
+
+            var fromEmail = new MailAddress("grizztimenotification@gmail.com", "GrizzTime Do Not Reply");
+            var toEmail = new MailAddress(email);
+            var fromEmailPassword = "WinterSemester";
+            string subject = "Reset Your Password";
+
+            string body = PopulateBody(link);
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
+            };
+            using (var message = new MailMessage(fromEmail, toEmail)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            })
+                smtp.Send(message);
+        }
+
+        private string PopulateBody(string link)
+        {
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/emailTemplates/forgotpassword.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{Link}", link);
+            return body;
         }
 
         public static string Hash(string value)

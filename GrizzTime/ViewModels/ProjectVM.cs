@@ -21,6 +21,7 @@ namespace GrizzTime.ViewModels
         public string ProjDesc { get; set; }
 
         [Display(Name = "Start Date: ")]
+        [DisplayFormat(DataFormatString ="{0:d}")]
         [Required(ErrorMessage = "This field is required. ")]
         public DateTime ProjStartDate { get; set; }
 
@@ -33,6 +34,8 @@ namespace GrizzTime.ViewModels
         [Display(Name = "Belongs to: ")]
         [Required(ErrorMessage = "This field is required. ")]
         public string ConID { get; set; }
+
+        public Contract Contract { get; set; }
 
         //Project manager incharge of this
         [Display(Name = "Project Manager: ")]
@@ -47,6 +50,24 @@ namespace GrizzTime.ViewModels
 
         [Display(Name = "Mark as ended: ")]
         public bool IsEnded { get; set; }
+
+        //User Id of the Business account that owns this project
+        public int BusID { get; set; }
+
+        //-------Used in employee invoices, should be individual to one employee when created------
+        public decimal EmpTotalHr { get; set; }
+
+        public decimal EmpTotalAmt { get; set; }
+
+        public List<Task> EmpProjTask { get; set; }
+
+        //------------------------------------------------------------------------------------------
+
+        //-------------Project timesheet totals-----------------------------------------------------
+        public decimal ProjTotalHr { get; set; }
+
+
+        //------------------------------------------------------------------------------------------
 
         //Gets all the projects belonging to a specific contract.
         public static List<SelectListItem> ConProjList(string id)
@@ -146,10 +167,12 @@ namespace GrizzTime.ViewModels
 
         }
 
+        //Gets all projects belonging to project manager
         public static List<Project> PMProjList(int id)
         {
             using (Entities dc = new Entities())
             {
+                employee projman = dc.employees.Find(id);
                 //get projects for this project manager
                 var thisPMProjects = (from p in dc.projects
                                       join c in dc.contracts
@@ -171,6 +194,7 @@ namespace GrizzTime.ViewModels
                         ContractName = item.ConName,
                         ProjStatus = item.ProjStatus,
                         ProjID = item.ProjID,
+                        ProjManName = projman.EmpFName + " " + projman.EmpLName,
                     });
                 }
                 return tryIt;

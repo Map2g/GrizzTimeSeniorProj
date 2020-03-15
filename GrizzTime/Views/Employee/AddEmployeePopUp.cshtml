@@ -39,12 +39,12 @@
                 <div class="col-xs-12">
 
                     @*<div class="small-button" id="btnShowModal" type="button">
-                        <span>
-                            <h2>
-                                Add Employee
-                            </h2>
-                        </span>
-                    </div>*@
+                            <span>
+                                <h2>
+                                    Add Employee
+                                </h2>
+                            </span>
+                        </div>*@
 
                     <div class="modal fade" tabindex="-1" id="loginModal" data-keyboard="false" data-backdrop="static">
                         <div class="modal-dialog modal-lg">
@@ -57,61 +57,61 @@
                                 </div>
                                 @using (Html.BeginForm())
                                 {
-                            <div class="modal-body">
+                                    <div class="modal-body">
 
-                                @Html.AntiForgeryToken()
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                <div class="form-group">
-                                    @Html.Label("First Name:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.EmpFName, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.EmpFName, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            @Html.Label("First Name:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.EmpFName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.EmpFName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label("Last Name:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.EmpLName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.EmpLName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label("Email Address:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+                                                @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label("Phone Number:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.EmpPhone, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.EmpPhone, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label("Job Title:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownListFor(model => model.EmpType, Employee.JobTypes, "--Select--", new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.EmpType, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label("Supervisor:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownListFor(model => model.SupervisorID, supervisorList, "--Select--", new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.SupervisorID, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
                                     </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.Label("Last Name:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.EmpLName, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.EmpLName, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.Label("Email Address:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
-                                        @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.Label("Phone Number:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.EmpPhone, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.EmpPhone, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.Label("Job Title:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.EmpType, Employee.JobTypes, "--Select--", new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.EmpType, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.Label("Supervisor:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.SupervisorID, supervisorList, "--Select--", new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.SupervisorID, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                            </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary button button4">Add</button>
                                         <button type="button" id="btnHideModal" class="btn btn-primary button button4">
@@ -131,31 +131,31 @@
 </div>
 
 @*Displays alert message telling user how the operation went.*@
-@if (ViewBag.Message != null)
+@if (@TempData["message"] != null)
 {
     <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewBag.Message");
+            window.onload = function () {
+            alert(@TempData["message"]);
         };
     </script>
 }
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
 
-</script>
-<script src="scripts/bootstrap.min.js"></script>
+        </script>
+        <script src="scripts/bootstrap.min.js"></script>
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-    $(document).ready(function () {
-        $("#btnShowModal").click(function () {
-            $("#loginModal").modal('show');
-        });
+            $(document).ready(function () {
+                $("#btnShowModal").click(function () {
+                    $("#loginModal").modal('show');
+                });
 
-        $("#btnHideModal").click(function () {
-            $("#loginModal").modal('hide');
-        });
-    });
+                $("#btnHideModal").click(function () {
+                    $("#loginModal").modal('hide');
+                });
+            });
 
-</script> 
+        </script> 

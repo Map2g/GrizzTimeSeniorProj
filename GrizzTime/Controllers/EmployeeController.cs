@@ -13,6 +13,7 @@ using GrizzTime.Models;
 using System.Text;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace GrizzTime.Controllers
 {
@@ -86,8 +87,46 @@ namespace GrizzTime.Controllers
                 }
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return RedirectToAction("Dashboard");
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword(string UserEmail)
+        {
+
+            //Email already exists
+            var isExist = IsEmailExist(UserEmail);
+            if (isExist)
+            {
+                using (Entities dc = new Entities())
+                {
+                    var emp = dc.employees.Where(a => a.UserEmail == UserEmail).FirstOrDefault();
+
+                    if (emp == null)
+                    {
+                        TempData["message"] = "Something went wrong with SQL query.";
+                        return View();
+                    }
+
+                    ForgotPasswordEmail(UserEmail, emp.UserID);
+                    TempData["message"] = "An email was sent to " + UserEmail + ". Please check your email.";
+                }
+            }
+            else
+            {
+                TempData["message"] = "There is no account registered with that email address!";
+            }
+            
+            return View();
         }
 
         public ActionResult Dashboard()
@@ -96,7 +135,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -135,7 +174,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find business id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -201,7 +240,7 @@ namespace GrizzTime.Controllers
                 message = "Invalid Request";
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
 
             return View(thisEmp);
@@ -209,7 +248,7 @@ namespace GrizzTime.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Registration(int? id)
+        public ActionResult ResetPassword(int? id)
         {
             using (Entities dc = new Entities())
             {
@@ -220,7 +259,7 @@ namespace GrizzTime.Controllers
                 }
 
                 employee employee = dc.employees.Find(id);
-             Employee viewEmp = new Employee()
+                Employee viewEmp = new Employee()
                 {
                     UserEmail = employee.UserEmail,
                     EmpFName = employee.EmpFName,
@@ -241,14 +280,13 @@ namespace GrizzTime.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Registration(Employee thisEmp, int? id)
+        public ActionResult ResetPassword(Employee thisEmp, int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            bool Status = false;
             string message = "";
 
             //Don't check include in validation check
@@ -295,17 +333,16 @@ namespace GrizzTime.Controllers
                     }
                    
                 }
-                message = "Registration complete! An email has been sent to you to confirm your registration!";
-                Status = true;
+                TempData["message"] = "Success! Please log in.";
+                return RedirectToAction("Login", "Employee");
             }
             else
             {
                 message = "Couldn't complete request.";
             }
 
-            SendVerificationEMail(thisEmp.UserEmail);
-            ViewBag.Message = message;
-            ViewBag.Status = Status;
+            //SendVerificationEMail(thisEmp.UserEmail);
+            TempData["message"] = message;
             return View(thisEmp);
         }
 
@@ -354,7 +391,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find employee
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }                     
@@ -399,7 +436,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find employee id
-                ViewBag.Message = "Please log in";
+                TempData["message"] = "Please log in";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -464,7 +501,7 @@ namespace GrizzTime.Controllers
                 }
                 message = "Employee updated successfully.";
                 Status = true;
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 ViewBag.Status = Status;
                 if (Request.Cookies["Role"].Value.Equals("Business"))
                     return RedirectToAction("MyEmployees", "Business");
@@ -476,7 +513,7 @@ namespace GrizzTime.Controllers
                 message = "Invalid Request";
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
             return View(thisEmp);
         }
@@ -487,7 +524,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -522,7 +559,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -582,7 +619,7 @@ namespace GrizzTime.Controllers
                 }
                 message = "Pay rate updated successfully.";
                 Status = true;
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 ViewBag.Status = Status;
                 return RedirectToAction("MyEmployees", "Business");
             }
@@ -591,7 +628,7 @@ namespace GrizzTime.Controllers
                 message = "Invalid Request";
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
             return View(thisEmp);
         }
@@ -607,11 +644,11 @@ namespace GrizzTime.Controllers
                 if (emp == null)
                 {
                     message = "Employee not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("MyEmployees", "Business");
                 }
 
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 return View(emp);
             }
         }
@@ -627,7 +664,7 @@ namespace GrizzTime.Controllers
                 if (employee == null)
                 {
                     message = "Employee not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("MyEmployees", "Business");
                 }
 
@@ -635,7 +672,7 @@ namespace GrizzTime.Controllers
                 dc.SaveChanges();
                 message = "Employee successfully deleted.";
             }
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return RedirectToAction("MyEmployees", "Business");
         }
 
@@ -683,7 +720,7 @@ namespace GrizzTime.Controllers
         [NonAction]
         public void SendRegistrationEMail(string email, int employeeId)
         {
-            var completeRegister = "/employee/registration/" + employeeId.ToString();
+            var completeRegister = Url.Action("ResetPassword", "Employee", new { id = employeeId }); /*"/employee/registration/" + employeeId.ToString(); */
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, completeRegister);
 
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
@@ -711,11 +748,57 @@ namespace GrizzTime.Controllers
                 smtp.Send(message);
         }
 
+        [NonAction]
+        public void ForgotPasswordEmail(string email, int employeeId)
+        {
+            var forgotPassword = Url.Action("ResetPassword", "Employee", new { id = employeeId });/*"/employee/registration/" + employeeId.ToString();*/
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, forgotPassword);
+
+            //Try to make secure later.
+            //var forgotPassword = Url.Action("Registration", "Employee", new { id = employeeId.ToString() }, protocol: Request.Url.Scheme);
+            //var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, forgotPassword);
+
+            var fromEmail = new MailAddress("grizztimenotification@gmail.com", "GrizzTime Do Not Reply");
+            var toEmail = new MailAddress(email);
+            var fromEmailPassword = "WinterSemester";
+            string subject = "Reset Your Password";
+
+            string body = PopulateBody(link);
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
+            };
+            using (var message = new MailMessage(fromEmail, toEmail)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            })
+                smtp.Send(message);
+        }
+
         public static string Hash(string value)
         {
             return Convert.ToBase64String(
             System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(value))
                 );
+        }
+
+        private string PopulateBody(string link)
+        {
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/emailTemplates/forgotpassword.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{Link}", link);
+            return body;
         }
 
     }

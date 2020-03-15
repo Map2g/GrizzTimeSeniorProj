@@ -24,7 +24,7 @@
           </Key>
           <Property Name="ConID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ConName" Type="nvarchar" MaxLength="45" Nullable="false" />
-          <Property Name="ConAllottedHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ConAllottedHours" Type="decimal" Precision="13" Scale="2" />
           <Property Name="BusID" Type="int" Nullable="false" />
           <Property Name="ConHoursRemaining" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
@@ -84,7 +84,7 @@
           <Property Name="ExpDate" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ExpDollarAmt" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="ExpSheetID" Type="int" Nullable="false" />
-          <Property Name="TaskID" Type="int" Nullable="false" />
+          <Property Name="ExpCategory" Type="nvarchar" MaxLength="1" />
         </EntityType>
         <EntityType Name="expensesheet">
           <Key>
@@ -158,9 +158,10 @@
           <Property Name="PayrollCycleID" Type="int" Nullable="false" />
           <Property Name="EmpID" Type="int" Nullable="false" />
           <Property Name="TimeSheetStatus" Type="nvarchar" MaxLength="45" />
-          <Property Name="TimeSheetTotalHr" Type="decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="TimeSheetTotalHr" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="TimeSheetSubmitTime" Type="datetime" />
           <Property Name="TimeSheetApproveTime" Type="datetime" />
+          <Property Name="TimeSheetTotalAmt" Type="decimal" Precision="13" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="workentry">
           <Key>
@@ -291,20 +292,6 @@
             </Principal>
             <Dependent Role="employee_project">
               <PropertyRef Name="ProjID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExpenseTask">
-          <End Role="task" Type="Self.task" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="expenseentry" Type="Self.expenseentry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="task">
-              <PropertyRef Name="TaskID" />
-            </Principal>
-            <Dependent Role="expenseentry">
-              <PropertyRef Name="TaskID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -531,10 +518,6 @@
             <End Role="project" EntitySet="project" />
             <End Role="employee_project" EntitySet="employee_project" />
           </AssociationSet>
-          <AssociationSet Name="FK_ExpenseTask" Association="Self.FK_ExpenseTask">
-            <End Role="task" EntitySet="task" />
-            <End Role="expenseentry" EntitySet="expenseentry" />
-          </AssociationSet>
           <AssociationSet Name="FK_expentry_project" Association="Self.FK_expentry_project">
             <End Role="project" EntitySet="project" />
             <End Role="expenseentry" EntitySet="expenseentry" />
@@ -670,9 +653,10 @@
           <Property Name="ExpDollarAmt" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="ExpSheetID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="expensesheet" Relationship="Self.expenseentry_ExpSheetID" FromRole="expenseentry" ToRole="expensesheet" />
-          <Property Name="TaskID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="task" Relationship="GrizzTime_dbModel.FK_ExpenseTask" FromRole="expenseentry" ToRole="task" />
+          <!--<Property Name="TaskID" Type="Int32" Nullable="false" />-->
+          <!--<NavigationProperty Name="task" Relationship="GrizzTime_dbModel.FK_ExpenseTask" FromRole="expenseentry" ToRole="task" />-->
           <NavigationProperty Name="project" Relationship="GrizzTime_dbModel.FK_expentry_project" FromRole="expenseentry" ToRole="project" />
+          <Property Name="ExpCategory" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="expensesheet">
           <Key>
@@ -752,12 +736,13 @@
           <Property Name="PayrollCycleID" Type="Int32" Nullable="false" />
           <Property Name="EmpID" Type="Int32" Nullable="false" />
           <Property Name="TimeSheetStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Name="TimeSheetTotalHr" Type="Decimal" Precision="13" Scale="1" Nullable="false" />
+          <Property Name="TimeSheetTotalHr" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="TimeSheetSubmitTime" Type="DateTime" Precision="3" />
           <Property Name="TimeSheetApproveTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="employee" Relationship="Self.timesheet_FK_TimeSheet_EmpID" FromRole="timesheet" ToRole="employee" />
           <NavigationProperty Name="payrollcycle" Relationship="Self.timesheet_FK_Time_PayrollCycleID" FromRole="timesheet" ToRole="payrollcycle" />
           <NavigationProperty Name="workentries" Relationship="Self.workentry_TimeSheetID" FromRole="timesheet" ToRole="workentry" />
+          <Property Name="TimeSheetTotalAmt" Type="Decimal" Precision="13" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="workentry">
           <Key>
@@ -1011,10 +996,10 @@
             <End Role="project" EntitySet="projects" />
           </AssociationSet>
           <EntitySet Name="tasks" EntityType="GrizzTime_dbModel.task" />
-          <AssociationSet Name="FK_ExpenseTask" Association="GrizzTime_dbModel.FK_ExpenseTask">
+          <!--<AssociationSet Name="FK_ExpenseTask" Association="GrizzTime_dbModel.FK_ExpenseTask">
             <End Role="task" EntitySet="tasks" />
             <End Role="expenseentry" EntitySet="expenseentries" />
-          </AssociationSet>
+          </AssociationSet>-->
           <AssociationSet Name="FK_ProjectTask" Association="GrizzTime_dbModel.FK_ProjectTask">
             <End Role="project" EntitySet="projects" />
             <End Role="task" EntitySet="tasks" />
@@ -1076,7 +1061,7 @@
           </Key>
           <Property Name="ConID" Type="Int32" Nullable="false" />
           <Property Name="ConName" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Name="ConAllottedHours" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ConAllottedHours" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="BusID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="business" Relationship="GrizzTime_dbModel.FK_Contract_Business" FromRole="contract" ToRole="business" />
           <NavigationProperty Name="projects" Relationship="GrizzTime_dbModel.FK_project_contract" FromRole="contract" ToRole="project" />
@@ -1127,11 +1112,11 @@
           <Property Name="IsBillable" Type="Boolean" Nullable="false" />
           <Property Name="BillableRate" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="ProjID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="expenseentries" Relationship="GrizzTime_dbModel.FK_ExpenseTask" FromRole="task" ToRole="expenseentry" />
+          <!--<NavigationProperty Name="expenseentries" Relationship="GrizzTime_dbModel.FK_ExpenseTask" FromRole="task" ToRole="expenseentry" />-->
           <NavigationProperty Name="project" Relationship="GrizzTime_dbModel.FK_ProjectTask" FromRole="task" ToRole="project" />
           <NavigationProperty Name="workentries" Relationship="GrizzTime_dbModel.FK_WorkTask" FromRole="task" ToRole="workentry" />
         </EntityType>
-        <Association Name="FK_ExpenseTask">
+        <!--<Association Name="FK_ExpenseTask">
           <End Type="GrizzTime_dbModel.task" Role="task" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -1144,7 +1129,7 @@
               <PropertyRef Name="TaskID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
+        </Association>-->
         <Association Name="FK_ProjectTask">
           <End Type="GrizzTime_dbModel.project" Role="project" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1295,7 +1280,7 @@
           <EntitySetMapping Name="expenseentries">
             <EntityTypeMapping TypeName="GrizzTime_dbModel.expenseentry">
               <MappingFragment StoreEntitySet="expenseentry">
-                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="ExpCategory" ColumnName="ExpCategory" />
                 <ScalarProperty Name="ExpEntryID" ColumnName="ExpEntryID" />
                 <ScalarProperty Name="EmpID" ColumnName="EmpID" />
                 <ScalarProperty Name="ProjID" ColumnName="ProjID" />
@@ -1367,6 +1352,7 @@
           <EntitySetMapping Name="timesheets">
             <EntityTypeMapping TypeName="GrizzTime_dbModel.timesheet">
               <MappingFragment StoreEntitySet="timesheet">
+                <ScalarProperty Name="TimeSheetTotalAmt" ColumnName="TimeSheetTotalAmt" />
                 <ScalarProperty Name="TimeSheetID" ColumnName="TimeSheetID" />
                 <ScalarProperty Name="PayrollCycleID" ColumnName="PayrollCycleID" />
                 <ScalarProperty Name="EmpID" ColumnName="EmpID" />

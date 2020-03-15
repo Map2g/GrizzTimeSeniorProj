@@ -48,9 +48,15 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Login" class="btn btn-default" />
-                    @*<input type="submit" value="Register" href="~/Employee/Registration"/>*@
                 </div>
             </div>
+
+            <div class="form-group">
+                <a href="@Url.Action("ForgotPassword", "Employee")" style="color:aliceblue">
+                    Forgot password?
+                </a>
+            </div>
+
         </div>
     </div>
 
@@ -91,12 +97,16 @@
         </div>*@
 }
 
+<div>
+    <p><a href="/home/landingpage">Back to Home &raquo;</a></p>
+</div>
+
 @*Displays alert message telling user how the operation went.*@
-@if (ViewBag.Message != null)
+@if (@TempData["message"] != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.Message");
+            alert("@TempData["message"]");
         };
     </script>
 }

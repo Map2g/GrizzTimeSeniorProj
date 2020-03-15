@@ -22,8 +22,6 @@ public partial class task
     public task()
     {
 
-        this.expenseentries = new HashSet<expenseentry>();
-
         this.workentries = new HashSet<workentry>();
 
     }
@@ -40,10 +38,6 @@ public partial class task
     public int ProjID { get; set; }
 
 
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<expenseentry> expenseentries { get; set; }
 
     public virtual project project { get; set; }
 

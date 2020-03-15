@@ -1,0 +1,56 @@
+﻿@model GrizzTime.ViewModels.Task
+@using GrizzTime.ViewModels
+
+
+@{
+    //Temporary. I'd like to put this function directly in the edit form.
+
+    ViewBag.Title = "Edit task";
+}
+
+<h2>Edit task</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Task", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.TaskName, new { htmlAttributes = new { @class = "input-lg" } })
+                @Html.ValidationMessageFor(model => model.TaskName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Billable rate", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BillableRate, new { htmlAttributes = new { @class = "input-lg", @type = "number" } })
+                @Html.ValidationMessageFor(model => model.BillableRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="db-Row-Button-Box">
+    <a href="@Request.UrlReferrer">
+        <div class="small-button">
+            <span>
+                <h2>
+                    Back
+                </h2>
+            </span>
+        </div>
+    </a>
+</div>
+

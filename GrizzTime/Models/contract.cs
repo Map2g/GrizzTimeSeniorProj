@@ -31,7 +31,7 @@ public partial class contract
 
     public string ConName { get; set; }
 
-    public decimal ConAllottedHours { get; set; }
+    public Nullable<decimal> ConAllottedHours { get; set; }
 
     public int BusID { get; set; }
 

@@ -25,7 +25,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -75,7 +75,7 @@ namespace GrizzTime.Controllers
                 message = "Invalid Request";
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
 
             return View(thisCon);
@@ -87,7 +87,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -105,7 +105,7 @@ namespace GrizzTime.Controllers
                 Contract viewCon = new Contract()
                 {
                     ConName = con.ConName,
-                    ConAllottedHours = con.ConAllottedHours,
+                    ConAllottedHours = (decimal) con.ConAllottedHours,
                     ConHoursRemaining = con.ConHoursRemaining,
                 };
 
@@ -124,7 +124,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -142,7 +142,7 @@ namespace GrizzTime.Controllers
                 Contract viewCon = new Contract()
                 {
                     ConName = con.ConName,
-                    ConAllottedHours = con.ConAllottedHours,
+                    ConAllottedHours = (decimal) con.ConAllottedHours,
                     ConHoursRemaining = con.ConHoursRemaining,
                 };
 
@@ -162,7 +162,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
-                ViewBag.Message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -196,7 +196,7 @@ namespace GrizzTime.Controllers
                     con.ConName = thisCon.ConName;
 
                     var oldHoursRemaining = con.ConHoursRemaining;
-                    con.ConHoursRemaining = thisCon.ConAllottedHours - (con.ConAllottedHours - oldHoursRemaining);
+                    con.ConHoursRemaining = thisCon.ConAllottedHours - ((decimal) con.ConAllottedHours - oldHoursRemaining);
 
                     con.ConAllottedHours = thisCon.ConAllottedHours;
 
@@ -233,7 +233,7 @@ namespace GrizzTime.Controllers
                 message = "Invalid Request";
             }
             
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
             return RedirectToAction("MyContracts", "Business");
         }
@@ -249,11 +249,11 @@ namespace GrizzTime.Controllers
                 if (con == null)
                 {
                     message = "Contract not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("MyContracts", "Business");
                 }
 
-                ViewBag.Message = message;
+                TempData["message"] = message;
                 return View(con);
             }
         }
@@ -270,7 +270,7 @@ namespace GrizzTime.Controllers
                 if (con == null)
                 {
                     message = "Contract not found.";
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     return RedirectToAction("MyContracts", "Business");
                 }
 
@@ -278,7 +278,7 @@ namespace GrizzTime.Controllers
                 dc.SaveChanges();
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             return RedirectToAction("MyContracts", "Business");
         }
     }
