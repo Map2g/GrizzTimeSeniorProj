@@ -151,6 +151,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
+    <Compile Include="Controllers\ExpensesheetController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
@@ -164,6 +165,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BusinessVM.cs" />
     <Compile Include="ViewModels\TaskVM.cs" />
+    <Compile Include="ViewModels\ExpensesheetVM.cs" />
     <Compile Include="ViewModels\TimesheetVM.cs" />
     <Compile Include="ViewModels\ContractVM.cs" />
     <Compile Include="ViewModels\ProjectVM.cs" />
@@ -234,6 +236,7 @@
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ExpenseEntryVM.cs" />
     <Compile Include="ViewModels\WorkEntryVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -724,6 +727,8 @@
     <Content Include="Views\Invoice\EmployeeInvoice_print.cshtml" />
     <Content Include="Views\Project\EditTask.cshtml" />
     <Content Include="Views\Home\MyProjects.cshtml" />
+    <Content Include="Views\Expensesheet\List.cshtml" />
+    <Content Include="Views\Expensesheet\ExpenseEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
