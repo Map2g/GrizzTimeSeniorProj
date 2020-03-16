@@ -1,0 +1,47 @@
+﻿@using GrizzTime.ViewModels
+@model IEnumerable<GrizzTime.Models.expensesheet>
+
+
+
+
+@{
+    ViewBag.Title = "My Expense Reports";
+}
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Expense Sheet ID</th>
+            <th>Amount</th>
+            <th>Date of Request</th>
+            <th>Requestor</th>
+            <th>Approval Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ExpSheetID</td>
+                    <td>@item.ExpSheetTotalAmt</td>
+                    <td>@item.ExpSheetSubmitTime</td>
+                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName </td>
+                    <td>@item.ExpSheetStatus</td>
+                    <td>
+                        <div>
+                            @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { id = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                        </div>
+
+                        <div>
+                            @Html.ActionLink("Submit", "Submit", "Expensesheet", new { tid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

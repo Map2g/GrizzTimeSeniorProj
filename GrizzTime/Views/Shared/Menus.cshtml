@@ -43,6 +43,11 @@
                 <i class="fa fa-check"></i><span>Timesheets to Review</span>
             </a>
         </li>
+        <li style="@(Role != "Expensesheet"? "display:block" : "display:none")">
+            <a href="@(Url.Action("List","Expensesheet" ))">
+                <i class="fa fa-check"></i><span>Timesheets to Review</span>
+            </a>
+        </li>
         <!--end-->
         <!--Common-->
         <li style="font-size:14px">
