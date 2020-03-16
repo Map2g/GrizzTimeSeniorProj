@@ -66,7 +66,8 @@ namespace GrizzTime.ViewModels
         //-------------Project timesheet totals-----------------------------------------------------
         public decimal ProjTotalHr { get; set; }
 
-
+        [DataType(DataType.Currency)]
+        public decimal ProjTotalCost { get; set; }
         //------------------------------------------------------------------------------------------
 
         //Gets all the projects belonging to a specific contract.

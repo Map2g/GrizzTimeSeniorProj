@@ -61,7 +61,7 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box bg-light">
                                 <div class="info-box-content" style="margin-left: 0rem">
-                                    <span class="info-box-text text-center text-muted">Contract Allotted Hours</span>
+                                    <span class="info-box-text text-center text-muted">Contract Hours Allotted </span>
                                     <span class="info-box-number text-center text-muted mb-0">@Model.Contract.ConAllottedHours</span>
                                 </div>
                             </div>
@@ -77,8 +77,8 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box bg-light">
                                 <div class="info-box-content" style="margin-left:0rem">
-                                    <span class="info-box-text text-center text-muted">Project Total Hours</span>
-                                    <span class="info-box-number text-center text-muted mb-0">Placeholder <span>
+                                    <span class="info-box-text text-center text-muted">Hours Used by this Project</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.ProjTotalHr <span>
                                 </div>
                             </div>
                         </div>
@@ -93,21 +93,34 @@
                                     {
                                         <div class="post">
                                             <div class="user-block">
-                                                <img class="img-circle img-bordered-sm" src="../../assets/img/defaultuser.jpg" alt="user image">
+                                                <img class="img-circle img-bordered-sm" src="../../assets/img/defaultuser.png" alt="user image">
                                                 <span class="username">
                                                     <a href="@Url.Action("Details", "Employee", new {id = item.UserID })">@item.EmpFName @item.EmpLName</a>
                                                 </span>
                                                 <span class="description">@item.EmpType</span>
+                                                <p class="text-right">
+                                                    <a href="@Url.Action("RemoveEmpFromProject", "Project", new {pid = Model.ProjID, eid = item.UserID})" class="btn btn-sm btn-danger" style="@(isVisible? "display:inline" : "display:none")">Remove</a>
+                                                </p>
                                             </div>
                                             <!-- /.user-block -->
-                                            <p class="text-right">
-                                                <a href="@Url.Action("RemoveEmpFromProject", "Project", new {pid = Model.ProjID, eid = item.UserID})" class="btn btn-sm btn-danger" style="@(isVisible? "display:inline" : "display:none")">Remove</a>
-                                            </p>
                                         </div>
                                     }
                                     <div class="text-left mt-5 mb-3">
-                                        <a href="@Url.Action("AddEmpToProject", "Project", new {id = Model.ProjID})" class="btn btn-sm btn-primary" style="@(isVisible? "display:inline" : "display:none")">Add Employee</a>
+                                        <a href="@Url.Action("AddEmpToProject", "Project", new {id = Model.ProjID})" class="btn btn-md btn-primary" style="@(isVisible? "display:inline" : "display:none")">Add Employee</a>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-12 col-sm-4"></div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content" style="margin-left: 0rem">
+                                    <span class="info-box-text text-center">Invoice</span>
+                                    <br />
+                                    <span class="info-box-more text-center"><a href="@Url.Action("ProjectInvoice", "Invoice", new {id = Model.ProjID})" class="btn btn-md btn-success">Generate</a></span>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +131,7 @@
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                     <div class="info-box bg-light">
                         <div class="info-box-content" style="margin-left:0rem">
-                            <h3 class="text-primary"><i class="fas fa-paint-brush"></i> @Html.DisplayFor(m => m.ProjName) - <b class="accent-green">@Html.DisplayFor(m => m.ProjStatus)</b> </h3>
+                            <h3 class="text-primary"><i class="fas fa-paint-brush"></i> @Html.DisplayFor(m => m.ProjName) <text class="float-right text-green">@Html.DisplayFor(m => m.ProjStatus)</text> </h3>
                             <p class="text-muted"> @Html.DisplayFor(m => m.ProjDesc)</p>
                             <br>
                             <div class="text-muted">
@@ -142,23 +155,22 @@
                             </div>
 
                             <hr>
-
                             <h5 class="mt-5 text-muted"><i class="fas fa-tasks"></i> <strong>Project Tasks</strong> </h5>
                             <table class="table table-responsive-sm">
                                 <tbody>
                                     @foreach (var item in Project.GetTasks(Model.ProjID))
                                     {
                                         <tr>
-                                            <td><i class="far fa-circle"></i> @item.TaskName</td>
-                                            <td>@item.BillableRate/hour</td>
-                                            <td style="@(isVisible? "display:inline" : "display:none")"><a href="@Url.Action("EditTask", "Project", new {id = item.TaskID})" class="text-right mt-5 mb-3">Edit Task</a></td>
+                                            <td class="text-md"><i class="far fa-circle"></i> @item.TaskName</td>
+                                            <td class="text-md">@item.BillableRate/hour</td>
+                                            <td class="text-md" style="@(isVisible? "display:block" : "display:none")"><a href="@Url.Action("EditTask", "Project", new {id = item.TaskID})">Edit Task</a></td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                             <div class="text-right mt-5 mb-3">
-                                <a href="@Url.Action("Edit", "Project", new {id = Model.ProjID})" class="btn btn-sm btn-primary" style="@(isVisible? "display:inline" : "display:none")">Edit Project</a>
-                                <a href="@Url.Action("AddTask", "Project", new {id = Model.ProjID})" class="btn btn-sm btn-primary" style="@(isVisible? "display:inline" : "display:none")">Add Task</a>
+                                <a href="@Url.Action("Edit", "Project", new {id = Model.ProjID})" class="btn btn-md btn-primary" style="@(isVisible? "display:inline" : "display:none")">Edit Project</a>
+                                <a href="@Url.Action("AddTask", "Project", new {id = Model.ProjID})" class="btn btn-md btn-primary" style="@(isVisible? "display:inline" : "display:none")">Add Task</a>
                             </div>
                         </div>
                     </div>

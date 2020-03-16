@@ -131,7 +131,7 @@ namespace GrizzTime.Controllers
 
         public ActionResult Dashboard()
         {
-            string message = "";
+            string message;
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find user id
@@ -378,7 +378,6 @@ namespace GrizzTime.Controllers
                     {
                         type = "thisEmployee";
                     }
-                    type = "otherEmployee";
                 }
                 ViewBag.type = type;
 

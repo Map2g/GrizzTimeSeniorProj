@@ -38,6 +38,20 @@ namespace GrizzTime.Controllers
                 }
 
                 project proj = dc.projects.Find(id);
+
+                decimal totalHours = 0;
+                decimal totalCost = 0;
+
+                //Will repeat for every workentry for this project
+                foreach (var item in proj.workentries1)
+                {
+                    totalHours += item.WorkHours;
+                    if (item.task.IsBillable == true)
+                    {
+                        totalCost += (item.WorkHours * (decimal)item.task.BillableRate);
+                    }
+                }
+
                 Project viewProj = new Project()
                 {
                     ProjName = proj.ProjName,
@@ -57,6 +71,8 @@ namespace GrizzTime.Controllers
                                                 ConAllottedHours = (decimal) proj.contract.ConAllottedHours,
                                                 ConHoursRemaining = proj.contract.ConHoursRemaining
                                               },
+                    ProjTotalCost = totalCost,
+                    ProjTotalHr = totalHours,
                 };
 
                 if (proj == null)

@@ -1,53 +1,192 @@
 ﻿@using GrizzTime.ViewModels
 @using System.Globalization
-@*@model dynamic*@
 @model Project
 
 @{
-    ViewBag.Title = "ProjectInvoice";
+    ViewBag.Title = Model.ProjName + " Invoice";
 }
 
-<h2>ProjectInvoice</h2>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../assets/css/stylesheet1.css">
+    @*<link rel="stylesheet" href="../../stylesheet.css">*@
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
 
-<div>
-    <h4>project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        @Html.DisplayFor(m => m.ProjName)
-        <br>
-        @foreach (var item in Project.GetEmployees(Model.ProjID))
-        {
-            @item.EmpFName @item.EmpLName
-            <br>
-        }
-        <br>
-        @Html.DisplayFor(m => m.ProjDesc)
-        <br>
-        @Html.DisplayFor(m => m.ProjStartDate)
-        <br>
-        @Html.DisplayFor(m => m.ProjEndDate)
-        <br>
-        @Html.DisplayFor(m => m.Contract.ConHoursRemaining)
-        <br>
-        @Html.DisplayFor(m => m.ProjTotalHr)
-        <br>
-        @foreach (var item in Project.GetTasks(Model.ProjID))
-        {
-            @item.TaskName
-        }
-        <br>
+@*<body class="hold-transition">*@
+@*<div class="wrapper">*@
 
-        @*@foreach (var item in Model.Project)
-            {
-                <h1>@item.ProjName</h1>
-                <h1>@item.ProjDesc</h1>
-                <h1>@item.ProjStartDate</h1>
-                <h1>@item.ProjEndDate</h1>
-                <h1>@item.ProjManName</h1>
-                <h1>@item.ContractName</h1>
-                <h1>@item.ProjTotalHr</h1>
-            }*@
+<!-- Content Wrapper. Contains page content -->
+@*<div class="content-wrapper">
 
-    </dl>
-</div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Invoice</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Invoice</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
+    <section class="content">*@
+<div class="container-fluid">
+    <br />
+    <div class="row">
+        <div class="col-12">
+            <div class="callout callout-info">
+                <h5><i class="fas fa-info"></i> Note:</h5>
+                This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+            </div>
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+                <!-- title row -->
+                <div class="row">
+                    <div class="col-12">
+                        <h4>
+                            <i class="fas fa-globe"></i> GrizzTime
+                            <small class="float-right">Date: @System.DateTime.Now.Date.ToShortDateString() </small>
+                        </h4>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- info row -->
+                <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+                        <strong>Project</strong>
+                        <address>
+                            @Html.DisplayFor(m => m.ProjName) - <b>@Html.DisplayFor(m => m.ProjStatus)</b><br>
+                            @Html.DisplayFor(m => m.ProjDesc)<br>
+                            <strong>Contract</strong><br>
+                            @Html.DisplayFor(m => m.ContractName)
+                        </address>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                        <strong>Project Manager</strong>
+                        <address>
+                            @Html.DisplayFor(m=>m.ProjManName)
+                        </address>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                        <b>Start Date:</b> @Html.DisplayFor(m => m.ProjStartDate)<br>
+                        <b>End Date:</b> @Html.DisplayFor(m => m.ProjEndDate)<br>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <!-- Table row -->
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Billable Rate</th>
+                                    <th>Total Hours</th>
+                                    <th>Total Earned</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.EmpProjTask.Any())
+                                {
+                                    foreach (var item in Model.EmpProjTask)
+                                    {
+                                        <tr>
+                                            <td> @item.TaskName </td>
+                                            <td> @item.BillableRate.ToString("C", CultureInfo.CurrentCulture)/hour </td>
+                                            <td> @item.EmpTaskHours </td>
+                                            <td> @item.EmpTaskAmt.ToString("C", CultureInfo.CurrentCulture)</td>                                          
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-6">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-6">
+                        <p class="lead">Totals</p>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th style="width:50%">Project Total Hours</th>
+                                    <td>@Html.DisplayFor(m => m.ProjTotalHr) </td>
+                                </tr>
+                                <tr>
+                                    <th>Project Total Earned</th>
+                                    <td>@Html.DisplayFor(m => m.ProjTotalCost) </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                    <div class="col-12">
+                        <a href="@Url.Action("ProjectInvoice_Print", "Invoice", new {id = Model.ProjID })" target="_blank" class="btn btn-lg btn-default"><i class="fas fa-print"></i> Print</a>
+                        @*<button type="button" class="btn btn-success float-right">
+                                <i class="far fa-credit-card"></i> Submit
+                                Payment
+                            </button>
+                            <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                <i class="fas fa-download"></i> Generate PDF
+                            </button>*@
+                    </div>
+                </div>
+            </div>
+            <!-- /.invoice -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div><!-- /.container-fluid -->
+@*</section>*@
+<!-- /.content -->
+@*</div>*@
+<!-- /.content-wrapper -->
+@*<footer class="main-footer no-print">
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.0.3-pre
+        </div>
+        <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        reserved.
+    </footer>*@
+
+@*</div>*@
+<!-- ./wrapper -->
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+@*</body>*@

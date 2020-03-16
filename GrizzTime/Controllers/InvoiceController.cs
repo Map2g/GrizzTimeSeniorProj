@@ -95,39 +95,77 @@ namespace GrizzTime.Controllers
             return EmployeeInvoice(eid, year);
         }
 
-        public ActionResult ProjectInvoice(int id)
+        public ActionResult ProjectInvoice(int? id)
         {
-
-            if (Request.Cookies["UserID"].Value == null)
-            {
-                //Redirect to login if it can't find user id
-                TempData["message"] = "Please log in.";
-                System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
-                return RedirectToAction("LandingPage", "Home");
-            }
-
-            ViewBag.UserID = Request.Cookies["UserID"].Value;
             using (Entities dc = new Entities())
             {
 
+            //if (Request.Cookies["UserID"].Value == null)
+            //{
+            //    //Redirect to login if it can't find user id
+            //    TempData["message"] = "Please log in.";
+            //    System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
+            //    return RedirectToAction("LandingPage", "Home");
+            //}
+
+            //------Get database data before filling in Project View Model------
+
+                //Project information
                 project proj = dc.projects.Find(id);
 
-                //List<workentry> we;
-
-                List<project> thisProjTimesheets;
-
-                //we = dc.workentries.Where(x => x.ProjID == id).ToList();
-
-                thisProjTimesheets = dc.projects.Where(x => x.ProjID == id).ToList();
-
-                decimal totalProjHours = 0;
-
-                foreach (var item in thisProjTimesheets)
+                if (proj == null)
                 {
-                    totalProjHours += item.ProjTotalHr;
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
-                Project projects = new Project()
+                //Timesheet information
+                List<workentry> thisProjWorkentries;
+
+                //Get all the workentries that mention this project.
+                thisProjWorkentries = dc.workentries.Where(x => (x.ProjID == id)).ToList();
+
+                //we = dc.workentries.Where(x => x.ProjID == id).ToList();
+                //thisProjTimesheets = dc.projects.Where(x => x.ProjID == id).ToList();
+
+                decimal totalHours = 0;
+                decimal totalCost = 0;
+
+                List<Task> taskTotals = new List<Task>();
+                //Will repeat for every workentry for this project
+                foreach (var item in thisProjWorkentries)
+                {
+                    totalHours += item.WorkHours;                 
+                    if (item.task.IsBillable == true)
+                    {
+                        totalCost += (item.WorkHours * (decimal)item.task.BillableRate);
+                    }
+
+                    //Build totals for tasks:
+
+                    //If this workentry's task is already in the task list, create a new task in the task list. If not, edit total work hours and amount
+                    Task thisTask = taskTotals.Find(x => x.TaskID == item.TaskID);
+                    if (thisTask == null)
+                    {
+                        taskTotals.Add(new Task()
+                        {
+                            TaskID = item.TaskID,
+                            TaskName = item.task.TaskName,
+                            BillableRate = (decimal)item.task.BillableRate,
+                            EmpTaskAmt = (item.WorkHours * (decimal)item.task.BillableRate),
+                            EmpTaskHours = item.WorkHours
+                        });
+                    }
+                    else
+                    {
+                        thisTask.EmpTaskAmt += (item.WorkHours * (decimal)item.task.BillableRate);
+                        thisTask.EmpTaskHours += item.WorkHours;
+                    }
+                  
+                }
+
+                //----------Build Project ViewModel-----------------------------------------------
+
+                Project viewProjInv = new Project()
                 {
                     ProjName = proj.ProjName,
                     ProjDesc = proj.ProjDesc,
@@ -137,7 +175,8 @@ namespace GrizzTime.Controllers
                     ProjID = proj.ProjID,
                     ProjStatus = proj.ProjStatus,
                     ContractName = proj.contract.ConName,
-                    ProjTotalHr = totalProjHours,
+                    ProjTotalHr = totalHours,
+                    ProjTotalCost = totalCost,
                     ProjManID = proj.employee.UserID.ToString(),
                     //EmployeeProjects = Project.GetEmployees(proj.ProjID),
                     Contract = new Contract()
@@ -147,10 +186,16 @@ namespace GrizzTime.Controllers
                         ConAllottedHours = (decimal)proj.contract.ConAllottedHours,
                         ConHoursRemaining = proj.contract.ConHoursRemaining
                     },
-
+                    EmpProjTask = taskTotals,
                 };
-                return View(projects);
+                return View(viewProjInv);
             }
+        }
+
+        [HttpGet]
+        public ActionResult ProjectInvoice_Print(int? id)
+        {
+            return ProjectInvoice(id);
         }
 
     }
