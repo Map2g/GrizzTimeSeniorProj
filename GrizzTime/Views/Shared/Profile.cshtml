@@ -56,13 +56,13 @@
                 <!-- Menu Footer-->
                 <li class="user-footer">
                     <div class="pull-left">
-                        <a href="@Url.Action("Details", (Role == "Business"? "Business" : "Employee"), new {id = id})" class="btn btn-default btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
+                        <a href="@Url.Action("Details", (Role == "Business"? "Business" : "Employee"), new {id = id})" class="btn btn-default btn-md btn-flat"><i class="fa fa-user"></i>&nbsp;Profile</a>
                     </div>
                     <div class="pull-right">
                         @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { @id = "logoutForm", @class = "navbar-right" }))
                         {
                         @Html.AntiForgeryToken()
-                        <a href="javascript:document.getElementById('logoutForm').submit()"> <button class="btn btn-default btn-flat" value="Logout"><i class="fa fa-sign-out"></i>&nbsp;Logout</button> </a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()"> <button class="btn btn-default btn-md btn-flat" value="Logout"><i class="fa fa-sign-out"></i>&nbsp;Logout</button> </a>
                         }
                     </div>
                 </li>
