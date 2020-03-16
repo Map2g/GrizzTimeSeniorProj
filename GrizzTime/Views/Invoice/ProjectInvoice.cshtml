@@ -1,0 +1,53 @@
+﻿@using GrizzTime.ViewModels
+@using System.Globalization
+@*@model dynamic*@
+@model Project
+
+@{
+    ViewBag.Title = "ProjectInvoice";
+}
+
+<h2>ProjectInvoice</h2>
+
+<div>
+    <h4>project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @Html.DisplayFor(m => m.ProjName)
+        <br>
+        @foreach (var item in Project.GetEmployees(Model.ProjID))
+        {
+            @item.EmpFName @item.EmpLName
+            <br>
+        }
+        <br>
+        @Html.DisplayFor(m => m.ProjDesc)
+        <br>
+        @Html.DisplayFor(m => m.ProjStartDate)
+        <br>
+        @Html.DisplayFor(m => m.ProjEndDate)
+        <br>
+        @Html.DisplayFor(m => m.Contract.ConHoursRemaining)
+        <br>
+        @Html.DisplayFor(m => m.ProjTotalHr)
+        <br>
+        @foreach (var item in Project.GetTasks(Model.ProjID))
+        {
+            @item.TaskName
+        }
+        <br>
+
+        @*@foreach (var item in Model.Project)
+            {
+                <h1>@item.ProjName</h1>
+                <h1>@item.ProjDesc</h1>
+                <h1>@item.ProjStartDate</h1>
+                <h1>@item.ProjEndDate</h1>
+                <h1>@item.ProjManName</h1>
+                <h1>@item.ContractName</h1>
+                <h1>@item.ProjTotalHr</h1>
+            }*@
+
+    </dl>
+</div>
+
