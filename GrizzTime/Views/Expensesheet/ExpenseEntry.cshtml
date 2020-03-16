@@ -1,0 +1,78 @@
+﻿@using GrizzTime.ViewModels
+
+@model ExpenseEntry
+
+
+
+@{
+
+    bool IsChangeable = ViewBag.IsChangeable;
+    ViewBag.Title = "New Expense Entry";
+
+    List<Project> projlist_l = Employee.GetProjects(ViewBag.UserID);
+
+    //convert project list to a select list
+    List<SelectListItem> projectList = projlist_l.ConvertAll(a =>
+    {
+        return new SelectListItem()
+        {
+            Text = a.ProjName,
+            Value = a.ProjID.ToString()
+        };
+    });
+}
+
+
+{@Html.BeginForm("ExpenseEntry", "Expensesheet"); }
+
+<div class="form-horizontal">
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.Label("Amount Spent:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ExpDollarAmt, new { htmlAttributes = new { @class = "input-lg", @type = "number", @id = "workhours" } })
+            @Html.ValidationMessageFor(model => model.ExpDollarAmt, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Expense Date:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ExpDate, new { htmlAttributes = new { @class = "input-lg", @type = "number", @id = "workhours" } })
+            @Html.ValidationMessageFor(model => model.ExpDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Project:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ProjID, projectList, "--Select--", new { @class = "select2", @id = "projectlist" })
+            @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Expense Category:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ExpCategory, ExpenseEntry.ExpenseTypes, "--Select--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ExpCategory, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit" value="Submit" class="small-button">Save</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="submit">
+            @Html.ActionLink("Submit", "ExpenseEntry", "Expensesheet")
+        </div>
+    </div>
+    @{Html.EndForm();}
+
+</div>
