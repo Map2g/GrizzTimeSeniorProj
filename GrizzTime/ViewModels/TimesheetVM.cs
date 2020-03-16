@@ -26,6 +26,8 @@ namespace GrizzTime.ViewModels
 
         public Nullable<System.DateTime> TimeSheetApproveTime { get; set; }
 
+        public string PayrollCycleYear { get; set; }
+
         public static List<SelectListItem> TaskTypes = new List<SelectListItem>()
         {
             new SelectListItem() {Text="Administration", Value="Administration" },

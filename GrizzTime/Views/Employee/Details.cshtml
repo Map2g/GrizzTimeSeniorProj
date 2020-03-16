@@ -3,99 +3,248 @@
 
 @{
     ViewBag.Title = "Details";
+    string type = ViewBag.type;
+
+    List<string> years = new List<string>();
 }
 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../assets/css/AdminLTE.min.css">
+    @*<link rel="stylesheet" href="../../stylesheet.css">*@
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
 
-    <div class="form-horizontal">
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmpFName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EmpFName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
-            </div>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="@Request.UrlReferrer">Back</a></li>
+                <li class="breadcrumb-item active">Employee Details</li>
+            </ol>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmpLName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EmpLName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly", @type = "text" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmpPhone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EmpPhone, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Job Title", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EmpType, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Supervisor", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SupervisorName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <h3>List of Projects: </h3>
-                <table class="table table-striped">
-                    <tr>
-                        <th>
-                            Project
-                        </th>
-                    </tr>
-                    @foreach (var item in Employee.GetProjects(Model.UserID))
-                    {
-                        <tr>
-                            <td>
-                                <a href="@Url.Action("Details", "Project", new { id = item.ProjID })">@Html.DisplayFor(modelItem => item.ProjName)</a>
-                            </td>
-                        </tr>
-
-                    }
-                </table>
-            </div>
-        </div>
-
     </div>
+    <!-- /.container-fluid -->
+</section>
 
-<div class="db-Row-Button-Box">
-    <div class="db-Column-Button-Box">
-        <a href="@Request.UrlReferrer">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Back
-                    </h2>
-                </span>
+<div class="container-fluid">
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content" style="margin-left: 20px">
+                                    <h4>Projects</h4>
+                                    @foreach (var item in Employee.GetProjects(Model.UserID))
+                                    {
+                                        <div class="post">
+                                            <div class="user-block">
+                                                <span class="username">
+                                                    <a href="@Url.Action("Details", "Project", new {id = item.ProjID })">@item.ProjName</a>
+                                                </span>
+                                                <span class="description">@item.ProjDesc</span>
+                                            </div>
+                                            <!-- /.user-block -->
+                                            <p class="text-right">
+                                                <a href="@Url.Action("RemoveEmpFromProject", "Project", new {pid = item.ProjID, eid = Model.UserID})" class="btn btn-sm btn-danger" style="@((type == "thisBusiness")? "display:inline" : "display:none")">Remove</a>
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content" style="margin-left: 0rem">
+                                    <ul class="list-unstyled">
+
+                                        @foreach (var item in Model.EmployeeTimesheets)
+                                        {
+                                        <li>
+                                            @if (!years.Contains(item.PayrollCycleYear))
+                                            {
+                                            <a href="@Url.Action("EmployeeInvoice", "Invoice", new { eid = Model.UserID, year = item.PayrollCycleYear })"> @item.PayrollCycleYear </a>
+                                             years.Add(item.PayrollCycleYear);
+                                            } 
+                                        </li>
+                                        }
+
+                                    </ul>
+                                    @*<span class="info-box-text text-center text-muted">Contract Allotted Hours</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.Contract.ConAllottedHours</span>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                    <div class="info-box bg-light">
+                        <div class="info-box-content" style="margin-left:0rem">
+                            <h3 class="profile-username text-center"> @Html.DisplayFor(m => m.EmpFName) @Html.DisplayFor(m => m.EmpLName)</h3>
+                            <p class="text-muted text-center"> @Html.DisplayFor(m => m.EmpType)</p>
+                            <br>
+                            <div class="text-muted">
+                                <p class="text-md">
+                                    Contact: <br>
+                                    <b class="d-block">@Html.DisplayFor(m => m.UserEmail)</b><br>
+                                    <b class="d-block">@Html.DisplayFor(m => m.EmpPhone)</b>
+                                </p>
+                                <hr>
+                                <p class="text-md">
+                                    Business<br>
+                                    <b class="d-block">@Html.DisplayFor(m => m.BusinessName)</b>
+                                </p>
+                                <p class="text-md">
+                                    Direct Supervisor<br>
+                                    <b class="d-block">@Html.DisplayFor(m => m.SupervisorName)</b>
+                                </p>
+                            </div>
+
+                            <hr>
+
+                            <h5 class="mt-5 text-muted"><i class="fas fa-tasks"></i> <strong>Managing Projects: </strong> </h5>
+                            @if (Project.PMProjList(Model.UserID).Any())
+                            {
+                                <table class="table table-responsive-sm">
+                                    <tbody>
+                                        @foreach (var item in Project.PMProjList(Model.UserID))
+                                        {
+                                            <tr>
+                                                <td><i class="far fa-circle"></i> <a href="@Url.Action("Details", "Project", new { id = item.ProjID })"> @item.ProjName </a></td>
+                                                <td>@item.ContractName</td>
+                                                <td> - @item.ProjStatus</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p>This employee isn't managing any projects.</p>
+                            }
+                            <div class="text-right mt-5 mb-3">
+                                <a href="@Url.Action("Edit", "Employee", new {id = Model.UserID})" class="btn btn-sm btn-primary" style="@((type == "thisBusiness")? "display:inline" : "display:none")">Edit Project</a>
+                                <a href="@Url.Action("ResetPassword", "Employee", new {id = Model.UserID})" class="btn btn-sm btn-primary" style="@((type == "thisEmployee")? "display:inline" : "display:none")">Change Password</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </a>
-    </div>
-    <div class="db-Column-Button-Box">
-        <a href="/employee/edit/@Request.Cookies["UserID"].Value">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Edit
-                    </h2>
-                </span>
-            </div>
-        </a>
+        </div>
     </div>
 </div>
+
+                <div class="form-horizontal">
+                    <hr />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmpFName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EmpFName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmpLName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EmpLName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly", @type = "text" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmpPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EmpPhone, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Job Title", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EmpType, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Supervisor", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SupervisorName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <h3>List of Projects: </h3>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>
+                                        Project
+                                    </th>
+                                </tr>
+                                @foreach (var item in Employee.GetProjects(Model.UserID))
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("Details", "Project", new { id = item.ProjID })">@Html.DisplayFor(modelItem => item.ProjName)</a>
+                                        </td>
+                                    </tr>
+
+                                }
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="db-Row-Button-Box">
+                    <div class="db-Column-Button-Box">
+                        <a href="@Request.UrlReferrer">
+                            <div class="small-button">
+                                <span>
+                                    <h2>
+                                        Back
+                                    </h2>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="db-Column-Button-Box">
+                        <a href="/employee/edit/@Request.Cookies["UserID"].Value">
+                            <div class="small-button">
+                                <span>
+                                    <h2>
+                                        Edit
+                                    </h2>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
 

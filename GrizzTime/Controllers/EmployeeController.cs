@@ -364,6 +364,39 @@ namespace GrizzTime.Controllers
                 }
 
                 employee emp = dc.employees.Find(id);
+
+                //-------Determine who's accessing employee details-----------
+                string currentUserID = Request.Cookies["UserID"].Value;
+                string type = "otherEmployee";
+                if (currentUserID == emp.BusCode.ToString())
+                {
+                    type = "thisBusiness";
+                }
+                else
+                {
+                    if (currentUserID == emp.UserID.ToString())
+                    {
+                        type = "thisEmployee";
+                    }
+                    type = "otherEmployee";
+                }
+                ViewBag.type = type;
+
+                //------------------------------------------------------------
+                List<Timesheet> theseTimesheets = new List<Timesheet>();
+                foreach (var ts in emp.timesheets)
+                {
+                    theseTimesheets.Add(
+                        new Timesheet()
+                        {
+                            //I think this is all i need for now.
+                            PayrollCycleYear = ts.payrollcycle.PayrollCycleYear.ToString(),
+                        }
+                   ) ;
+                }
+                //--------------------------------------------------------------------------
+
+
                 Employee viewEmp = new Employee()
                 {
                     EmpFName = emp.EmpFName,
@@ -373,7 +406,10 @@ namespace GrizzTime.Controllers
                     EmpPayRate = emp.EmpPayRate,
                     EmpPhone = emp.EmpPhone,
                     UserID = emp.UserID,
-                    SupervisorID = emp.SupervisorID,
+                    SupervisorID = emp.SupervisorID, 
+                    SupervisorName = emp.employee2.EmpFName + " " + emp.employee2.EmpLName,
+                    BusinessName = emp.business.BusName,
+                    EmployeeTimesheets = theseTimesheets,
                 };
 
                 if (emp == null)

@@ -54,7 +54,7 @@ namespace GrizzTime.ViewModels
 
         public int BusCode { get; set; }
 
-        public string BusinessName { get; }
+        public string BusinessName { get; set; }
 
         [Display(Name = "Pay rate: ")]
         public decimal EmpPayRate { get; set; }
@@ -99,6 +99,8 @@ namespace GrizzTime.ViewModels
         public decimal YearTotalHours { get; set; }
 
         public List<Project> EmployeeProjects { get; set; }
+
+        public List<Timesheet> EmployeeTimesheets { get; set; }
 
         //public List<EmployeeInvProject> EmployeeInvProjects { get; set; }
 

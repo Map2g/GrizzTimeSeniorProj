@@ -11601,6 +11601,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .content-wrapper,
         padding: .812rem
     }
 
+
 .content-header {
     padding: 15px .5rem
 }
@@ -11628,6 +11629,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .content-wrapper,
 .text-sm .content-header .breadcrumb {
     line-height: 1.5rem
 }
+
 
 .hold-transition .content-wrapper, .hold-transition .control-sidebar, .hold-transition .control-sidebar *, .hold-transition .main-footer, .hold-transition .main-header, .hold-transition .main-sidebar, .hold-transition .main-sidebar * {
     transition: none !important
