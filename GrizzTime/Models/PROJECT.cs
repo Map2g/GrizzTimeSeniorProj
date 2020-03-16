@@ -49,9 +49,9 @@ public partial class project
 
     public int ProjManID { get; set; }
 
+        public decimal ProjTotalHr { get; set; }
 
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<employee_project> employee_project { get; set; }
 

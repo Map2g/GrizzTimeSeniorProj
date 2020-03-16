@@ -724,6 +724,7 @@
     <Content Include="Views\Invoice\EmployeeInvoice_print.cshtml" />
     <Content Include="Views\Project\EditTask.cshtml" />
     <Content Include="Views\Home\MyProjects.cshtml" />
+    <Content Include="Views\Invoice\ProjectInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
