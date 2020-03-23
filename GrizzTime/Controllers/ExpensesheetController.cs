@@ -88,39 +88,63 @@ namespace GrizzTime.Controllers
 
 
         [HttpPost]
-        public ActionResult ExpenseEntry(ExpenseEntry thisExpense)
+        public ActionResult ExpenseEntry(int? eid, ExpenseEntry thisExpense)
         {
             using (Entities dc = new Entities())
             {
                 DateTime d = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
-                IEnumerable<payrollcycle> thispayroll;
+              
                 ///payrollcycle pc = dc.payrollcycles.Where(a => a.PayrollCycleStart = d);
                 var v = dc.payrollcycles.Where(a => a.PayrollCycleStart == d).FirstOrDefault();
 
-                expensesheet es = new expensesheet();
-                es.EmpID = Int32.Parse(Request.Cookies["UserID"].Value);
-                es.PayrollCycleID = v.PayrollCycleID;
-                es.ExpSheetStatus = "";
-                es.ExpSheetTotalAmt = (int)0;
+                expensesheet es = new expensesheet
+                {
+                    EmpID = Int32.Parse(Request.Cookies["UserID"].Value),
+                    PayrollCycleID = v.PayrollCycleID,
+                    ExpSheetStatus = "Unapproved"
+                };
 
                 dc.expensesheets.Add(es);
-                dc.SaveChanges();
-
-
+                var testvar = thisExpense.SelectedCategoryText;
                 expenseentry ee = new expenseentry()
                 {
                     ExpSheetID = (int)es.ExpSheetID,
                     EmpID = es.EmpID,
                     ExpDate = thisExpense.ExpDate,
                     ExpDollarAmt = thisExpense.ExpDollarAmt,
-                    ExpCategory = thisExpense.ExpCategory,
+                    ExpCategory = thisExpense.SelectedCategoryText,
                     ProjID = thisExpense.ProjID
                 };
 
                 dc.expenseentries.Add(ee);
-                dc.SaveChanges();
-                return View("List");
+                
+                try
+                {
 
+                dc.SaveChanges();
+                return Redirect("List");
+                
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                {
+                    //more descriptive error for validation problems
+                    Exception exception = dbEx;
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            string message1 = string.Format("{0}:{1}",
+                                validationErrors.Entry.Entity.ToString(),
+                                validationError.ErrorMessage);
+
+                            //create a new exception inserting the current one as the InnerException
+                            exception = new InvalidOperationException(message1, exception);
+                        }
+                    }
+                    //error for UI
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    throw exception;
+                }
 
             }
         }

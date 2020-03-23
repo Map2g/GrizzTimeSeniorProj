@@ -1162,3 +1162,20 @@ D:\Senior Capstone Project\GrizzTimeSeniorProj\GrizzTime\obj\Debug\GrizzTime.csp
 D:\Senior Capstone Project\GrizzTimeSeniorProj\GrizzTime\obj\Debug\GrizzTime.dll
 D:\Senior Capstone Project\GrizzTimeSeniorProj\GrizzTime\obj\Debug\GrizzTime.pdb
 C:\Users\Mel\source\Repos\Map2g\GrizzTimeSeniorProj\GrizzTime\obj\Debug\GrizzTime.csprojAssemblyReference.cache
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Security.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Owin.dll
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.xml
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Security.xml
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\miher\Source\Repos\GrizzTimeSeniorProj\GrizzTime\bin\Microsoft.Owin.Security.OAuth.xml
