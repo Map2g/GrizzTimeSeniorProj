@@ -57,7 +57,7 @@
         <div class="form-group">
             @Html.Label("Expense Category:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ExpCategory, new SelectList(ExpenseEntry.ExpenseTypes, "Value", "Text"), "--Select--", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.ExpCategory, new SelectList(ExpenseEntry.ExpenseTypes, "Value", "Text"), "--Select--", new {  @id = "ExpCategory", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ExpCategory, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -79,7 +79,7 @@
             </div>
         </div>
 
-        @Html.HiddenFor(model => model.SelectedCategoryText)
+        @Html.HiddenFor(model => model.SelectedCategoryText, new { @id = "SelectedCategoryText"})
         @{Html.EndForm();}
 
     </div>
@@ -87,8 +87,10 @@
 
 <script type="text/javascript">
 $(function(){
-$("#ExpCategory").on("change", function() {
-    $("#SelectedCategoryText").val($(**"#ExpCategory option:selected"**).text());
+    $("#ExpCategory").on("change", function () {
+        var testtext = $("#ExpCategory option:selected").val();
+    ///$("#SelectedCategoryText").val($(this).text());
+        $("#SelectedCategoryText").val(testtext);
  });
 });
 </script>

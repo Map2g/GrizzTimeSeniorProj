@@ -105,7 +105,7 @@ namespace GrizzTime.Controllers
                 };
 
                 dc.expensesheets.Add(es);
-                var testvar = thisExpense.SelectedCategoryText;
+                
                 expenseentry ee = new expenseentry()
                 {
                     ExpSheetID = (int)es.ExpSheetID,
