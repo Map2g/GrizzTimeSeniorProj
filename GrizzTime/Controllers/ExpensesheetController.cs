@@ -93,7 +93,7 @@ namespace GrizzTime.Controllers
             using (Entities dc = new Entities())
             {
                 DateTime d = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
-              
+
                 ///payrollcycle pc = dc.payrollcycles.Where(a => a.PayrollCycleStart = d);
                 var v = dc.payrollcycles.Where(a => a.PayrollCycleStart == d).FirstOrDefault();
 
@@ -105,7 +105,7 @@ namespace GrizzTime.Controllers
                 };
 
                 dc.expensesheets.Add(es);
-                
+
                 expenseentry ee = new expenseentry()
                 {
                     ExpSheetID = (int)es.ExpSheetID,
@@ -117,13 +117,13 @@ namespace GrizzTime.Controllers
                 };
 
                 dc.expenseentries.Add(ee);
-                
+
                 try
                 {
 
-                dc.SaveChanges();
-                return Redirect("List");
-                
+                    dc.SaveChanges();
+                    return Redirect("List");
+
                 }
                 catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
                 {
@@ -148,9 +148,56 @@ namespace GrizzTime.Controllers
 
             }
         }
-    }
-}
 
+
+
+        public ActionResult Submit(int? eid)
+        {
+            Entities dc = new Entities();
+
+            expensesheet es = dc.expensesheets.Find(eid);
+
+            if (es.ExpSheetStatus == "Pending")
+            {
+                TempData["message"] = "Expensesheet already submitted!";
+                return Redirect("List");
+            }
+
+            es.ExpSheetStatus = "Pending";
+            es.ExpSheetSubmitTime = System.DateTime.Now;
+
+            dc.Entry(es).State = System.Data.Entity.EntityState.Modified;
+            try
+            {
+                dc.SaveChanges();
+                TempData["message"] = "Timesheet submitted successfully!";
+                return Redirect("List");
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                //more descriptive error for validation problems
+                Exception exception = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message1 = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+
+                        //create a new exception inserting the current one as the InnerException
+                        exception = new InvalidOperationException(message1, exception);
+                    }
+                }
+                //error for UI
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                throw exception;
+            }
+
+        }
+    }
+
+}
 
 
 
