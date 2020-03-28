@@ -2,11 +2,11 @@
 @model Business
 
 @{
-    ViewBag.Title = "Registration";
     Layout = null;
 }
 
 <link rel="stylesheet" href="~/StyleSheet.css" />
+<title>Create Business Account</title>
 
 @using (Html.BeginForm())
 {
@@ -20,38 +20,20 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="Login-Box-Top">
-                <div class="Form-Titles">Create Business</div>
+                <div class="Form-Titles">Create a business account</div>
             </div>
-
-            @*<div class="form-horizontal">
-                <h4>Create Business Account</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                @*<div class="Column-1">
-                         @Html.Label("Email Address:", htmlAttributes: new { })
-                         @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { placeholder = "Your Email Here" } })
-                         @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
-                         @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
-                         <label for="Email"> First Name </label>
-                         <input type="text" id="fname" name="firstname" placeholder="Your First Name Here">
-                         <label for="Email"> Email </label>
-                         <input type="text" class="half-box" placeholder="Your Email Here">
-                         <input type="text" placeholder="Your Password Here">
-                         <label for="Password"> Password</label>
-                         <input type="submit" value="Submit">
-                    </div>*@
 
             <div class="Form-Box-Container">
                 <div class="Form-Box" style="margin-top:50px">
 
                     <div class="form-group">
-                        <div class="label"> Email </div>
+                        <div class="label"> Email Address </div>
                         <div class="col-md-10">
                             @*htmlAttributes = new { @class = "form-control", @placeholder = "Your Email Here"*@
-                            @Html.EditorFor(model => model.UserEmail, new { @type = "input" })
-                            @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
-                            @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.UserEmail, new { @type = "text" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
+                            @Html.ValidationMessage("EmailExist", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                         </div>
                     </div>
 
@@ -60,40 +42,50 @@
                         @*@Html.LabelFor(model => model.UserPW, htmlAttributes: new { @class = "control-label col-md-2" })*@
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-                            @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="label"> Business Name </div>
+                        <div class="label"> Name </div>
                         @*@Html.LabelFor(model => model.BusName, htmlAttributes: new { @class = "control-label col-md-2" })*@
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.BusName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.BusName, "", new { @class = "text-danger" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.BusName, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="label"> Business Address </div>
+                        <div class="label"> Address </div>
                         @*@Html.LabelFor(model => model.BusAddress, htmlAttributes: new { @class = "control-label col-md-2" })*@
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.BusAddress, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.BusAddress, "", new { @class = "text-danger" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.BusAddress, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="label"> Business Description </div>
+                        <div class="label"> Description </div>
                         @*@Html.LabelFor(model => model.BusDesc, htmlAttributes: new { @class = "control-label col-md-2" })*@
                         <div class="col-md-10">
                             @Html.TextAreaFor(model => model.BusDesc, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.BusDesc, "", new { @class = "text-danger" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.BusDesc, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+                        <div class="smalltext">
+                            <a href="/home/landingpage" style="color:white">Back to Home &raquo;</a>
                         </div>
                     </div>
                 </div>
@@ -103,20 +95,11 @@
 
 }
 
-
-<div>
-    <p><a href="/home/index">Back to Home &raquo;</a></p>
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-
 @if (@TempData["message"] != null)
 {
     <script type="text/javascript">
-            window.onload = function () {
-            alert(@TempData["message"]);
-        };
+                window.onload = function () {
+                    alert("@TempData["message"]");
+                };
     </script>
 }

@@ -1,8 +1,11 @@
 body {
-    background-color: #b59a57;
+    /*background-color: #b59a57;*/
+    background-image: url(/assets/img/clock.jpg);
+    background-repeat: repeat-y;
+    background-size: cover;
+    background-position: center;
+    background-color: #e8ebf5;
 }
-
-
 
 .Column-Button-Box{
   flex: 50%;
@@ -53,13 +56,14 @@ body {
     justify-content: center;
 }
 
-.Login-Box{
-  width: 600px;
-  height: auto;
-  position: absolute;
-  top: 15%;
-  border-radius: 25px 25px 25px 25px;
-  background-color: #333;
+.Login-Box {
+    width: 600px;
+    height: auto;
+    position: absolute;
+    top: 15%;
+    border-radius: 25px 25px 25px 25px;
+    background-color: #333;
+    box-shadow: 0 0 20px #000;
 }
 
 .Column-1{
@@ -82,6 +86,7 @@ body {
     border-radius: 15px;
     box-sizing: border-box;
 }
+
 input[type=text], select {
   width: 400px;
   padding: 12px 10px;
@@ -91,6 +96,17 @@ input[type=text], select {
   border: 1px solid #ccc;
   border-radius: 15px;
   box-sizing: border-box;
+}
+
+input[type=email], select {
+    width: 400px;
+    padding: 12px 10px;
+    margin: 15px 0;
+    margin-left: 100px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
 }
 
 input[type=password] {
@@ -105,9 +121,20 @@ input[type=password] {
 	box-sizing: border-box
 }
 
+textarea {
+    font: small-caption;
+    width: 400px;
+    padding: 12px 10px;
+    margin: 15px 0;
+    margin-left: 100px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box
+}
+
 input[type=submit] {
     width: 400px;
-    background-color: #0000FF;
+    background-color: #b59a57;
     color: white;
     padding: 14px 20px;
     margin: 20px 0;
@@ -119,9 +146,21 @@ input[type=submit] {
 }
 
     input[type=submit]:hover, input[type=submit]:active {
-        background-color: #0000A0;
+        background-color: #b59a57;
+        box-shadow: 0 0 15px #231C01;
         color: white;
     }
+
+input[type=checkbox] {
+    width: 220px;
+    background-color: #b59a57;
+    color: white;
+    margin: 10px 0; 
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 25px;
+}
 
 label {
 	color: black;
@@ -133,7 +172,15 @@ label {
 	color: white;
 	font-size: 20px;
 	font-family: Noto Sans, sans-serif;
-    padding:20px;
+    padding-left: 20px;
+    padding-top:15px;
+}
+
+.smalltext {
+    color: white;
+    font-size: 15px;
+    font-family: Noto Sans;
+    padding: 20px;
 }
 
 .form-Labels{
@@ -204,43 +251,94 @@ label {
 }
 
 .Landing-Box-Container {
-    height: 100%;
+    width: 100%;
+    position: relative;
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+    padding-top: 3%;
+    margin-right: auto;
+    margin-left: auto;
+    /*height: ;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center;*/
+}
+
+/* centered columns styles */
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    /* reset the text-align */
+    text-align: left;
+    /* inline-block space fix */
+    margin-right: -4px;
+    text-align: center;
+    background-color: #ccc;
+    border: 1px solid #ddd;
 }
 
 .Landing-Box {
-    width: 850px;
+    width: 550px;
     height: 350px;
-    position: absolute;
-    top: 15%;
+    position: relative;
+    padding-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 25px 25px 25px 25px;
-    background-color: #b59a57;
-}
-.Landing-Page-Buttons {
-    position: absolute;
-    height: 200px;
-    width: 250px;
     background-color: #333;
-    border-radius: 25px;
-    transition: all 0.2s ease-in-out;
+    box-shadow: 0 0 20px #000;
+}
+
+.Landing-Page-Buttons {
+    background-color: #b59a57;
+    border: 1px solid transparent;
+    padding: 2.75rem 1.75rem;
+    font-size: 1.53rem;
+    height: 10rem;
+    width: 12rem;
+    border-radius: 1.25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
 }
 
     .Landing-Page-Buttons h2 {
         text-align: center;
-        margin-top: 25%;
+        align-items: center;
+        justify-content: center;
+        /* margin-top: 50%;
+        margin-bottom: 50%; */
         color: white;
         font-family: Noto, sans-serif;
-        font-size: 23px;
+        font-size: 1.5rem;
     }
 
     .Landing-Page-Buttons:hover {
-        /*color: rgba(255, 255, 255, 1);
-        box-shadow: 0 0 20px #D3BD09;*/
-        border-radius: 0;
-        width: 260px;
-        height: 210px;
+        color: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 20px /*#D3BD09*/#000;
+        border-radius: 1.25rem;
+        width: 12.15rem;
+        height: 10.15rem;
+    }
+
+.Landing-Page-Buttons-sm {
+    background-color: #b59a57;
+    border: 1px solid transparent;
+    padding: 1rem 1.75rem;
+    font-size: 1.05rem;
+    height: 5rem;
+    width: 8rem;
+    border-radius: 1.25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
+}
+    .Landing-Page-Buttons-sm:hover {
+        color: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 10px /*#D3BD09*/ #000;
+        border-radius: 1.25rem;
+        width: 8.15rem;
+        height: 5.15rem;
     }
 
 .small-button {

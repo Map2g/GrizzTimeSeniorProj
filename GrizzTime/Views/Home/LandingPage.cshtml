@@ -1,39 +1,46 @@
-﻿
-@{
-    ViewBag.Title = "LandingPage";
+﻿@{ 
+    Layout = null;
 }
 
-<link rel="stylesheet" href="~/StyleSheet.css" />
+<html>
+<head>
+    <link rel="stylesheet" href="../../assets/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../../assets/css/AdminLTE.min_notusing.css">
+    <link rel="stylesheet" href="~/StyleSheet.css" />
+    <title>Login</title>
+</head>
+<body>
 
-<div class="Login-Box-Top">
-    <div class="Form-Titles"> HOME </div>
-</div>
+    <img src="~/assets/img/namelogo.png"/>
 
-<div class="Landing-Box-Container">
-    <div class="Landing-Box">
-        <div class="Row-Button-Box">
-            <div class="Column-Button-Box">
-                <a href="~/Business/Login">
-                    <div class="Landing-Page-Buttons">
-                        <h2>
-                            Business Login
-                        </h2>
-                    </div>
-                </a>
+    <div class="Landing-Box-Container">
+        <div class="Landing-Box">
+
+            <div class="row row-centered">
+                <div class="col">
+                    <a href="@Url.Action("Login", "Business")" class="btn Landing-Page-Buttons" style="text-decoration:none; color:white">
+                        Business Login
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="@Url.Action("Login", "Employee")" class="btn Landing-Page-Buttons" style="text-decoration:none; color:white">
+                        Employee Login
+                    </a>
+                </div>
             </div>
-
-            <div class="Column-Button-Box">
-                <a href="~/Employee/Login">
-                    <div class="Landing-Page-Buttons">
-                        <h2>
-                            Employee Login
-                        </h2>
-                    </div>
-                </a>
+            <br />
+            <div class="row row-centered">
+                <div class="col">
+                    <a href="@Url.Action("Registration", "Business")" class="btn Landing-Page-Buttons-sm" style="text-decoration:none; color:white">
+                        Register Business
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+</body>
+    </html>
 
 @*Displays alert message telling user how the operation went.*@
 @if (@TempData["message"] != null)

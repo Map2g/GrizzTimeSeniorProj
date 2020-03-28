@@ -31,7 +31,7 @@ namespace GrizzTime.Controllers
         [AllowAnonymous]
         public ActionResult Login(business business, String ReturnUrl)
         {
-            string message = "";
+            
             using (Entities dc = new Entities())
             {
                 var v = dc.businesses.Where(a => a.UserEmail == business.UserEmail).FirstOrDefault();
@@ -67,6 +67,7 @@ namespace GrizzTime.Controllers
                         }
                         catch (Exception ex)
                         {
+                            TempData["message"] = "Something went wrong.";
                             throw ex;
                         }
 
@@ -80,16 +81,18 @@ namespace GrizzTime.Controllers
                             return RedirectToAction("Dashboard");
                         }
                     }
+                    else
+                    {
+                        TempData["message"] = "Invalid Credentials";
+                        return View();
+                    }
                 }
                 else
                 {
-                    message = "Invalid Credentials";
+                    TempData["message"] = "There is no business account associated with " + business.UserEmail;
                     return View();
                 }
             }
-
-            ViewBag.Message = message;
-            return RedirectToAction("Dashboard");
         }
 
         [AllowAnonymous]
@@ -255,18 +258,17 @@ namespace GrizzTime.Controllers
         [AllowAnonymous]
         public ActionResult Registration([Bind(Exclude = "IsEmailVerified,ActivationCode")] Business thisBus)
         {
-            bool Status = false;
-            string message = "";
+            //Check if email exists
+            var isExist = IsEmailExist(thisBus.UserEmail);
+            if (isExist)
+            {
+                ModelState.AddModelError("EmailExist", "There is already an account registered with this email address.");
+                return View(thisBus);
+            }
+
             //ensure that the model exists
             if (ModelState.IsValid)
             {
-                //Email already exists
-                var isExist = IsEmailExist(thisBus.UserEmail);
-                if (isExist)
-                {
-                    ModelState.AddModelError("EmailExist", "Email already exists.");
-                    return View(thisBus);
-                }
                 //Save to Database
                 try
                 {
@@ -286,8 +288,7 @@ namespace GrizzTime.Controllers
                     }
 
                     SendVerificationEMail(thisBus.UserEmail);
-                    message = "Registration complete! An email has been sent to you to confirm your registration!";
-                    Status = true;
+                    TempData["message"] = "Registration complete! An email has been sent to you to confirm your registration!";
 
                     return RedirectToAction("Details");
                 }
@@ -306,17 +307,15 @@ namespace GrizzTime.Controllers
             }
             else
             {
-                message = "Invalid Request";
-            }
-            ViewBag.Message = message;
-            ViewBag.Status = Status;
-            return View();
+                TempData["message"] = "Invalid Request";
+                return View(thisBus);
+            }                 
         }
 
         // GET: User/Details/5
         public ActionResult Details(int? id)
         {
-            string message = "";
+            string message;
             using (Entities dc = new Entities())
             {
 
@@ -330,7 +329,7 @@ namespace GrizzTime.Controllers
                 if (bus == null)
                 {
                     message = "Business not find with id: " + id.ToString();
-                    ViewBag.Message = message;
+                    TempData["message"] = message;
                     RedirectToAction("Dashboard");
                 }
 
@@ -404,7 +403,7 @@ namespace GrizzTime.Controllers
             }
 
             bool Status = false;
-            string message = "";
+            string message;
 
             //Don't check include in validation check
             //ModelState.Remove("UserEmail");
@@ -435,7 +434,7 @@ namespace GrizzTime.Controllers
                         dc.SaveChanges();
                         message = "Business updated successfully.";
                         Status = true;
-                        ViewBag.Message = message;
+                        TempData["message"] = message;
                         ViewBag.Status = Status;
                         return RedirectToAction("Dashboard");
                     }
@@ -469,7 +468,7 @@ namespace GrizzTime.Controllers
                 message = "Invalid Request";
             }
 
-            ViewBag.Message = message;
+            TempData["message"] = message;
             ViewBag.Status = Status;
             return View(thisBus);
         }
@@ -477,18 +476,15 @@ namespace GrizzTime.Controllers
         // GET: User/Delete/5
         public ActionResult Delete(int id)
         {
-            string message = "";
             using (Entities dc = new Entities())
             {
                 business business = dc.businesses.Find(id);
 
                 if (business == null)
                 {
-                    message = "Business does not exist.";
-                    ViewBag.Message = message;
+                    TempData["message"] = "Business does not exist.";
                     return View("Details");
                 }
-                ViewBag.Message = message;
                 return View(business);
             }
         }
@@ -575,7 +571,7 @@ namespace GrizzTime.Controllers
             var fromEmail = new MailAddress("grizztimenotification@gmail.com");
             var toEmail = new MailAddress(email);
             var fromEmailPassword = "WinterSemester";
-            string subject = "Your account hase been succesfully created!";
+            string subject = "Your account has been succesfully created!";
 
             string body = "Congratulations, your business account has been created!";
 

@@ -24,7 +24,7 @@
                 @*Html.Label("Email Address", htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.UserEmail, new { @type = "input" })
-                    @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                 @*@Html.Label("Password:", htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @type = "password" } })
-                    @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                 </div>
             </div>
 
@@ -51,10 +51,14 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <a href="@Url.Action("ForgotPassword", "Employee")" style="color:aliceblue">
-                    Forgot password?
-                </a>
+            <div class="col-md-10">
+                <div class="smalltext">
+                    <a href="/employee/forgotpassword" style="color:white">
+                        Forgot password?
+                    </a>
+                    <br />
+                    <a href="/home/landingpage" style="color:white">Back to Home &raquo;</a>
+                </div>
             </div>
 
         </div>
@@ -96,10 +100,6 @@
             </div>
         </div>*@
 }
-
-<div>
-    <p><a href="/home/landingpage">Back to Home &raquo;</a></p>
-</div>
 
 @*Displays alert message telling user how the operation went.*@
 @if (@TempData["message"] != null)

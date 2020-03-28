@@ -319,7 +319,9 @@
     <Content Include="assets\css\EmpDashboardStyle.css" />
     <Content Include="assets\css\AdminLTE.min.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\img\clock.jpg" />
     <Content Include="assets\img\defaultuser.png" />
+    <Content Include="assets\img\namelogo.png" />
     <Content Include="assets\js\AdminLTE.js" />
     <Content Include="assets\js\app.min.js" />
     <Content Include="assets\js\bootstrap.bundle.min.js" />
