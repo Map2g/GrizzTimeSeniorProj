@@ -28,25 +28,22 @@ namespace GrizzTime.ViewModels
 
         public int ExpSheetID { get; set; }
 
-        public int TaskID { get; set; }
-
-        public string TaskName { get; set; }
-
         public string ExpCategory { get; set; }
+
+        public string SelectedCategoryText { get; set; }
 
         public static List<SelectListItem> ExpenseTypes = new List<SelectListItem>()
         {
-            new SelectListItem() {Text="Transporation", Value="Transportation" },
-            new SelectListItem() {Text="Food", Value="Food" },
-            new SelectListItem() {Text="Housing", Value="Housing" },
-            new SelectListItem() {Text="Travel Supplies", Value="Travel Supplies" },
-            new SelectListItem() {Text="Airfare", Value="Airfare" },
-            new SelectListItem() {Text="Tech Support", Value="Tech Support" },
-            new SelectListItem() {Text="Other", Value="Other" },
+            new SelectListItem() {Text="Transportation", Value = "1" },
+            new SelectListItem() {Text="Food", Value= "2" },
+            new SelectListItem() {Text="Housing", Value= "3" },
+            new SelectListItem() {Text="Travel Supplies", Value="4" },
+            new SelectListItem() {Text="Airfare", Value = "5" },
+            new SelectListItem() {Text="Tech Support", Value = "6" },
+            new SelectListItem() {Text="Other", Value= "7" },
 
         };
-        public List<Project> possibleProjects { get; set; }
-
+     
 
 
     }
