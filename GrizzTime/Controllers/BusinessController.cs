@@ -30,8 +30,7 @@ namespace GrizzTime.Controllers
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public ActionResult Login(business business, String ReturnUrl)
-        {
-            
+        {      
             using (Entities dc = new Entities())
             {
                 var v = dc.businesses.Where(a => a.UserEmail == business.UserEmail).FirstOrDefault();
@@ -83,13 +82,13 @@ namespace GrizzTime.Controllers
                     }
                     else
                     {
-                        TempData["message"] = "Invalid Credentials";
+                        ModelState.AddModelError("BadCredentials", "Incorrect password.");
                         return View();
                     }
                 }
                 else
                 {
-                    TempData["message"] = "There is no business account associated with " + business.UserEmail;
+                    ModelState.AddModelError("NotExist", "There is no business account associated with this email address.");
                     return View();
                 }
             }

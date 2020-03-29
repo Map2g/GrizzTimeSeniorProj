@@ -4,6 +4,12 @@
 @{
     ViewBag.Title = "My Projects";
     bool isBusiness = ViewBag.isBusiness;
+
+    //true when called from dashboard
+    if (TempData["partial"] != null && TempData["partial"].Equals("True"))
+    {
+        Layout = null;
+    }
 }
 
 @*Link name, controller name, action method, route argument, html details*@
@@ -17,32 +23,33 @@
 
 <br />
 
-<table class="table table-striped">
-    <tr>
-        <th>
-            @Html.DisplayName("Contract")
-        </th>
-        <th>
-            @Html.DisplayName("Name")
-        </th>
-        <th>
-            @Html.DisplayName("Description")
-        </th>
-        <th>
-            @Html.DisplayName("Project Manager")
-        </th>
-        <th>
-            @Html.DisplayName("Start Date")
-        </th>
-        <th>
-            @Html.DisplayName("End Date")
-        </th>
-        <th>
-            @Html.DisplayName("Status")
-        </th>
-        <th></th>
-    </tr>
-
+<table id="myPTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Contract")
+            </th>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Description")
+            </th>
+            <th>
+                @Html.DisplayName("Project Manager")
+            </th>
+            <th>
+                @Html.DisplayName("Start Date")
+            </th>
+            <th>
+                @Html.DisplayName("End Date")
+            </th>
+            <th>
+                @Html.DisplayName("Status")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
     @foreach (var item in Model)
     {
         <tr>
@@ -77,4 +84,8 @@
 
 </table>
 
-
+<script>
+    $(document).ready(function () {
+        $('#myPTable').dataTable();
+    });
+</script>

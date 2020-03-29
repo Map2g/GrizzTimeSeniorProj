@@ -1,44 +1,140 @@
 ﻿@{
     ViewBag.Title = "Dashboard";
-
 }
 
-<h2>Employee Dashboard</h2>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../assets/css/AdminLTE.min.css">
+    @*<link rel="stylesheet" href="../../stylesheet.css">*@
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
 
-<div class="form-horizontal">
-    <h4>Employee - @ViewBag.EmployeeName </h4>
-    <hr />
-
-    @*<p><a href="/employee/edit/@Request.Cookies["UserID"].Value">Edit employee</a></p>
-        @Html.ActionLink("See Timesheets", "List", "Timesheet")
-        <p><a href="/timesheets/list/">See timesheets</a></p>*@
-
-
-</div>
-<div class="db-Row-Button-Box">
-    <div class="db-Column-Button-Box">
-        <a href="/employee/edit/@Request.Cookies["UserID"].Value">
-            <div class="db-Page-Buttons">
-                <span>
-                    <h2>
-                        Edit Employee
-                    </h2>
-                </span>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Dashboard</h1>
             </div>
-        </a>
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="@Request.UrlReferrer">Back</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </div>
     </div>
+    <!-- /.container-fluid -->
+</section>
 
-    <div class="db-Column-Button-Box">
-        <a href="/Timesheet/List">
-            <div class="db-Page-Buttons">
-                <span>
-                    <h2>
-                        Timesheets
-                    </h2>
-                </span>
+<style>
+    .dashboard-title
+    {
+        font-size: 3rem;
+        color: white;
+        text-align: right;
+        padding-top: 5px;
+        padding-bottom: 10px;
+        padding-right:15px;
+        background-color:#b59a57;
+        border-radius:10px;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="dashboard-title">
+                        Welcome to GrizzTime, @ViewBag.EmployeeFName!
+                    </div>
+                </div>
             </div>
-        </a>
+            <!--START TIMESHEETS AND MY PROJECTS ROW-->
+            <div class="row" style="padding-top:10px;">
+                <div class="col-md-8">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <div class="card-title">
+                                My Timesheets
+                            </div>
+                        </div>
+                        <!---/.card-header-->
+                        <div class="card-body">
+                            @{
+                                //I use this to tell the page not to use _Layout this time
+                                TempData["partial"] = "True";
+                            }
+                            @Html.Action("List", "Timesheet")
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-4">
+                    <div class="card card-default align-items-center">
+                        @*<div class="card-header">
+                    <h3 class="card-title">
+
+                    </h3>
+                </div>*@
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row justify-content-center" style="padding-top:20px; padding-bottom:20px;">
+                                <a href="/business/details/@ViewBag.BusID" class="btn btn-lg btn-dark">My Business</a>
+                            </div>
+                            <div class="row justify-content-center" style="padding-top:20px; padding-bottom:20px;">
+                                <a href="/home/myprojects/" class="btn btn-lg btn-dark">My Projects</a>
+                            </div>
+                            <div class="row justify-content-center" style="padding-top:20px; padding-bottom:20px;">
+                                <a href="/timesheet/pendingapprovals/" class="btn btn-lg btn-dark">Supervisor Portal</a>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <!-- END TIMESHEETS AND PROJECTS -->
+            <div class="row" style="padding-top:10px;">
+                <div class="col-md-8">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <div class="card-title">
+                                My Expense Reports
+                            </div>
+                        </div>
+                        <!---/.card-header-->
+                        <div class="card-body">
+                            @{
+                                //I use this to tell the page not to use _Layout this time
+                                TempData["partial"] = "True";
+                            }
+                            @Html.Action("List", "Expensesheet")
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+
+
+        </div>
     </div>
 </div>
+
 
 

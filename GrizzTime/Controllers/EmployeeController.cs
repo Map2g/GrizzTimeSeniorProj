@@ -32,7 +32,6 @@ namespace GrizzTime.Controllers
         [AllowAnonymous]
         public ActionResult Login(employee employee, String ReturnUrl)
         {
-            string message = "";
             using (Entities dc = new Entities())
             {
                 var v = dc.employees.Where(a => a.UserEmail == employee.UserEmail).FirstOrDefault();
@@ -66,29 +65,31 @@ namespace GrizzTime.Controllers
                         }
                         catch (Exception ex)
                         {
-                            message = "Failed try.";
+                            TempData["message"] = "Something went wrong.";
                             throw ex;
                         }
 
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
-                            return Redirect(ReturnUrl);
+                            return RedirectToAction("Dashboard");
                         }
                         else
                         {
                             return RedirectToAction("Dashboard");
                         }
                     }
+                    else
+                    {
+                        ModelState.AddModelError("BadCredentials", "Incorrect password.");
+                        return View();
+                    }
                 }
                 else
                 {
-                    message = "Invalid credentials";
+                    ModelState.AddModelError("NotExist", "There is no employee account associated with this email address.");                   
                     return View();
                 }
             }
-
-            TempData["message"] = message;
-            return RedirectToAction("Dashboard");
         }
 
         [AllowAnonymous]
@@ -148,6 +149,7 @@ namespace GrizzTime.Controllers
                     //int id = Int32.Parse(Request.Cookies["UserID"].Value);
                     var v = dc.employees.Where(a => a.UserID == id).FirstOrDefault();
 
+                    ViewBag.EmployeeFName = v.EmpFName;
                     ViewBag.EmployeeName = v.EmpFName + " " + v.EmpLName;
                     ViewBag.BusID = v.BusCode;
                     ViewBag.UserID = v.UserID;

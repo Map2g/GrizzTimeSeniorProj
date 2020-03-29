@@ -14,7 +14,7 @@ namespace GrizzTime.Controllers
     public class TimesheetController : Controller
     {
         // GET: Timesheet
-        public ActionResult Create()
+        public ActionResult Create(DateTime date)
         {
             string message;
 
@@ -34,9 +34,12 @@ namespace GrizzTime.Controllers
                 using (Entities dc = new Entities())
                 {
                     GrizzTime.Models.payrollcycle pc = new GrizzTime.Models.payrollcycle();
-                    pc.PayrollCycleStart = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).Date;
-                    pc.PayrollCycleEnd = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7).Date;
-                    pc.PayrollCycleYear = (short)System.DateTime.Now.Year;
+                    //pc.PayrollCycleStart = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).Date;
+                    //pc.PayrollCycleEnd = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7).Date;
+                    //pc.PayrollCycleYear = (short)System.DateTime.Now.Year;
+                    pc.PayrollCycleStart = date.Date;
+                    pc.PayrollCycleEnd = date.AddDays(-7).Date;
+                    pc.PayrollCycleYear = (short)date.Year;
 
                     dc.payrollcycles.Add(pc);
                     dc.SaveChanges();
@@ -52,7 +55,7 @@ namespace GrizzTime.Controllers
                     int tsID = ts.TimeSheetID;
 
 
-                    message = "New Timesheet and payroll cycle created.";
+                    message = "New timesheet and payroll cycle created.";
                     TempData["message"] = message;
                     return RedirectToAction("Week", "Timesheet", new { id = tsID });
                 }

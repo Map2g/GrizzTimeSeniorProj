@@ -2,46 +2,64 @@
 @model IEnumerable<GrizzTime.Models.expensesheet>
 
 
-
-
 @{
     ViewBag.Title = "My Expense Reports";
+
+    //true when called from dashboard
+    if (TempData["partial"] != null && TempData["partial"].Equals("True"))
+    {
+        Layout = null;
+    }
 }
 
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Expense Sheet ID</th>
-            <th>Amount</th>
-            <th>Date of Request</th>
-            <th>Requestor</th>
-            <th>Approval Status</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @if (Model != null)
-        {
-            foreach (var item in Model)
-            {
+        <table id="" class="display">
+            <thead>
                 <tr>
-                    <td>@item.ExpSheetID</td>
-                    <td>@item.ExpSheetTotalAmt</td>
-                    <td>@item.ExpSheetSubmitTime</td>
-                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName </td>
-                    <td>@item.ExpSheetStatus</td>
-                    <td>
-                        <div>
-                            @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { id = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
-                        </div>
-
-                        <div>
-                            @Html.ActionLink("Submit", "Submit", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
-                        </div>
-                    </td>
+                    <th>Expense Sheet ID</th>
+                    <th>Amount</th>
+                    <th>Date of Request</th>
+                    <th>Requestor</th>
+                    <th>Approval Status</th>
+                    <th></th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ExpSheetID</td>
+                            <td>@item.ExpSheetTotalAmt</td>
+                            <td>@item.ExpSheetSubmitTime</td>
+                            <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName </td>
+                            <td>@item.ExpSheetStatus</td>
+                            <td>
+                                <div>
+                                    @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { id = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-outline-dark pull-left button button4" })
+                                </div>
+
+                                <div>
+                                    @Html.ActionLink("Submit", "Submit", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-outline-dark pull-left button button4" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+<script>
+    $(document).ready(function () {
+        if ($.fn.dataTable.isDataTable('table.display')) {
+            $('table.display').DataTable();
+        } else {
+            $('table.display').dataTable(
+                {
+                    pageLength: 5,
+                    lengthMenu: [[5, 10, 20, 50], [5, 10, 20, 50]]
+                }
+            );
         }
-    </tbody>
-</table>
+    });
+</script>

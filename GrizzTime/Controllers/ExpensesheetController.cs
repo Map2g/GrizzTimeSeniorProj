@@ -12,15 +12,12 @@ namespace GrizzTime.Controllers
 {
     public class ExpensesheetController : Controller
     {
-        public ActionResult List(string m)
+        public ActionResult List()
         {
-            string message = m;
-
             if (!Request.Cookies.AllKeys.Contains("UserID"))
             {
                 /// Redirect to login if it can't find user id
-                message = "Please log in.";
-                ViewBag.Message = message;
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -35,21 +32,18 @@ namespace GrizzTime.Controllers
 
                 if (thisEmployeeExpenseSheet.Any() == false)
                 {
-                    message = "You don't have any timesheets yet!";
-                    ViewBag.Message = message;
+                    TempData["message"] = "You don't have any timesheets yet!";
                     return View();
                 }
                 else
                 {
-                    ViewBag.Message = message;
                     return View(thisEmployeeExpenseSheet);
                 }
 
             }
             catch (Exception ex)
             {
-                message = "something happened";
-                ViewBag.Message = message;
+                TempData["message"] = "something happened";
                 return View();
                 throw ex;
             }

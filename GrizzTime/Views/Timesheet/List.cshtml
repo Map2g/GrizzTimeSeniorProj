@@ -3,72 +3,106 @@
 
 @{
     ViewBag.Title = "My Timesheets";
+    //true when called from dashboard
+    if (TempData["partial"] != null && TempData["partial"].Equals("True"))
+    {
+        Layout = null;
+    }
 
-    bool currentWeekExists = false;
+    //You're not supposed to write code in views but I'm a rebel
 
+    //Start by creating a list with the past four weeks in it.
+    List<DateTime> missedWeeks = new List<DateTime>();
+    DateTime weekStart = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
+    for (int i = 0; i < 4; i++)
+    {
+        missedWeeks.Add(weekStart);
+        weekStart = weekStart.AddDays(-7);
+    }
+
+    //If we find a timesheet in the model that matches one of the past four weeks, remove that from the missedWeeks list because it wasn't missed afterall.
     if (Model != null)
     {
         foreach (var item in Model)
         {
-            if (item.payrollcycle.PayrollCycleStart.Date == System.DateTime.Now.StartOfWeek(DayOfWeek.Monday))
+            if (missedWeeks.Contains(item.payrollcycle.PayrollCycleStart.Date))
             {
-                currentWeekExists = true;
+                missedWeeks.Remove(item.payrollcycle.PayrollCycleStart.Date);
             }
         }
     }
-
-
 }
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Week</th>
-            <th>Time</th>
-            <th>Reviewer</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @*Don't display this block if the current week is already in the DB*@
-        <tr style="@(currentWeekExists? "display:none" : "")">
-            <td>@System.DateTime.Now.StartOfWeek(DayOfWeek.Monday).ToShortDateString()</td>
-            <td>0.00</td>
-            <td>---</td>
-            <td>New</td>
-            <td>
-                @Html.ActionLink("View Week", "Create", "Timesheet", null, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
-            </td>
-        </tr>
-        @if (Model != null)
-        {
-            foreach (var item in Model)
+
+    <table id="" class="display">
+        <thead>
+            <tr>
+                <th>Week</th>
+                <th>Time</th>
+                <th>Reviewer</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--Show NEW timesheet weeks first-->
+            @if (missedWeeks.Any())
             {
-                <tr>
-                    <td>@item.payrollcycle.PayrollCycleStart.Date.ToShortDateString()</td>
-                    <td>@item.TimeSheetTotalHr</td>
-                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName </td>
-                    <td>@item.TimeSheetStatus</td>
-                    <td>
-                        <div>
-                            @Html.ActionLink("View Week", "Week", "Timesheet", new { id = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
-                        </div>
-
-                        <div>
-                            @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
-                        </div>
-                    </td>
-                </tr>
+                foreach (var date in missedWeeks)
+                {
+                    <tr>
+                        <td>@date.ToShortDateString()</td>
+                        <td>0.00</td>
+                        <td>---</td>
+                        <td>New</td>
+                        <td>
+                            @Html.ActionLink("View Week", "Create", "Timesheet", new { date = date }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.payrollcycle.PayrollCycleStart.Date.ToShortDateString()</td>
+                        <td>@item.TimeSheetTotalHr</td>
+                        <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName </td>
+                        <td>@item.TimeSheetStatus</td>
+                        <td>
+                            <div>
+                                @Html.ActionLink("View Week", "Week", "Timesheet", new { id = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                            </div>
 
-@*@if (@TempData["message"] != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@TempData["message"]");
-        };
-    </script>
-}*@
+                            <div>
+                                @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+<script>
+    //$(document).ready(function () {
+    //    $('#myTSTable').dataTable(
+    //        {
+    //            "order": [[0, "desc"]],
+    //        }
+    //    );
+    //});
+
+    $(document).ready(function () {
+        if ($.fn.dataTable.isDataTable('table.display')) {
+            $('table.display').DataTable();
+        } else
+        {
+        $('table.display').dataTable(
+            {
+                "order": [[0, "desc"]],
+            }
+        );
+        }
+    });
+</script>

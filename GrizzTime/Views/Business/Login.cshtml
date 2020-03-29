@@ -2,11 +2,11 @@
 @model business
 
 @{
-    ViewBag.Title = "Business Login";
     Layout = null;
 }
 
 <link rel="stylesheet" href="~/StyleSheet.css" />
+<title>Login</title>
 
 @using (Html.BeginForm())
 {
@@ -23,8 +23,9 @@
                 <div class="label"> Email Address</div>
                 @*Html.Label("Email Address", htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.UserEmail, new { @type = "input" })
+                    @Html.EditorFor(model => model.UserEmail, new { @type = "input" })<br />
                     @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
+                    @Html.ValidationMessage("NotExist", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                 </div>
             </div>
 
@@ -32,8 +33,9 @@
                 <div class="label"> Password </div>
                 @*@Html.Label("Password:", htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @type = "password" } })
+                    @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @type = "password" } })<br />
                     @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
+                    @Html.ValidationMessage("BadCredentials", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
                 </div>
             </div>
 

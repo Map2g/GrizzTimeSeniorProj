@@ -311,12 +311,12 @@
     <Content Include="admin-lte\js\pages\dashboard2.js" />
     <Content Include="assets\css\AdminLTE.min_notusing.css" />
     <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\css\datatables.min.css" />
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\Fontes.css" />
     <Content Include="assets\css\please-wait.css" />
     <Content Include="assets\css\skin-blue.css" />
     <Content Include="assets\css\skin-blue.min.css" />
-    <Content Include="assets\css\EmpDashboardStyle.css" />
     <Content Include="assets\css\AdminLTE.min.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\img\clock.jpg" />
@@ -326,6 +326,7 @@
     <Content Include="assets\js\app.min.js" />
     <Content Include="assets\js\bootstrap.bundle.min.js" />
     <Content Include="assets\js\bootstrap.min.js" />
+    <Content Include="assets\js\datatables.min.js" />
     <Content Include="assets\js\demo.js" />
     <Content Include="assets\js\html5shiv.min.js" />
     <Content Include="assets\js\jquery.js" />
