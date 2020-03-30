@@ -12,15 +12,18 @@
     }
 }
 
+@Html.ActionLink("Add New Expense", "ExpenseEntry", "Expensesheet", new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+<br />
+<br />
+
 <table id="" class="display">
     <thead>
         <tr>
-            <th>Expense Sheet ID</th>
             <th>Amount</th>
-            <th>Date of Request</th>
-            <th>Requestor</th>
+            <th>Submission Date</th>
+            <th>Reviewer</th>
             <th>Approval Status</th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -28,19 +31,28 @@
         {
             foreach (var item in Model)
             {
+
+                var expsubmitime = item.ExpSheetSubmitTime.GetValueOrDefault();
+
                 <tr>
-                    <td>@item.ExpSheetID</td>
                     <td>@item.ExpSheetTotalAmt</td>
-                    <td>@item.ExpSheetSubmitTime</td>
-                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName </td>
+                    @if (expsubmitime.Date.ToShortDateString() == "1/1/0001")
+                    {
+                        <td>---</td>
+                    }
+                    else
+                    {
+                        <td>@expsubmitime.Date.ToShortDateString()</td>
+                    }
+                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName</td>
                     <td>@item.ExpSheetStatus</td>
                     <td>
                         <div>
-                            @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { id = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
+                            @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { id = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
                         </div>
 
                         <div>
-                            @Html.ActionLink("Submit", "Submit", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
+                            @Html.ActionLink("Submit", "Submit", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
                         </div>
                     </td>
                 </tr>
@@ -74,8 +86,8 @@ else
                 $('table.display').dataTable();
             } else {
                 $('table.display').dataTable(
-                    {
                         pageLength: 20,
+                    {
                         lengthMenu: [[20, 50, 100, 150], [20, 50, 100, 150]]
                     }
                 );

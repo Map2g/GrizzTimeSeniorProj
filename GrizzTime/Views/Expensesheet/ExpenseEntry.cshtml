@@ -95,7 +95,7 @@
         <div class="form-group">
             @Html.Label("Amount Spent:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ExpDollarAmt, new { htmlAttributes = new { @class = "input-lg", @type = "number", @id = "workhours" } })
+                @Html.EditorFor(model => model.ExpDollarAmt, new { htmlAttributes = new { @class = "input-lg", @type = "number", @id = "expenseamount" } })
                 @Html.ValidationMessageFor(model => model.ExpDollarAmt, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -103,7 +103,7 @@
         <div class="form-group">
             @Html.Label("Expense Date:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ExpDate, new { htmlAttributes = new { @class = "input-lg", @type = "number", @id = "workhours" } })
+                @Html.EditorFor(model => model.ExpDate, new { htmlAttributes = new { @class = "input-lg", @type = "date", @id = "espenseentrydate" } })
                 @Html.ValidationMessageFor(model => model.ExpDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -135,24 +135,19 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="submit">
-                @Html.ActionLink("Submit", "ExpenseEntry", "Expensesheet")
-            </div>
-        </div>
+       
 
         @Html.HiddenFor(model => model.SelectedCategoryText, new { @id = "SelectedCategoryText" })
         @{Html.EndForm();}
 
     </div>*@
 
-
-    <script type="text/javascript">
-        $(function () {
-            $("#ExpCategory").on("change", function () {
-                var testtext = $("#ExpCategory option:selected").val();
-                ///$("#SelectedCategoryText").val($(this).text());
-                $("#SelectedCategoryText").val(testtext);
-            });
-        });
-    </script>
+<script type="text/javascript">
+$(function(){
+    $("#ExpCategory").on("change", function () {
+        var testtext = $("#ExpCategory option:selected").val();
+    ///$("#SelectedCategoryText").val($(this).text());
+        $("#SelectedCategoryText").val(testtext);
+ });
+});
+</script>
