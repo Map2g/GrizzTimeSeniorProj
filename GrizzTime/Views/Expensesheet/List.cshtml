@@ -35,8 +35,8 @@
             <th>Amount</th>
             <th>Submission Date</th>
             <th>Reviewer</th>
-            <th>Approval Status</th>
-            <th>Action</th>
+            <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -59,7 +59,7 @@
                     <td>@item.ExpSheetStatus</td>
                     <td>
                         <div>
-                            @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
+                            @Html.ActionLink("Edit", "Edit", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
                         </div>
 
                         <div>

@@ -92,7 +92,8 @@ namespace GrizzTime.Controllers
                 {
                     EmpID = Int32.Parse(Request.Cookies["UserID"].Value),
                     PayrollCycleID = v.PayrollCycleID,
-                    ExpSheetStatus = "In Progress"
+                    ExpSheetStatus = "In Progress",
+                    ExpSheetTotalAmt = thisExpense.ExpDollarAmt
                 };
 
                 dc.expensesheets.Add(es);
