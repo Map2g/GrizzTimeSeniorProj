@@ -12,7 +12,7 @@ namespace GrizzTime.ViewModels
 {
     public class Business
     {
-        public int UserID { get; }
+        public int UserID { get; set; }
 
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "The email address is required. ")]
@@ -20,6 +20,7 @@ namespace GrizzTime.ViewModels
         public string UserEmail { get; set; }
 
         [Display(Name = "Password")]
+        [Required(ErrorMessage = "Password is required. ")]
         [MembershipPassword(
         MinRequiredNonAlphanumericCharacters = 1,
         MinRequiredPasswordLength = 8,
@@ -45,6 +46,8 @@ namespace GrizzTime.ViewModels
         public string BusAddress { get; set; }
 
         public string UserStatus { get; set; }
+
+        public List<Contract> BusContracts { get; set; }
 
         public void SaveNew()
         {

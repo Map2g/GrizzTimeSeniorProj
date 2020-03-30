@@ -285,7 +285,7 @@ label {
     width: 550px;
     height: 350px;
     position: relative;
-    padding-top: 50px;
+    padding-top: 40px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 25px 25px 25px 25px;
@@ -326,10 +326,10 @@ label {
 .Landing-Page-Buttons-sm {
     background-color: #b59a57;
     border: 1px solid transparent;
-    padding: 1rem 1.75rem;
-    font-size: 1.05rem;
+    padding: 1.45rem 1.75rem;
+    font-size: 1.15rem;
     height: 5rem;
-    width: 8rem;
+    width: 12rem;
     border-radius: 1.25rem;
     transition: color .15s ease-in-out, background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
 }
@@ -337,7 +337,7 @@ label {
         color: rgba(255, 255, 255, 1);
         box-shadow: 0 0 10px /*#D3BD09*/ #000;
         border-radius: 1.25rem;
-        width: 8.15rem;
+        width: 12.15rem;
         height: 5.15rem;
     }
 

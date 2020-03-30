@@ -71,18 +71,24 @@ namespace GrizzTime.ViewModels
         //------------------------------------------------------------------------------------------
 
         //Gets all the projects belonging to a specific contract.
-        public static List<SelectListItem> ConProjList(string id)
+        public static List<Project> ConProjList(string id)
         {
             string query = "SELECT * FROM grizztime.project WHERE ConID = @id";
 
             Entities dc = new Entities();
             IEnumerable<project> thisContractProjects = dc.projects.SqlQuery(query, new SqlParameter("@id", id));
 
-            List<SelectListItem> AllProjects = new List<SelectListItem>();
+            List<Project> AllProjects = new List<Project>();
 
             foreach (var item in thisContractProjects)
             {
-                AllProjects.Add(new SelectListItem() { Text = item.ProjName, Value = item.ProjID.ToString() });
+                AllProjects.Add(new Project() 
+                    { 
+                        ProjID = item.ProjID,
+                        ProjName = item.ProjName,
+                        ProjStatus= item.ProjStatus,
+                        ProjDesc = item.ProjDesc,
+                    });
             };
 
             return AllProjects;

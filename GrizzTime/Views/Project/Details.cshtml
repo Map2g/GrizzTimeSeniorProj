@@ -37,23 +37,11 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="@Request.UrlReferrer">Back</a></li>
-                <li class="breadcrumb-item active">Project Details</li>
-            </ol>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
-</section>
-
 <div class="container-fluid">
     <!-- Default box -->
-    <div class="card">
-        <div class="card-body">
+    @*<div class="card">
+        <div class="card-body">*@
+    <br />
             <div class="row">
 
                 <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
@@ -78,7 +66,7 @@
                             <div class="info-box bg-light">
                                 <div class="info-box-content" style="margin-left:0rem">
                                     <span class="info-box-text text-center text-muted">Hours Used by this Project</span>
-                                    <span class="info-box-number text-center text-muted mb-0">@Model.ProjTotalHr <span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.ProjTotalHr </span>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +74,7 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <div class="info-box bg-light">
+                            <div class="info-box bg-white">
                                 <div class="info-box-content" style="margin-left: 20px">
                                     <h4>Project Members</h4>
                                     @foreach (var item in Project.GetEmployees(Model.ProjID))
@@ -99,7 +87,7 @@
                                                 </span>
                                                 <span class="description">@item.EmpType</span>
                                                 <p class="text-right">
-                                                    <a href="@Url.Action("RemoveEmpFromProject", "Project", new {pid = Model.ProjID, eid = item.UserID})" class="btn btn-sm btn-danger" style="@(isVisible? "display:inline" : "display:none")">Remove</a>
+                                                    <a href="@Url.Action("RemoveEmpFromProject", "Project", new {pid = Model.ProjID, eid = item.UserID})" class="btn btn-md btn-danger" style="@(isVisible? "display:inline" : "display:none")">Remove</a>
                                                 </p>
                                             </div>
                                             <!-- /.user-block -->
@@ -113,12 +101,12 @@
                         </div>
                     </div>
                     <br />
-                    <div class="row">
+                    <div class="row" style="@(isVisible? "display:block" : "display:none")">
                         <div class="col-12 col-sm-4"></div>
                         <div class="col-12 col-sm-4">
-                            <div class="info-box bg-light">
+                            <div class="info-box bg-gradient-dark">
                                 <div class="info-box-content" style="margin-left: 0rem">
-                                    <span class="info-box-text text-center">Invoice</span>
+                                    <span class="info-box-text text-center" style="font-size:1.55rem">Invoice</span>
                                     <br />
                                     <span class="info-box-more text-center"><a href="@Url.Action("ProjectInvoice", "Invoice", new {id = Model.ProjID})" class="btn btn-md btn-success">Generate</a></span>
                                 </div>
@@ -129,56 +117,56 @@
                 </div>
 
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                    <div class="info-box bg-light">
+                    <div class="info-box bg-white">
                         <div class="info-box-content" style="margin-left:0rem">
                             <h3 class="text-primary"><i class="fas fa-paint-brush"></i> @Html.DisplayFor(m => m.ProjName) <text class="float-right text-green">@Html.DisplayFor(m => m.ProjStatus)</text> </h3>
                             <p class="text-muted"> @Html.DisplayFor(m => m.ProjDesc)</p>
                             <br>
-                            <div class="text-muted">
-                                <p class="text-md">
+                            <div class="text-black">
+                                <p>
                                     Belongs to <br>
-                                    <b class="d-block">@Html.DisplayFor(m => m.ContractName) Contract</b>
+                                    <b class="d-block">@Html.DisplayFor(m => m.ContractName)</b>
                                 </p>
-                                <p class="text-md">
+                                <p>
                                     Project Manager<br>
                                     <b class="d-block">@Html.DisplayFor(m => m.ProjManName)</b>
                                 </p>
                                 <hr>
-                                <p class="text-md">
+                                <p>
                                     Start Date
                                     <b class="d-block">@Html.DisplayFor(m => m.ProjStartDate)</b>
                                 </p>
-                                <p class="text-md">
+                                <p>
                                     End Date
-                                    <b class="d-block">@if (Model.ProjEndDate != null) { Html.DisplayFor(m => m.ProjEndDate); } else { Html.Display("~"); }</b>
+                                    <b class="d-block">@if (Model.ProjEndDate != null) { Html.DisplayFor(m => m.ProjEndDate); } else { Html.DisplayText("Ongoing"); }</b>
                                 </p>
                             </div>
 
                             <hr>
-                            <h5 class="mt-5 text-muted"><i class="fas fa-tasks"></i> <strong>Project Tasks</strong> </h5>
+                            <h5 class="mt-5 text-dark"><i class="fas fa-tasks"></i> <strong>Project Tasks</strong> </h5>
                             <table class="table table-responsive-sm">
                                 <tbody>
                                     @foreach (var item in Project.GetTasks(Model.ProjID))
                                     {
                                         <tr>
-                                            <td class="text-md"><i class="far fa-circle"></i> @item.TaskName</td>
-                                            <td class="text-md">@item.BillableRate/hour</td>
-                                            <td class="text-md" style="@(isVisible? "display:block" : "display:none")"><a href="@Url.Action("EditTask", "Project", new {id = item.TaskID})">Edit Task</a></td>
+                                            <td><i class="far fa-circle"></i> @item.TaskName</td>
+                                            <td>@item.BillableRate/hour</td>
+                                            <td style="@(isVisible? "display:block" : "display:none")"><a href="@Url.Action("EditTask", "Project", new {id = item.TaskID})">Edit Task</a></td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
                             <div class="text-right mt-5 mb-3">
-                                <a href="@Url.Action("Edit", "Project", new {id = Model.ProjID})" class="btn btn-md btn-primary" style="@(isVisible? "display:inline" : "display:none")">Edit Project</a>
-                                <a href="@Url.Action("AddTask", "Project", new {id = Model.ProjID})" class="btn btn-md btn-primary" style="@(isVisible? "display:inline" : "display:none")">Add Task</a>
+                                <a href="@Url.Action("Edit", "Project", new {id = Model.ProjID})" class="btn btn-lg btn-primary" style="@(isVisible? "display:inline" : "display:none")">Edit Project</a>
+                                <a href="@Url.Action("AddTask", "Project", new {id = Model.ProjID})" class="btn btn-lg btn-primary" style="@(isVisible? "display:inline" : "display:none")">Add Task</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @*</div>*@
         <!-- /.card-body -->
-    </div>
+    @*</div>*@
     <!-- /.card -->
 </div>
 

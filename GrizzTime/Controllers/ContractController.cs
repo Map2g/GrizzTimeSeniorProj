@@ -104,9 +104,12 @@ namespace GrizzTime.Controllers
                 contract con = dc.contracts.Find(id);
                 Contract viewCon = new Contract()
                 {
+                    ConID = con.ConID,
                     ConName = con.ConName,
                     ConAllottedHours = (decimal) con.ConAllottedHours,
                     ConHoursRemaining = con.ConHoursRemaining,
+                    BusinessOwnerID = con.business.UserID,
+                    BusinessName = con.business.BusName,                  
                 };
 
                 if (con == null)

@@ -18,41 +18,22 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Dashboard</h1>
-            </div>
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="@Request.UrlReferrer">Back</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
-</section>
-
 <style>
-    .dashboard-title
-    {
+    .dashboard-title {
         font-size: 3rem;
         color: white;
         text-align: right;
         padding-top: 5px;
         padding-bottom: 10px;
-        padding-right:15px;
-        background-color:#b59a57;
-        border-radius:10px;
+        padding-right: 15px;
+        background-color: #b59a57;
+        border-radius: 10px;
     }
-
 </style>
 
 <div class="container-fluid">
     <!-- Default box -->
-    <div class="card">
-        <div class="card-body">
+    <br />
             <div class="row">
                 <div class="col-12">
                     <div class="dashboard-title">
@@ -83,22 +64,22 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-md-4">
-                    <div class="card card-default align-items-center">
+                    <div class="card card-default align-items-center" style="height:410px; padding-top:80px;">
                         @*<div class="card-header">
-                    <h3 class="card-title">
+                                <h3 class="card-title">
 
-                    </h3>
-                </div>*@
+                                </h3>
+                            </div>*@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row justify-content-center" style="padding-top:20px; padding-bottom:20px;">
-                                <a href="/business/details/@ViewBag.BusID" class="btn btn-lg btn-dark">My Business</a>
+                                <a href="/business/details/@ViewBag.BusID" class="btn btn-xl btn-success">My Business</a>
                             </div>
                             <div class="row justify-content-center" style="padding-top:20px; padding-bottom:20px;">
-                                <a href="/home/myprojects/" class="btn btn-lg btn-dark">My Projects</a>
+                                <a href="/home/myprojects/" class="btn btn-xl btn-success">My Projects</a>
                             </div>
                             <div class="row justify-content-center" style="padding-top:20px; padding-bottom:20px;">
-                                <a href="/timesheet/pendingapprovals/" class="btn btn-lg btn-dark">Supervisor Portal</a>
+                                <a href="/timesheet/pendingapprovals/" class="btn btn-xl btn-success">Supervisor Portal</a>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -130,11 +111,6 @@
                     <!-- /.card -->
                 </div>
             </div>
-
-
-        </div>
-    </div>
 </div>
-
 
 

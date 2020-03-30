@@ -3,60 +3,126 @@
 
 @{
     ViewBag.Title = "My Contracts";
+
+    HtmlString top = new HtmlString("");
+    HtmlString bottom = new HtmlString("");
+    //true when called from dashboard
+    if (TempData["partial"] != null && TempData["partial"].Equals("True"))
+    {
+        Layout = null;
+    }
+    else
+    {
+        top = new HtmlString("<div class='container-fluid'><br><div class='row'><div class='col-12'><div class='card card-default'><div class='card-header'><div class='card-title'>My Contracts</div></div><div class='card-body'>");
+        bottom = new HtmlString("</div></div></div></div></div>");
+    }
 }
 
-@*Link name, controller name, action method, route argument, html details*@
-@*@Html.ActionLink("Add a new contract", "Create", "Contract", null, null)*@
-<a href="/contract/create">
-    <div class="small-button">
-        <span>
-            <h2>Add a New Contract</h2>
-        </span>
+@Html.Raw(top)
+
+<div class="row" style="padding-bottom:20px;">
+    <div class="col-lg-4">
+        <a href="@Url.Action("Create", "Contract")" class="btn btn-lg btn-primary">
+            New Contract
+        </a>
     </div>
-</a>
-<br />
+</div>
 
-<table class="table table-striped">
-    <tr>
-        <th>
-            @Html.DisplayName("Name")
-        </th>
-        <th>
-            @Html.DisplayName("Allotted hours")
-        </th>
-        <th>
-            @Html.DisplayName("Hours remaining")
-        </th>
-        <th>
-            @Html.DisplayName("Projects")
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table id="" class="display">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConAllottedHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConHoursRemaining)
-            </td>
-            <td>
-                @Html.DropDownList("Projects", Project.ConProjList(item.ConID.ToString()))
-            </td>
-            <td>
-                @*Link name, controller name, action method, route argument, html details*@
-                @Html.ActionLink("Edit", "Edit", "Contract", new { id = item.ConID }, null) |
-                @Html.ActionLink("Details", "Details", "Contract", new { id = item.ConID }, null) |
-                @Html.ActionLink("Delete", "Delete", "Contract", new { id = item.ConID }, null)
-            </td>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Allotted hours")
+            </th>
+            <th>
+                @Html.DisplayName("Hours remaining")
+            </th>
+            <th>
+                @Html.DisplayName("Projects")
+            </th>
+            <th></th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            //---------------------------------------------------------------------
+            List<Project> conprojects = Project.ConProjList(item.ConID.ToString());
+            //employees.RemoveAll(x => x.UserID == Model.UserID); //remove this employee from possible supervisor list
 
+            //convert employee list to selectlist
+            List<SelectListItem> projectList = conprojects.ConvertAll(a =>
+            {
+                return new SelectListItem()
+                {
+                    Text = a.ProjName,
+                    Value = a.ProjID.ToString()
+                };
+            });
+            //----------------------------------------------------------------------------
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConAllottedHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConHoursRemaining)
+                </td>
+                <td>
+                    @Html.DropDownList("Projects", projectList)
+                </td>
+                <td>
+                    @*Link name, controller name, action method, route argument, html details*@
+                    @Html.ActionLink("Edit", "Edit", "Contract", new { id = item.ConID }, null) |
+                    @Html.ActionLink("Details", "Details", "Contract", new { id = item.ConID }, null) |
+                    @Html.ActionLink("Delete", "Delete", "Contract", new { id = item.ConID }, null)
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+@Html.Raw(bottom)
+
+@if (TempData["partial"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            if ($.fn.dataTable.isDataTable('table.display')) {
+                $('table.display').dataTable();
+            } else {
+                $('table.display').dataTable(
+                    {
+                        pageLength: 5,
+                        lengthMenu: [[5, 10, 20, 50], [5, 10, 20, 50]]
+                    }
+                );
+            }
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(document).ready(function () {
+            if ($.fn.dataTable.isDataTable('table.display')) {
+                $('table.display').dataTable();
+            } else {
+                $('table.display').dataTable(
+                    {
+                        pageLength: 20,
+                        lengthMenu: [[20, 50, 100, 150], [20, 50, 100, 150]]
+                    }
+                );
+            }
+        });
+    </script>
+}
 
 

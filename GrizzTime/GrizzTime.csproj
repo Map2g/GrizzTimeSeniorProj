@@ -696,7 +696,7 @@
     <Content Include="Views\Business\Dashboard.cshtml" />
     <Content Include="Views\Shared\Profile.cshtml" />
     <Content Include="Views\Shared\Menus.cshtml" />
-    <Content Include="Views\Employee\AddEmployeePopUp.cshtml" />
+    <Content Include="Views\Employee\Create.cshtml" />
     <Content Include="Views\Business\Delete.cshtml" />
     <Content Include="Views\Contract\Create.cshtml" />
     <Content Include="Views\Business\MyContracts.cshtml" />

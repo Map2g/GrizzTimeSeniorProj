@@ -5,32 +5,37 @@
     ViewBag.Title = "My Projects";
     bool isBusiness = ViewBag.isBusiness;
 
+    HtmlString top = new HtmlString("");
+    HtmlString bottom = new HtmlString("");
     //true when called from dashboard
     if (TempData["partial"] != null && TempData["partial"].Equals("True"))
     {
         Layout = null;
+    }else
+    {
+        top = new HtmlString("<div class='container-fluid'><br><div class='row'><div class='col-12'><div class='card card-default'><div class='card-header'><div class='card-title'>My Projects</div></div><div class='card-body'>");
+        bottom = new HtmlString("</div></div></div></div></div>");
     }
 }
 
-@*Link name, controller name, action method, route argument, html details*@
-<a href="@Url.Action("Create", "Project")" style="@(isBusiness? "display:block" : "display:none")">
-    <div class="small-button">
-        <span>
-            <h2>Add a New Project</h2>
-        </span>
-    </div>
-</a>
+@Html.Raw(top)
 
-<br />
+<div class="row" style="padding-bottom:20px; @(isBusiness? "display:block" : "display:none")">
+    <div class="col-lg-4">
+        <a href="@Url.Action("Create", "Project")" class="btn btn-lg btn-primary">
+            New Project
+        </a>
+    </div>
+</div>
 
 <table id="myPTable" class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("Contract")
+                @Html.DisplayName("Name")
             </th>
             <th>
-                @Html.DisplayName("Name")
+                @Html.DisplayName("Contract")
             </th>
             <th>
                 @Html.DisplayName("Description")
@@ -54,10 +59,10 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ContractName)
+                @Html.DisplayFor(modelItem => item.ProjName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProjName)
+                @Html.DisplayFor(modelItem => item.ContractName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProjDesc)
@@ -84,8 +89,16 @@
 
 </table>
 
+@Html.Raw(bottom)
+
 <script>
     $(document).ready(function () {
-        $('#myPTable').dataTable();
+        $('#myPTable').dataTable
+            (
+                {
+                    pageLength: 20,
+                    lengthMenu: [[20, 50, 100, 150], [20, 50, 100, 150]]
+                }
+            );
     });
 </script>

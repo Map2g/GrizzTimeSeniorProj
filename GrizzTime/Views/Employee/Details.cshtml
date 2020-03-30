@@ -24,143 +24,145 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="@Request.UrlReferrer">Back</a></li>
-                <li class="breadcrumb-item active">Employee Details</li>
-            </ol>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
-</section>
-
 <div class="container-fluid">
     <!-- Default box -->
-    <div class="card">
-        <div class="card-body">
+    <br />
+    @*<div class="card">*@
+    @*<div class="card-body">*@
+    <div class="row">
+
+        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+
             <div class="row">
-
-                <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
-
-                    <div class="row">
-                        <div class="col-12">
-                            @*<div class="info-box bg-light">
-                                <div class="info-box-content" style="margin-left: 20px">*@
-                                    <h4>Projects</h4>
-                                    @foreach (var item in Employee.GetProjects(Model.UserID))
-                                    {
-                                        <div class="post">
-                                            <div class="user-block">
-                                                <span class="username" style="margin-left: 10px; margin-bottom: 5px">
-                                                    <a href="@Url.Action("Details", "Project", new {id = item.ProjID })">@item.ProjName</a>
-                                                </span>
-                                                <span class="text-muted" style="margin-left: 15px">@item.ProjDesc</span>
-                                                <p class="text-right">
-                                                    <a href="@Url.Action("RemoveEmpFromProject", "Project", new {pid = item.ProjID, eid = Model.UserID})" class="btn btn-sm btn-danger" style="@((type == "thisBusiness")? "display:inline" : "display:none")">Remove</a>
-                                                </p>
-                                            </div>
-                                            <!-- /.user-block -->                                          
-                                        </div>
-                                    }
-                                @*</div>
-                            </div>*@
+                <div class="col-12">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <div class="card-title">
+                                Projects
+                            </div>
                         </div>
-                    </div>
-
-                    <br />
-
-                    <div class="row">
-                        <div class="col-12 col-sm-4"></div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box bg-light">
-                                <div class="info-box-content" style="margin-left: 0rem">
-                                    <span class="info-box-text text-center">Invoices</span>
-                                    <ul class="list-unstyled">
-                                        @if (Model.EmployeeTimesheets.Any())
-                                        {
-                                            foreach (var item in Model.EmployeeTimesheets)
-                                            {
-                                                <li>
-                                                    @if (!years.Contains(item.PayrollCycleYear))
-                                                    {
-                                                        <a href="@Url.Action("EmployeeInvoice", "Invoice", new { eid = Model.UserID, year = item.PayrollCycleYear })"> @item.PayrollCycleYear </a>
-                                                        years.Add(item.PayrollCycleYear);
-                                                    }
-                                                </li>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <li class="text-muted">There are no invoices to display.</li>
-                                        }
-                                    </ul>
-                                    @*<span class="info-box-text text-center text-muted">Contract Allotted Hours</span>
-        <span class="info-box-number text-center text-muted mb-0">@Model.Contract.ConAllottedHours</span>*@
+                        @foreach (var item in Employee.GetProjects(Model.UserID))
+                        {
+                            <div class="post">
+                                <div class="user-block">
+                                    <span class="username" style="margin-left: 10px; margin-bottom: 5px">
+                                        <a href="@Url.Action("Details", "Project", new {id = item.ProjID })">@item.ProjName</a>
+                                    </span>
+                                    <span class="text-lg text-muted" style="margin-left: 15px">@item.ProjDesc</span>
+                                    <p class="text-right" style="margin-right: 10px">
+                                        <a href="@Url.Action("RemoveEmpFromProject", "Project", new {pid = item.ProjID, eid = Model.UserID})" class="btn btn-lg btn-danger" style="@((type == "thisBusiness")? "display:inline" : "display:none")">Remove</a>
+                                    </p>
                                 </div>
+                                <!-- /.user-block -->
                             </div>
-                        </div>
+                        }
+                        @*</div>
+                            </div>*@
                     </div>
-
                 </div>
+            </div>
 
-                <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                    <div class="info-box bg-light">
-                        <div class="info-box-content" style="margin-left:0rem">
-                            <h3 class="profile-username text-center"> @Html.DisplayFor(m => m.EmpFName) @Html.DisplayFor(m => m.EmpLName)</h3>
-                            <p class="text-muted text-center"> @Html.DisplayFor(m => m.EmpType)</p>
-                            <br>
-                            <div class="text-muted">
-                                <p class="text-md">
-                                    Contact<br>
-                                    <b class="d-block">@Html.DisplayFor(m => m.UserEmail)</b>
-                                    @Html.DisplayFor(m => m.EmpPhone)
-                                </p>
-                                <hr>
-                                <p class="text-md">
-                                    Business<br>
-                                    <b class="d-block">@Html.DisplayFor(m => m.BusinessName)</b>
-                                </p>
-                                <p class="text-md">
-                                    Direct Supervisor<br>
-                                    <b class="d-block">@Html.DisplayFor(m => m.SupervisorName)</b>
-                                </p>
-                            </div>
+            <br />
 
-                            <hr>
+            <div class="row" style="@((type != "thisEmployee")? "display:inline" : "display:none")">
+                <div class="col-12 col-sm-4"></div>
+                <div class="col-12 col-sm-4">
+                    <div class="info-box bg-gradient-dark">
+                        <div class="info-box-content" style="margin-left: 0rem">
+                            <span class="info-box-text text-center" style="font-size:1.55rem">Invoices</span>
+                            <ul class="list-unstyled text-center">
+                                @if (Model.EmployeeTimesheets.Any())
+                                {
+                                    foreach (var item in Model.EmployeeTimesheets)
+                                    {
+                                        <li>
+                                            @if (!years.Contains(item.PayrollCycleYear))
+                                            {
+                                                <a class="text-lg text-yellow" href="@Url.Action("EmployeeInvoice", "Invoice", new { eid = Model.UserID, year = item.PayrollCycleYear })"> @item.PayrollCycleYear </a>
+                                                years.Add(item.PayrollCycleYear);
+                                            }
 
-                            <h5 class="mt-5 text-muted"><i class="fas fa-tasks"></i> <strong>Managing Projects: </strong> </h5>
-                            @if (Project.PMProjList(Model.UserID).Any())
-                            {
-                                <table class="table table-responsive-sm">
-                                    <tbody>
-                                        @foreach (var item in Project.PMProjList(Model.UserID))
-                                        {
-                                            <tr>
-                                                <td><i class="far fa-circle"></i> <a href="@Url.Action("Details", "Project", new { id = item.ProjID })"> @item.ProjName </a></td>
-                                                <td>@item.ContractName</td>
-                                                <td> - @item.ProjStatus</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                            else
-                            {
-                                <p class="text-muted">This employee isn't managing any projects.</p>
-                            }
-                            <div class="text-right mt-5 mb-3">
-                                <a href="@Url.Action("Edit", "Employee", new {id = Model.UserID})" class="btn btn-md btn-primary" style="@((type != "otherEmployee")? "display:inline" : "display:none")">Edit Details</a>
-                                <a href="@Url.Action("ResetPassword", "Employee", new {id = Model.UserID})" class="btn btn-md btn-primary" style="@((type == "thisEmployee")? "display:inline" : "display:none")">Change Password</a>
-                            </div>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>There are no invoices to display.</li>
+                                }
+                            </ul>
+                            @*<span class="info-box-text text-center text-muted">Contract Allotted Hours</span>
+                                <span class="info-box-number text-center text-muted mb-0">@Model.Contract.ConAllottedHours</span>*@
                         </div>
                     </div>
                 </div>
+            </div>
 
+        </div>
+
+        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+            <div class="info-box bg-yellow-gradient">
+                <div class="info-box-content" style="margin-left:0rem">
+                    <h3 class="profile-username text-center bg-dark"> @Html.DisplayFor(m => m.EmpFName) @Html.DisplayFor(m => m.EmpLName)</h3>
+                    <h4 class="text-black text-center"> @Html.DisplayFor(m => m.EmpType)</h4>
+                    <br>
+                    <h5 class="text-black">
+                        <p>
+                            Contact<br>
+                            <b class="d-block">@Html.DisplayFor(m => m.UserEmail)</b>
+                            @Html.DisplayFor(m => m.EmpPhone)
+                        </p>
+                        <hr>
+                        <p>
+                            Business<br>
+                            <b class="d-block">@Html.DisplayFor(m => m.BusinessName)</b>
+                        </p>
+                        <p>
+                            Direct Supervisor<br>
+                            <b class="d-block">@Html.DisplayFor(m => m.SupervisorName)</b>
+                        </p>
+                    </h5>
+
+                    <hr>
+
+                    <h5 class="mt-5"><i class="fas fa-tasks"></i> Managing Projects: </h5>
+                    @if (Project.PMProjList(Model.UserID).Any())
+                    {
+                        <table class="table table-responsive-sm">
+                            <tbody>
+                                @foreach (var item in Project.PMProjList(Model.UserID))
+                                {
+                                    <tr>
+                                        <td><i class="far fa-circle"></i> <b><a href="@Url.Action("Details", "Project", new { id = item.ProjID })"> @item.ProjName </a> </b></td>
+                                        <td>@item.ContractName</td>
+                                        <td> - @item.ProjStatus</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>This employee isn't managing any projects.</p>
+                    }
+                    <div class="text-right mt-5 mb-3">
+                        <a href="@Url.Action("Edit", "Employee", new {id = Model.UserID})" class="btn btn-md btn-dark" style="@((type != "otherEmployee")? "display:inline" : "display:none")">Edit Details</a>
+                        <a href="@Url.Action("ResetPassword", "Employee", new {id = Model.UserID})" class="btn btn-md btn-primary" style="@((type == "thisEmployee")? "display:inline" : "display:none")">Change Password</a>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
+    @*</div>*@
+    @*</div>*@
 </div>
 
+@*Displays alert message telling user how the operation went.*@
+@if (@TempData["message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["message"]");
+        };
+    </script>
+}

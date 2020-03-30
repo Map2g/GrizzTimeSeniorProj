@@ -1,79 +1,149 @@
 ﻿@model GrizzTime.ViewModels.Business
 @using GrizzTime.ViewModels
 
+
 @{
-    ViewBag.Title = "My Business";
+    ViewBag.Title = "Business Details";
+    int pid = Model.UserID;
+
+    //Employees should not be able to see buttons
+    string currentUserID = Request.Cookies["UserID"].Value;
+    bool isVisible;
+    if (currentUserID == Model.UserID.ToString())
+    {
+        isVisible = true;
+    }
+    else
+    {
+        isVisible = false;
+    }
+
 }
 
-<h2> @Model.BusName </h2>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../assets/css/AdminLTE.min.css">
+    @*<link rel="stylesheet" href="../../stylesheet.css">*@
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
 
-<div class="form-horizontal">
-    <hr />
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.BusName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.BusName, new { htmlAttributes = new { @class = "input-md", @readonly="readonly"} })
+<div class="container-fluid">
+    <!-- Default box -->
+    @*<div class="card">
+        <div class="card-body">*@
+    <br />
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        @Model.BusName's Contracts
+                    </div>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in Model.BusContracts)
+                    {
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content" style="margin-left:0rem">
+                                        <span class="info-box-number text-center text-muted mb-0">@item.ConName</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content" style="margin-left: 0rem">
+                                        <span class="info-box-text text-center text-muted">Hours Allotted </span>
+                                        <span class="info-box-number text-center text-muted mb-0">@item.ConAllottedHours</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content" style="margin-left:0rem">
+                                        <span class="info-box-text text-center text-muted">Hours Remaining</span>
+                                        <span class="info-box-number text-center text-muted mb-0">@item.ConHoursRemaining</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <div class="card-title">
+                                @Model.BusName's Projects
+                            </div>
+                        </div>
+                        <!---/.card-header-->
+                        <div class="card-body">
+                            @{
+                                //I use this to tell the page not to use _Layout this time
+                                TempData["partial"] = "True";
+                            }
+                            @Html.Action("MyProjects", "Home")
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+            <div class="info-box bg-yellow-gradient">
+                <div class="info-box-content" style="margin-left:0rem" >
+                    <h3 class="text-gray-dark"><i class="fas fa-suitcase"></i> @Html.DisplayFor(m => m.BusName) </h3>
+                    <p class="text-dark"> @Html.DisplayFor(m => m.BusDesc)</p>
+                    <hr />
+                    <div class="text-body">
+                        <p class="text-dark">
+                           @Html.DisplayFor(m => m.BusAddress)
+                        </p>
+                        <p class="text-dark">
+                            <b>Account owner:</b><br>
+                            <b class="d-block">@Html.DisplayFor(m => m.UserEmail)</b>
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+   
+                        <a href="@Url.Action("Edit", "Business", new {id = Model.UserID})" class="btn btn-lg btn-primary" style="@(isVisible? "display:inline" : "display:none")">Edit Details</a>                      
+             
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "input-md", @readonly="readonly", @type="text" } })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.BusDesc, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.BusDesc, new { htmlAttributes = new { @class = "input-md", @readonly="readonly" } })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.BusAddress, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.BusAddress, new { htmlAttributes = new { @class = "input-md", @readonly="readonly" } })
-        </div>
-    </div>
-
+    @*</div>*@
+    <!-- /.card-body -->
+    @*</div>*@
+    <!-- /.card -->
 </div>
 
-<br />
-
-<div class="db-Row-Button-Box">
-    <div class="db-Column-Button-Box">
-        <a href="@Request.UrlReferrer">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Back
-                    </h2>
-                </span>
-            </div>
-        </a>
-    </div>
-    <div class="db-Column-Button-Box">
-        <a href="/business/edit/@Request.Cookies["UserID"].Value">
-            <div class="small-button">
-                <span>
-                    <h2>
-                        Edit
-                    </h2>
-                </span>
-            </div>
-        </a>
-    </div>
-</div>
 
 @*Displays alert message telling user how the operation went.*@
-@*@if (@TempData["message"] != null)
+@if (@TempData["message"] != null)
 {
     <script type="text/javascript">
         window.onload = function () {
             alert("@TempData["message"]");
         };
     </script>
-}*@
+}
 

@@ -3,10 +3,9 @@
 @*We get the employee list and contract list from here*@
 @using GrizzTime.ViewModels
 
-
 @{
     string ProjectName = Model.ProjName;
-    ViewBag.Title = "Edit " + ProjectName;
+    ViewBag.Title = "Edit Project";
 
     //Remove non-pms from list.
     List<Employee> employees = Employee.EmployeeList(ViewBag.UserID);
@@ -35,150 +34,165 @@
 
 <!--#region CHECK BOX CSS-->
 <style>
-/* Hide the browser's default checkbox */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
+    /* Hide the browser's default checkbox */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
 
-/* Create a custom checkbox */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-}
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+    }
 
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
 
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
 
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
 
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
 
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
 </style>
 <!--#endregion-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+</head>
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProjName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjName, new { htmlAttributes = new { @class = "input-md" } })
-                @Html.ValidationMessageFor(model => model.ProjName, "", new { @class = "text-danger" })
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Edit this Project</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Date dd/mm/yyyy -->
+                    <div class="form-group">
+                        <label>Name:</label>
+
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.ProjName, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProjName, "", new { @class = "text-danger" })
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <!-- /.form group -->
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(model => model.ProjDesc, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProjDesc, "", new { @class = "text-danger" })
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <!-- /.form group -->
+                    <div class="form-group">
+                        <label>Contract:</label>
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.ContractName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.ConID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Start Date:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    @Html.EditorFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+                                    @Html.ValidationMessageFor(model => model.ProjStartDate, "", new { @class = "text-danger" })
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>End Date:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ProjEndDate, "", new { @class = "text-danger" })
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Manager:</label>
+                        <div class="input-group">
+                            @Html.DropDownListFor(model => model.ProjManID, pmList, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProjManID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        
+                        <div class="icheck-primary d-inline">
+                            @Html.CheckBoxFor(model => model.IsEnded, new { htmlAttributes = new { id = "checkboxPrimary1" } })
+                            <label for="checkboxPrimary1">Ended</label>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <input type="submit" value="Save" class="btn btn-lg btn-warning" />
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProjDesc, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.ProjDesc, new { htmlAttributes = new { @class = "input-md" } })
-                @Html.ValidationMessageFor(model => model.ProjDesc, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProjStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjStartDate, new { htmlAttributes = new { @class = "input-md", @type="date" } })
-                @Html.ValidationMessageFor(model => model.ProjStartDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProjEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjEndDate, new { htmlAttributes = new { @class = "input-md", @type="date" } })
-                @Html.ValidationMessageFor(model => model.ProjEndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ConID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ContractName, new { htmlAttributes = new { @class = "input-md", @readonly = "readonly", @disabled = "disabled" } })
-                @Html.ValidationMessageFor(model => model.ConID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProjManID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProjManID, pmList, new { htmlAttributes = new { @class = "select2-dropdown" } })
-                @Html.ValidationMessageFor(model => model.ProjManID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsEnded, htmlAttributes: new { @class = "control-label col-md-2" })
-            <span class="checkbox-inline">
-                @Html.CheckBoxFor(model => model.IsEnded)
-            </span>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+            <!-- /.card -->
         </div>
     </div>
+
 }
-
-<div class="row">
-    <div class="col-md-4">
-            <a class="btn btn-lg btn-default button button4" type="button" href="@Request.UrlReferrer" >
-                 Back
-            </a>
-    </div>
-    <div class="col-md-4">
-        <a href="@Url.Action( "AddTask", new { id = Model.ProjID })" class="btn btn-lg btn-default button button4" type="button">
-            Add Tasks
-        </a>
-    </div>
-    <div class="col-md-4">
-        <a href="@Url.Action("AddEmpToProject", new { id = Model.ProjID })" class="btn btn-lg btn-default button button4" type="button">
-            Assign Employees
-        </a>
-    </div>
-</div>
-
-<div>
-    @Html.ActionLink("Back to List", "MyProjects", "home")
-</div>

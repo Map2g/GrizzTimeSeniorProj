@@ -3,72 +3,108 @@
 
 @{
     ViewBag.Title = "My Employees";
+
+    HtmlString top = new HtmlString("");
+    HtmlString bottom = new HtmlString("");
+    //true when called from dashboard
+    if (TempData["partial"] != null && TempData["partial"].Equals("True"))
+    {
+        Layout = null;
+    }else
+    {
+        top = new HtmlString("<div class='container-fluid'><br><div class='row'><div class='col-12'><div class='card card-default'><div class='card-header'><div class='card-title'>My Employees</div></div><div class='card-body'>");
+        bottom = new HtmlString("</div></div></div></div></div>");
+    }
 }
 
-<h2>Details</h2>
+@Html.Raw(top)
 
-@Html.Action("AddEmployeePopUp", "Employee")
+<div class="row" style="padding-bottom:20px;">
+    <div class="col-lg-4">
+        <a href="@Url.Action("Create", "Employee")" class="btn btn-lg btn-primary">
+            New Employee
+        </a>
+    </div>
+</div>
 
-<hr />
-
-<table class="table table-striped">
-    <tr>
-        <th>
-            @Html.DisplayName("Email")
-        </th>
-        <th>
-            @Html.DisplayName("Name")
-        </th>
-        <th>
-            @Html.DisplayName("Phone Number")
-        </th>
-        <th>
-            @Html.DisplayName("Title")
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table id="" class="display">
+    <thead>
         <tr>
-            <td>               
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                <a href="@Url.Action("EmployeeInvoice", "Invoice", new { eid = item.UserID, year = 2020 })">
-                @Html.DisplayFor(modelItem => item.EmpFName) @Html.DisplayFor(modelItem => item.EmpLName)
-                </a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmpPhone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmpType)
-            </td>
-            <td>
-                @*Link name, controller name, action method, route argument, html details*@
-                @Html.ActionLink("Edit", "Edit", "Employee", new { id = item.UserID }, null) |
-                @*@Html.ActionLink("Edit Pay Rate", "EditPayRate", "Employee", new { id = item.UserID }, null) | *@
-                @Html.ActionLink("Details", "Details", "Employee", new { id = item.UserID }, null) |
-                @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.UserID }, null)
-            </td>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Phone Number")
+            </th>
+            <th>
+                @Html.DisplayName("Title")
+            </th>
+            <th></th>
         </tr>
-    }
-
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmpFName) @Html.DisplayFor(modelItem => item.EmpLName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmpPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmpType)
+                </td>
+                <td>
+                    @*Link name, controller name, action method, route argument, html details*@
+                    @Html.ActionLink("Edit", "Edit", "Employee", new { id = item.UserID }, null) |
+                    @Html.ActionLink("Details", "Details", "Employee", new { id = item.UserID }, null) |
+                    @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.UserID }, null)
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
-<script src="scripts/bootstrap.min.js"></script>
+@Html.Raw(bottom)
 
-<script type="text/javascript">
 
-    $(document).ready(function () {
-        $("#btnShowModal").click(function () {
-            $("#loginModal").modal('show');
+@if (TempData["partial"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            if ($.fn.dataTable.isDataTable('table.display')) {
+                $('table.display').dataTable();
+            } else {
+                $('table.display').dataTable(
+                    {
+                        pageLength: 5,
+                        lengthMenu: [[5, 10, 20, 50], [5, 10, 20, 50]]
+                    }
+                );
+            }
         });
-
-        $("#btnHideModal").click(function () {
-            $("#loginModal").modal('hide');
+    </script>
+}
+else
+{
+    <script>
+        $(document).ready(function () {
+            if ($.fn.dataTable.isDataTable('table.display')) {
+                $('table.display').dataTable();
+            } else {
+                $('table.display').dataTable(
+                    {
+                        pageLength: 20,
+                        lengthMenu: [[20, 50, 100, 150], [20, 50, 100, 150]]
+                    });
+            }
         });
-    });
-
-</script>
+    </script>
+}

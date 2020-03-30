@@ -1933,7 +1933,7 @@ pre {
     width: 100%;
     height: calc(2.25rem + 2px);
     padding: .375rem .75rem;
-    font-size: 1rem;
+    /*font-size: 1rem;*/
     font-weight: 400;
     line-height: 1.5;
     color: #495057;
@@ -3009,6 +3009,13 @@ a.btn.disabled, fieldset:disabled a.btn {
     font-size: 1.5rem;
     line-height: 1.5;
     border-radius: .3rem
+}
+
+.btn-group-xl > .btn, .btn-xl {
+    padding: .5rem 1rem;
+    font-size: 2rem;
+    line-height: 1.5;
+    border-radius: .5rem
 }
 
 .btn-group-sm > .btn, .btn-md {
@@ -29039,5 +29046,5 @@ a.text-muted:hover {
 [class*=accent-] a.btn-dark {
     color: #fff
 }
-/*# sourceMappingURL=adminlte.min.css.map */
 
+/*# sourceMappingURL=adminlte.min.css.map */

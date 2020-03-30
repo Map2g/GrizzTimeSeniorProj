@@ -23,6 +23,10 @@ namespace GrizzTime.ViewModels
 
         public decimal ConHoursRemaining { get; set; }
 
+        public decimal BusinessOwnerID { get; set; }
+
+        public string BusinessName { get; set; }
+
         //Gets a list of contracts for a specific business. ID should be UserID of a business
         public static List<SelectListItem> ContractList(string id)
         {

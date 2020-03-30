@@ -171,7 +171,7 @@ namespace GrizzTime.Controllers
             return View();
         }
 
-        public ActionResult AddEmployeePopUp()
+        public ActionResult Create()
         {
             if (Request.Cookies["UserID"].Value == null)
             {
@@ -186,7 +186,7 @@ namespace GrizzTime.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddEmployeePopUp([Bind(Exclude = "IsEmailVerified,ActivationCode")] Employee thisEmp)
+        public ActionResult Create([Bind(Exclude = "IsEmailVerified,ActivationCode")] Employee thisEmp)
         {
             bool Status = false;
             string message;

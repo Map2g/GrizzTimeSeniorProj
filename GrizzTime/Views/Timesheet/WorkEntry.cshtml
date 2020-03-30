@@ -62,57 +62,61 @@
 @* </div> *@
 @using (Html.BeginForm())
 {
-<div class="form-horizontal">
-
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.Label("Hours worked:", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.WorkHours, new { htmlAttributes = new { @class = "input-lg", @type="number", @id = "workhours", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.WorkHours, "", new { @class = "text-danger" })
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">@DayOfWeek </h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Hours:</label>
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.WorkHours, new { htmlAttributes = new { @class = "form-control", @type = "number", @id = "workhours", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.WorkHours, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Project:</label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(model => model.ProjID, projectList, "--Select--", new { @class = "form-control", @id = "projectlist", @disabled = "true" })
+                                    @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Task:</label>
+                                <div class="input-group">
+                                    @Html.DropDownListFor(model => model.TaskID, (isExist ? new SelectList(taskList, "Value", "Text") : new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text")), "--Select--", new { @id = "tasklist", @class = "form-control", @disabled = "true" })
+                                    @Html.ValidationMessageFor(model => model.TaskID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @Html.Hidden("WorkDate", DayOfWeek)
+                </div>
+                <div class="card-footer" style=@(IsChangeable ? "display:block" : "display:none")>
+                    <input type="submit" value="Save" class="btn btn-lg btn-info" style=@(IsChangeable ? "display:block" : "display:none") />
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.Label("Project:", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.ProjID, projectList, "--Select--", new { @class = "select2", @id = "projectlist", @disabled = "true" })
-            @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.Label("Task:", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.TaskID, (isExist ? new SelectList(taskList, "Value", "Text") : new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text")), "--Select--", new { @id = "tasklist", @class = "select2", @disabled = "true" })
-            @Html.ValidationMessageFor(model => model.TaskID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    @Html.Hidden("WorkDate", DayOfWeek)
-
-    <div class="form-group">
-        <div class="col-md-10">
-            <button type="submit" class="small-button" style=@(IsChangeable ? "display:block" : "display:none")>Save</button>
-        </div>
-    </div>
-
-</div>
 }
 
-@*</div>
-        </div>
-    </div>*@
-
-
 @*Displays alert message telling user how the operation went.*@
-@if (ViewBag.Message != null)
+@if (TempData["message"] != null)
 {
     <script type="text/javascript">
         window.onload = function () {
-            alert("@ViewBag.Message");
+            alert("@TempData["message"]");
         };
     </script>
 }
@@ -158,7 +162,7 @@
 
     //Toggle readonly and disabled properties
     window.onload = function () {
-        var myBool;       
+        var myBool;
         myBool = "@ViewBag.IsChangeable.ToString()";
 
         if (myBool == "True") {

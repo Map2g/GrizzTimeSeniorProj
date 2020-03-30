@@ -3,10 +3,18 @@
 
 @{
     ViewBag.Title = "My Timesheets";
+
+    HtmlString top = new HtmlString("");
+    HtmlString bottom = new HtmlString("");
     //true when called from dashboard
     if (TempData["partial"] != null && TempData["partial"].Equals("True"))
     {
         Layout = null;
+    }
+    else
+    {
+        top = new HtmlString("<div class='container-fluid'><br><div class='row'><div class='col-12'><div class='card card-default'><div class='card-header'><div class='card-title'>My Timesheets</div></div><div class='card-body'>");
+        bottom = new HtmlString("</div></div></div></div></div>");
     }
 
     //You're not supposed to write code in views but I'm a rebel
@@ -33,6 +41,8 @@
     }
 }
 
+@Html.Raw(top)
+
     <table id="" class="display">
         <thead>
             <tr>
@@ -55,7 +65,7 @@
                         <td>---</td>
                         <td>New</td>
                         <td>
-                            @Html.ActionLink("View Week", "Create", "Timesheet", new { date = date }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                            @Html.ActionLink("View Week", "Create", "Timesheet", new { date = date }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
                         </td>
                     </tr>
                 }
@@ -71,11 +81,10 @@
                         <td>@item.TimeSheetStatus</td>
                         <td>
                             <div>
-                                @Html.ActionLink("View Week", "Week", "Timesheet", new { id = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                                @Html.ActionLink("View Week", "Week", "Timesheet", new { id = item.TimeSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
                             </div>
-
                             <div>
-                                @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = item.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                                @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = item.TimeSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
                             </div>
                         </td>
                     </tr>
@@ -84,25 +93,41 @@
         </tbody>
     </table>
 
-<script>
-    //$(document).ready(function () {
-    //    $('#myTSTable').dataTable(
-    //        {
-    //            "order": [[0, "desc"]],
-    //        }
-    //    );
-    //});
+    @if (TempData["partial"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                if ($.fn.dataTable.isDataTable('table.display')) {
+                    $('table.display').dataTable();
+                } else {
+                    $('table.display').dataTable(
+                        {
+                            "order": [[0, "desc"]],
+                            pageLength: 5,
+                            lengthMenu: [[5, 10, 20, 50], [5, 10, 20, 50]]
+                        }
+                    );
+                }
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            $(document).ready(function () {
+                if ($.fn.dataTable.isDataTable('table.display')) {
+                    $('table.display').dataTable();
+                } else {
+                    $('table.display').dataTable(
+                        {
+                            "order": [[0, "desc"]],
+                            pageLength: 20,
+                            lengthMenu: [[20, 50, 100, 150], [20, 50, 100, 150]]
+                        }
+                    );
+                }
+            });
+        </script>
+    }
 
-    $(document).ready(function () {
-        if ($.fn.dataTable.isDataTable('table.display')) {
-            $('table.display').DataTable();
-        } else
-        {
-        $('table.display').dataTable(
-            {
-                "order": [[0, "desc"]],
-            }
-        );
-        }
-    });
-</script>
+@Html.Raw(bottom)

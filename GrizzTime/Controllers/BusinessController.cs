@@ -170,8 +170,6 @@ namespace GrizzTime.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            string message = "";
-
             //Don't check include in validation check
             ModelState.Remove("UserEmail");
             ModelState.Remove("BusName");
@@ -219,11 +217,10 @@ namespace GrizzTime.Controllers
             }
             else
             {
-                message = "Couldn't complete request.";
+                TempData["message"] = "Couldn't complete request.";
             }
 
             //SendVerificationEMail(thisEmp.UserEmail);
-            TempData["message"] = message;
             return View(thisBus);
         }
 
@@ -332,14 +329,28 @@ namespace GrizzTime.Controllers
                     RedirectToAction("Dashboard");
                 }
 
+                List<Contract> temp = new List<Contract>();
+                foreach (contract item in bus.contracts)
+                {
+                    temp.Add(new Contract()
+                    {
+                        ConName = item.ConName,
+                        ConAllottedHours = (decimal)item.ConAllottedHours,
+                        ConHoursRemaining = item.ConHoursRemaining,
+                        ConID = item.ConID
+                    });
+                }
+
                 Business viewBus = new Business()
                 {
+                    UserID = bus.UserID,
                     BusName = bus.BusName,
                     BusAddress = bus.BusAddress,
                     BusDesc = bus.BusDesc,
                     UserEmail = bus.UserEmail,
                     UserPW = bus.UserPW,
                     UserStatus = bus.UserStatus,
+                    BusContracts = temp
                 };
 
                 return View(viewBus);
@@ -410,6 +421,8 @@ namespace GrizzTime.Controllers
             //ModelState.Remove("EmpLName");
             //ModelState.Remove("EmpPhone");
             //ModelState.Remove("EmpType");
+            ModelState.Remove("UserPW");
+            ModelState.Remove("ConfirmPassword");
 
             if (ModelState.IsValid)
             {
@@ -425,7 +438,6 @@ namespace GrizzTime.Controllers
                     bus.BusDesc = thisBus.BusDesc;
                     bus.UserEmail = thisBus.UserEmail;
                     bus.UserStatus = thisBus.UserStatus;
-                    bus.UserPW = Hash(thisBus.UserPW);
 
                     dc.Entry(bus).State = System.Data.Entity.EntityState.Modified;
                     try

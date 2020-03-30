@@ -1,7 +1,7 @@
 ﻿@model GrizzTime.ViewModels.Business
 
 @{
-    ViewBag.Title = "Edit business";
+    ViewBag.Title = "Edit Business";
     Layout = null;
 }
 
@@ -28,18 +28,9 @@
                     @*@Html.Label("Email Address:", htmlAttributes: new { @class = "control-label col-md-2" })*@
                     <div class="label"> Email Address</div>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control", @type="text" } })
+                        @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
                         @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
                         @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @*@Html.Label("Password:", htmlAttributes: new { @class = "control-label col-md-2" })*@
-                    <div class="label"> Password </div>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.UserPW, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-                        @Html.ValidationMessageFor(model => model.UserPW, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -65,27 +56,23 @@
                     @*@Html.Label("Description:", htmlAttributes: new { @class = "control-label col-md-2" })*@
                     <div class="label"> Description </div>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.BusDesc, new { htmlAttributes = new { @class = "form-control", @type="text" } })
+                        @Html.EditorFor(model => model.BusDesc, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
                         @Html.ValidationMessageFor(model => model.BusDesc, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Save" class="btn btn-default" />
                     </div>
                 </div>
 
-                <div class="db-Row-Button-Box">
-                    <a href="@Request.UrlReferrer">
-                        <div class="small-button">
-                            <span>
-                                <h2>
-                                    Back
-                                </h2>
-                            </span>
-                        </div>
-                    </a>
+                <div class="col-md-10">
+                    <div class="smalltext">
+                        <a href="/business/resetpassword/@Model.UserID" style="color:white; text-decoration:none">
+                            Reset password
+                        </a>
+                    </div>
                 </div>
 
             </div>

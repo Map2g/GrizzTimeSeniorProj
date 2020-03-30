@@ -1,51 +1,134 @@
-﻿@using GrizzTime.ViewModels
-@model Contract
+﻿@model GrizzTime.ViewModels.Contract
+@using GrizzTime.ViewModels
 
 @{
-    ViewBag.Title = "View " + Model.ConName;
+    ViewBag.Title = "Contract Details";
+    int cid = Model.ConID;
+
+    //Employees should not be able to see buttons
+    string currentUserID = Request.Cookies["UserID"].Value;
+    bool isVisible;
+    if (currentUserID == Model.BusinessOwnerID.ToString())
+    {
+        isVisible = true;
+    }
+    else
+    {
+        isVisible = false;
+    }
+
 }
 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../assets/css/AdminLTE.min.css">
+    @*<link rel="stylesheet" href="../../stylesheet.css">*@
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
 
+<div class="container-fluid">
+    <!-- Default box -->
+    @*<div class="card">
+        <div class="card-body">*@
+    <br />
+    <div class="row">
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.ConName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ConName, new { htmlAttributes = new { @class = "input-md", @readonly="readonly" } })
-                @Html.ValidationMessageFor(model => model.ConName, "", new { @class = "text-danger" })
+        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="info-box bg-light">
+                        <div class="info-box-content" style="margin-left: 0rem">
+                            <span class="info-box-text text-center text-muted">Contract Hours Allotted </span>
+                            <span class="info-box-number text-center text-muted mb-0">@Model.ConAllottedHours</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="info-box bg-light">
+                        <div class="info-box-content" style="margin-left:0rem">
+                            <span class="info-box-text text-center text-muted">Contract Hours Remaining</span>
+                            <span class="info-box-number text-center text-muted mb-0">@Model.ConHoursRemaining</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="info-box bg-white">
+                        <div class="info-box-content" style="margin-left: 20px">
+                            <h4>Projects</h4>
+                            @foreach (var item in Project.ConProjList(Model.ConID.ToString()))
+                            {
+                                <div class="post">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" src="../../assets/img/defaultuser.png" alt="user image">
+                                        <span class="username">
+                                            <a href="@Url.Action("Details", "Project", new {id = item.ProjID })">@item.ProjName</a>
+                                        </span>
+                                        <span class="description">@item.ProjDesc</span>
+                                        @*<p class="text-right">
+                                            <a href="#" class="btn btn-md btn-danger" style="@(isVisible? "display:inline" : "display:none")">Remove</a>
+                                        </p>*@
+                                        <br />
+                                    </div>
+                                    <!-- /.user-block -->
+                                </div>
+                            }
+                            <div class="text-left mt-5 mb-3">
+                                <a href="@Url.Action("Create", "Project")" class="btn btn-md btn-primary" style="@(isVisible? "display:inline" : "display:none")">Add New Project</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ConAllottedHours, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ConAllottedHours, new { htmlAttributes = new { @class = "input-md", @readonly="readonly" } })
-                @Html.ValidationMessageFor(model => model.ConAllottedHours, "", new { @class = "text-danger" })
+        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+            <div class="info-box bg-white">
+                <div class="info-box-content" style="margin-left:0rem">
+                    <h3 class="text-primary"><i class="fas fa-paint-brush"></i> @Html.DisplayFor(m => m.ConName) <text class="float-right text-green"></text> </h3>
+                    <p class="text-muted"> </p>
+                    <br>
+                    <div class="text-muted">
+                        <p>
+                            Awarded to <br>
+                            <b class="d-block">@Html.DisplayFor(m => m.BusinessName)</b>
+                        </p>
+                    </div>
+
+                    <hr>
+                    <div class="text-right mt-5 mb-3">
+                        <a href="@Url.Action("Edit", "Contract", new {id = Model.ConID})" class="btn btn-lg btn-primary" style="@(isVisible? "display:inline" : "display:none")">Edit Details</a>                       
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
-}
-
-<div class="db-Row-Button-Box">
-    <a href="@Request.UrlReferrer">
-        <div class="small-button">
-            <span>
-                <h2>
-                    Back
-                </h2>
-            </span>
-        </div>
-    </a>
+    @*</div>*@
+    <!-- /.card-body -->
+    @*</div>*@
+    <!-- /.card -->
 </div>
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@*Displays alert message telling user how the operation went.*@
+@if (@TempData["message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["message"]");
+        };
+    </script>
 }
+
