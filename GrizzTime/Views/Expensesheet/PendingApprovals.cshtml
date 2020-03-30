@@ -1,0 +1,111 @@
+﻿@model IEnumerable<GrizzTime.Models.expensesheet>
+@using GrizzTime.ViewModels
+
+@{ 
+    if (TempData["partial"] != null && TempData["partial"].Equals("True"))
+    {
+        Layout = null;
+    }
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-default">
+            <div class="card-header">
+                <div class="card-title">
+                    Pending Expense Reports
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped padding-bottom-xl">
+                    <thead>
+                        <tr>
+                            <th>Submitted by</th>
+                            <th>Week Of</th>
+                            <th>Amount</th>
+                            <th>Details</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                if (item.ExpSheetStatus == "Pending")
+                                {
+                                    <tr>
+                                        <td>@item.employee.EmpFName @item.employee.EmpLName </td>
+                                        <td>@item.payrollcycle.PayrollCycleStart.ToShortDateString()</td>
+                                        <td>$@item.ExpSheetTotalAmt</td>
+                                        <td>
+                                            <div>
+                                                @Html.ActionLink("View", "ExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID}, new { @type = "button", @class = "btn btn-md btn-primary pull-left button button3" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-md btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
+                                                    Actions
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="@Url.Action("Approve", new { tid = item.ExpSheetID })">Approve</a></li>
+                                                    <li><a href="@Url.Action("Deny", new { tid = item.ExpSheetID })">Deny</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-default">
+            <div class="card-header">
+                <div class="card-title">
+                    Processed Expense Reports
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Submitted by</th>
+                            <th>Week Of</th>
+                            <th>Amount</th>
+                            <th>Details</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                if (item.ExpSheetStatus != "Pending")
+                                {
+                                    <tr>
+                                        <td scope="row">@item.employee.EmpFName @item.employee.EmpLName </td>
+                                        <td>@item.payrollcycle.PayrollCycleStart.Date.ToShortDateString()</td>
+                                        <td>$@item.ExpSheetTotalAmt</td>
+                                        <td>
+                                            <div>
+                                                @Html.ActionLink("View", "ExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-primary pull-left button button3" })
+                                            </div>
+                                        </td>
+                                        <td>@item.ExpSheetStatus</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

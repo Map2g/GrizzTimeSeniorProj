@@ -734,6 +734,7 @@
     <Content Include="Views\Invoice\ProjectInvoice_print.cshtml" />
     <Content Include="Views\Expensesheet\List.cshtml" />
     <Content Include="Views\Expensesheet\ExpenseEntry.cshtml" />
+    <Content Include="Views\Expensesheet\PendingApprovals.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

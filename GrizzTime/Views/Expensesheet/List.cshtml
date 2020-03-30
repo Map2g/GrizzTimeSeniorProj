@@ -5,16 +5,29 @@
 @{
     ViewBag.Title = "My Expense Reports";
 
+    HtmlString top = new HtmlString("");
+    HtmlString bottom = new HtmlString("");
     //true when called from dashboard
     if (TempData["partial"] != null && TempData["partial"].Equals("True"))
     {
         Layout = null;
     }
+    else
+    {
+        top = new HtmlString("<div class='container-fluid'><br><div class='row'><div class='col-12'><div class='card card-default'><div class='card-header'><div class='card-title'>My Expense Reports</div></div><div class='card-body'>");
+        bottom = new HtmlString("</div></div></div></div></div>");
+    }
 }
 
-@Html.ActionLink("Add New Expense", "ExpenseEntry", "Expensesheet", new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
-<br />
-<br />
+@Html.Raw(top)
+
+    <div class="row" style="padding-bottom:20px;">
+        <div class="col-lg-4">
+            <a href="@Url.Action("ExpenseEntry", "Expensesheet")" class="btn btn-lg btn-primary">
+                Add New Expense
+            </a>
+        </div>
+    </div>
 
 <table id="" class="display">
     <thead>
@@ -31,28 +44,26 @@
         {
             foreach (var item in Model)
             {
-
                 var expsubmitime = item.ExpSheetSubmitTime.GetValueOrDefault();
-
                 <tr>
-                    <td>@item.ExpSheetTotalAmt</td>
-                    @if (expsubmitime.Date.ToShortDateString() == "1/1/0001")
-                    {
-                        <td>---</td>
-                    }
-                    else
-                    {
-                        <td>@expsubmitime.Date.ToShortDateString()</td>
-                    }
-                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName</td>
+                    <td>$@item.ExpSheetTotalAmt</td>
+                    @if (expsubmitime.Date.ToShortDateString() == "1/1/0001") 
+                    { 
+                        <td>---</td> 
+                    } 
+                    else 
+                    { 
+                        <td>@expsubmitime.Date.ToShortDateString()</td> 
+                    } 
+                    <td>@item.employee.employee2.EmpFName @item.employee.employee2.EmpLName</td> 
                     <td>@item.ExpSheetStatus</td>
                     <td>
                         <div>
-                            @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { id = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                            @Html.ActionLink("Edit", "ExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
                         </div>
 
                         <div>
-                            @Html.ActionLink("Submit", "Submit", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+                            @Html.ActionLink("Submit", "Submit", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-dark pull-left button button4" })
                         </div>
                     </td>
                 </tr>
@@ -60,6 +71,8 @@
         }
     </tbody>
 </table>
+
+@Html.Raw(bottom)
 
 @if (TempData["partial"] != null)
 {
@@ -86,8 +99,8 @@ else
                 $('table.display').dataTable();
             } else {
                 $('table.display').dataTable(
-                        pageLength: 20,
                     {
+                        pageLength: 20,
                         lengthMenu: [[20, 50, 100, 150], [20, 50, 100, 150]]
                     }
                 );

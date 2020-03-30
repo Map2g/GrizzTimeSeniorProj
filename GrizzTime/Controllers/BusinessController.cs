@@ -233,7 +233,7 @@ namespace GrizzTime.Controllers
                 var v = dc.businesses.Where(a => a.UserID == id).FirstOrDefault();
                 ViewBag.BusinessName = v.BusName;
 
-                ViewBag.BusinessID = Request.Cookies["UserID"].Value;
+                ViewBag.BusinessID = v.UserID;
             }
             catch (NullReferenceException e)
             { //Redirect to login if it can't find business name
