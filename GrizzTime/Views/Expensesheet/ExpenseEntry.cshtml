@@ -40,7 +40,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                             </div>
-                            @Html.EditorFor(model => model.ExpDollarAmt, new { htmlAttributes = new { @class = "form-control", @type = "number", @id = "workhours" } })
+                            @Html.EditorFor(model => model.ExpDollarAmt, new { htmlAttributes = new { @class = "form-control", @type = "number", @id = "expenseamount" } })
                             @Html.ValidationMessageFor(model => model.ExpDollarAmt, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                             </div>
-                            @Html.EditorFor(model => model.ExpDate, new { htmlAttributes = new { @class = "form-control", @type = "text", @id = "workhours" } })
+                            @Html.EditorFor(model => model.ExpDate, new { htmlAttributes = new { @class = "form-control", @type = "text", @id = "expenseentrydate" } })
                             @Html.ValidationMessageFor(model => model.ExpDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
