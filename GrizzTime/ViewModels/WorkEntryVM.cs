@@ -23,10 +23,13 @@ namespace GrizzTime.ViewModels
 
         public int ProjID { get; set; }
 
-        public int ProjName { get; set; }
+        public string ProjName { get; set; }
 
         //Day of the week
         public String WorkDate { get; set; }
+
+        //Start day of timesheet this workentry belongs to
+        public DateTime WorkTSDate { get; set; }
 
         public decimal WorkHours { get; set; }
 

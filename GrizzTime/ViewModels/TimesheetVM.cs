@@ -15,9 +15,6 @@ namespace GrizzTime.ViewModels
 
         public int EmpID { get; set; }
 
-        [Display(Name = "Week")]
-        public System.DateTime Week { get; set; }
-
         public string TimeSheetStatus { get; set; }
 
         public decimal TimeSheetTotalHr { get; set; }
@@ -27,6 +24,10 @@ namespace GrizzTime.ViewModels
         public Nullable<System.DateTime> TimeSheetApproveTime { get; set; }
 
         public string PayrollCycleYear { get; set; }
+
+        public DateTime PayrollCycleStart { get; set; }
+
+        public List<WorkEntry> TimesheetWorkEntries { get; set; }
 
         public static List<SelectListItem> TaskTypes = new List<SelectListItem>()
         {

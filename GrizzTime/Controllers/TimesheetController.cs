@@ -157,14 +157,35 @@ namespace GrizzTime.Controllers
                 ViewBag.IsChangeable = changeable;
             }
 
-            ICollection<workentry> thisWeekTry = ts.workentries;
+            List<WorkEntry> thisWeekEntries = new List<WorkEntry>();
+
+            foreach (var item in ts.workentries)
+            {
+                thisWeekEntries.Add(
+                    new WorkEntry()
+                    {
+                        WorkDate = item.WorkDate,
+                        WorkHours = item.WorkHours,
+                        WorkEntryID = item.WorkEntryID,
+                        WorkTSDate = item.timesheet.payrollcycle.PayrollCycleStart,
+                        ProjName = item.project1.ProjName,
+                        TaskName = item.task.TaskName,
+                    }
+               );
+            }
+
+            Timesheet thisTimesheet = new Timesheet()
+            {
+                PayrollCycleStart = ts.payrollcycle.PayrollCycleStart,
+                TimesheetWorkEntries = thisWeekEntries,
+            };
 
             if (ts == null)
             {
                 return HttpNotFound();
             }
 
-            return View(thisWeekTry);           
+            return View(thisTimesheet);           
         }
 
         //tid is timesheet id, wid is workentry id

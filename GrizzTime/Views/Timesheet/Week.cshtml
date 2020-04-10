@@ -1,21 +1,31 @@
-﻿@model ICollection<GrizzTime.Models.workentry>
+﻿@*@model ICollection<GrizzTime.Models.workentry>*@
+@model GrizzTime.ViewModels.Timesheet
 @using GrizzTime.ViewModels
 
 @{
-    
+    WorkEntry mon = null;
+    WorkEntry tue = null;
+    WorkEntry wed = null;
+    WorkEntry thu = null;
+    WorkEntry fri = null;
+    WorkEntry sat = null;
+    WorkEntry sun = null;
 
-    GrizzTime.Models.workentry mon = null;
-    GrizzTime.Models.workentry tue = null;
-    GrizzTime.Models.workentry wed = null;
-    GrizzTime.Models.workentry thu = null;
-    GrizzTime.Models.workentry fri = null;
-    GrizzTime.Models.workentry sat = null;
-    GrizzTime.Models.workentry sun = null;
+    //GrizzTime.Models.workentry mon = null;
+    //GrizzTime.Models.workentry tue = null;
+    //GrizzTime.Models.workentry wed = null;
+    //GrizzTime.Models.workentry thu = null;
+    //GrizzTime.Models.workentry fri = null;
+    //GrizzTime.Models.workentry sat = null;
+    //GrizzTime.Models.workentry sun = null;
 
+    List<WorkEntry> tsWork = Model.TimesheetWorkEntries;
     int tID = ViewBag.TimeSheetID;
     bool IsChangeable = ViewBag.IsChangeable;
+    ViewBag.Title = "Week of " + Model.PayrollCycleStart.ToShortDateString();
 
 
+    /*
     if (Model != null)
     {
         foreach (var item in Model)
@@ -45,6 +55,33 @@
                     break;
             }
         }
+    } */
+    foreach (var item in tsWork)
+    {
+        switch (item.WorkDate)
+        {
+            case "Monday":
+                mon = item;
+                break;
+            case "Tuesday":
+                tue = item;
+                break;
+            case "Wednesday":
+                wed = item;
+                break;
+            case "Thursday":
+                thu = item;
+                break;
+            case "Friday":
+                fri = item;
+                break;
+            case "Saturday":
+                sat = item;
+                break;
+            case "Sunday":
+                sun = item;
+                break;
+        }
     }
 }
 
@@ -52,87 +89,213 @@
 <style>
     .grid-container {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        grid-template-areas: ". Mon Tues Wed Thurs Fri Sat Sun Action" ". Mon-form Tues-form Wed-form Thurs-form Fri-form Sat-form Sun-form submit" ". . . . . . . . .";
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr .5fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-areas: "Mon Tues Wed Thurs Fri Sat Sun Action" "Mon-form Tues-form Wed-form Thurs-form Fri-form Sat-form Sun-form submit" "a1 a2 a3 a4 a5 a6 a7 a8";
+        background-color: #ffffff;
+        border-radius: .25rem;
+        padding: 1rem;
+        box-shadow: #d7d7d7 2px 2px 5px 5px;
     }
 
     .Mon {
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 5px;
         grid-area: Mon;
     }
 
     .Mon-form {
         grid-area: Mon-form;
+        margin-top:5px;
     }
 
     .Tues {
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 5px;
         grid-area: Tues;
     }
 
     .Tues-form {
         grid-area: Tues-form;
+        margin-top:5px;
     }
 
     .Wed {
         grid-area: Wed;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 5px;
     }
 
     .Wed-form {
         grid-area: Wed-form;
+        margin-top:5px;
     }
 
     .Thurs {
         grid-area: Thurs;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 5px;
     }
 
     .Thurs-form {
         grid-area: Thurs-form;
+        margin-top:5px;
     }
 
     .Fri {
         grid-area: Fri;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 5px;
     }
 
     .Fri-form {
         grid-area: Fri-form;
+        margin-top:5px;
     }
 
     .Sat {
         grid-area: Sat;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 5px;
     }
 
     .Sat-form {
         grid-area: Sat-form;
+        margin-top:5px;
     }
 
     .Sun {
         grid-area: Sun;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 5px;
     }
 
     .Sun-form {
         grid-area: Sun-form;
+        margin-top:5px;
     }
 
     .Action {
         grid-area: Action;
     }
 
+    .a1{
+        grid-area: a1;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 13%;
+    }
+
+    .a2{
+        grid-area: a2;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 13%;
+    }
+
+    .a3{
+        grid-area: a3;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 13%;
+    }
+
+    .a4{
+        grid-area: a4;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 13%;
+    }
+
+    .a5{
+        grid-area: a5;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 13%;
+    }
+
+    .a6{
+        grid-area: a6;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 13%;
+    }
+
+    .a7{
+        grid-area: a7;
+        font-size: 18px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: dimgrey;       
+        background-color: aliceblue;
+        padding: 13%;
+    }
+
     .submit {
+        margin: 13%;
         grid-area: submit;
     }
-</style>
-<!--#endregion-->
 
+    body {
+      font-family: "Open Sans", sans-serif;
+      line-height: 1.25;
+    }
+
+    input[type=number], select {
+      width: 30px;
+      padding: 6px 5px;
+      margin: 10px 0;
+      font-size: 1.75rem;
+      /*display: inline-block;*/
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      box-sizing: border-box;
+    }
+</style>
+<!--#endregion-->      
+
+<br />
+
+<h1 style="color:#333;">Week of @Model.PayrollCycleStart.ToShortDateString()</h1>
+<br />
 <div class="grid-container">
-    <div>
+    <div class="Mon">
+        <b>Mon</b><br />
+        <!-- Model.payrollcycle.PayrollCycleStart.ToString("MMMM d") -->
+        @Model.PayrollCycleStart.ToString("MMMM d")
     </div>
-    <div>
-        Hours worked
-    </div>
-    <div>
-        Details
-    </div>
-    <div class="Mon">Monday</div>
     <div class="Mon-form">
         @if (mon != null)
         {
@@ -140,21 +303,23 @@
         }
         else
         {
-            @Html.TextBox("monHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
-
+            @Html.TextBox("monHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
         }
     </div>
-    <div>
+    <div class="class = a1">
         @if (mon != null)
         {
-            @Html.ActionLink("View", "WorkEntry", "Timesheet", new { tid = tID, wid = mon.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", "Timesheet", new { tid = tID, wid = mon.WorkEntryID }, new { @type = "button", @class = "btn btn-lg btn-primary button button4" })
         }
         else
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Monday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Monday" }, new { @type = "button", @class = "btn btn-lg btn-primary button button4", @style = (IsChangeable ? "display:inline" : "display:none") })
         }
     </div>
-    <div class="Tues">Tuesday</div>
+    <div class="Tues">
+        <b>Tue</b><br />
+        @Model.PayrollCycleStart.AddDays(1).ToString("MMMM d")
+    </div>
     <div class="Tues-form">
         @if (tue != null)
         {
@@ -162,21 +327,24 @@
         }
         else
         {
-            @Html.TextBox("tueHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("tueHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
-    <div>
+    <div class= "a2">
         @if (tue != null)
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = tue.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" });
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = tue.WorkEntryID }, new { @type = "button", @class = "btn btn-lg btn-primary button button4" });
         }
         else
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Tuesday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Tuesday" }, new { @type = "button", @class = "btn btn-lg btn-primary button button4", @style = (IsChangeable ? "display:inline" : "display:none") })
         }
     </div>
-    <div class="Wed">Wednesday</div>
+    <div class="Wed">
+        <b>Wed</b><br />
+        @Model.PayrollCycleStart.AddDays(2).ToString("MMMM d")
+    </div>
     <div class="Wed-form">
         @if (wed != null)
         {
@@ -184,21 +352,24 @@
         }
         else
         {
-            @Html.TextBox("wedHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("wedHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
-    <div>
+    <div class= "a3">
         @if (wed != null)
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = wed.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = wed.WorkEntryID }, new { @type = "button", @class = "btn btn-lg btn-primary button button4" })
         }
         else
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Wednesday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Wednesday" }, new { @type = "button", @class = "btn btn-lg btn-primary button button4", @style = (IsChangeable ? "display:inline" : "display:none") })
         }
     </div>
-    <div class="Thurs">Thursday</div>
+    <div class="Thurs">
+        <b>Thu</b><br />
+        @Model.PayrollCycleStart.AddDays(3).ToString("MMMM d")
+    </div>
     <div class="Thurs-form">
         @if (thu != null)
         {
@@ -206,21 +377,24 @@
         }
         else
         {
-            @Html.TextBox("thuHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("thuHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
-    <div>
+    <div class= "a4">
         @if (thu != null)
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = thu.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = thu.WorkEntryID }, new { @type = "button", @class = "btn btn-lg btn-primary button button4" })
         }
         else
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Thursday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Thursday" }, new { @type = "button", @class = "btn btn-lg btn-primary button button4", @style = (IsChangeable ? "display:inline" : "display:none") })
         }
     </div>
-    <div class="Fri">Friday</div>
+    <div class="Fri">
+        <b>Fri</b><br />
+        @Model.PayrollCycleStart.AddDays(4).ToString("MMMM d")
+    </div>
     <div class="Fri-form">
         @if (fri != null)
         {
@@ -228,21 +402,24 @@
         }
         else
         {
-            @Html.TextBox("friHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("friHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
-    <div>
+    <div class= "a5">
         @if (fri != null)
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = fri.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = fri.WorkEntryID }, new { @type = "button", @class = "btn btn-lg btn-primary button button4" })
         }
         else
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Friday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Friday" }, new { @type = "button", @class = "btn btn-lg btn-primary button button4", @style = (IsChangeable ? "display:inline" : "display:none") })
         }
     </div>
-    <div class="Sat">Saturday</div>
+    <div class="Sat">
+        <b>Sat</b><br />
+        @Model.PayrollCycleStart.AddDays(5).ToString("MMMM d")
+    </div>
     <div class="Sat-form">
         @if (sat != null)
         {
@@ -250,21 +427,24 @@
         }
         else
         {
-            @Html.TextBox("satHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("satHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
-    <div>
+    <div class= "a6">
         @if (sat != null)
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = sat.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4"})
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, wid = sat.WorkEntryID }, new { @type = "button", @class = "btn btn-lg btn-primary button button4"})
         }
         else
         {
-            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Saturday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
+            @Html.ActionLink("View", "WorkEntry", new { tid = tID, DOW = "Saturday" }, new { @type = "button", @class = "btn btn-lg btn-primary button button4", @style = (IsChangeable ? "display:inline" : "display:none") })
         }
     </div>
-    <div class="Sun">Sunday</div>
+    <div class="Sun">
+        <b>Sun</b><br />
+        @Model.PayrollCycleStart.AddDays(6).ToString("MMMM d")
+    </div>
     <div class="Sun-form">
         @if (sun != null)
         {
@@ -272,38 +452,24 @@
         }
         else
         {
-            @Html.TextBox("sunHours", "0.00", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("sunHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
-    <div>
+    <div class= "a7">
         @if (sun != null)
         {
-            @Html.ActionLink("View", "WorkEntry", new { id = tID, wid = sun.WorkEntryID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4" })
+            @Html.ActionLink("View", "WorkEntry", new { id = tID, wid = sun.WorkEntryID }, new { @type = "button", @class = "btn btn-lg btn-primary button button4" })
         }
         else
         {
-            @Html.ActionLink("View", "WorkEntry", new { id = @ViewBag.TimeSheetID, DOW = "Sunday" }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button4", @style = (IsChangeable ? "display:block" : "display:none") })
+            @Html.ActionLink("View", "WorkEntry", new { id = @ViewBag.TimeSheetID, DOW = "Sunday" }, new { @type = "button", @class = "btn btn-lg btn-primary button button4", @style = (IsChangeable ? "display:inline" : "display:none") })
         }
     </div>
     <div class="Action"></div>
     <div class="submit">
-        @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = @ViewBag.TimeSheetID }, new { @type = "button", @class = "btn btn-sm btn-default pull-left button button2", @style = (IsChangeable ? "display:block" : "display:none") })
+        @Html.ActionLink("Submit", "Submit", "Timesheet", new { tid = @ViewBag.TimeSheetID }, new { @type = "button", @class = "btn btn-lg btn-primary button button2", @style = (IsChangeable ? "display:inline" : "display:none") })
     </div>
-</div>
-
-<hr />
-
-<div class="db-Row-Button-Box">
-    <a href="@Request.UrlReferrer">
-        <div class="small-button">
-            <span>
-                <h2>
-                    Back
-                </h2>
-            </span>
-        </div>
-    </a>
 </div>
 
 
