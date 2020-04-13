@@ -169,7 +169,7 @@ namespace GrizzTime.Controllers
             TempData["message"] = message;
             ViewBag.Status = Status;
 
-            return View(thisProj);
+            return RedirectToAction("Create");
         }
 
         // GET: Project/Edit/5
@@ -269,7 +269,7 @@ namespace GrizzTime.Controllers
                     }
                     else
                     {
-                        proj.ProjStatus = "Active";
+                        proj.ProjStatus = "Ongoing";
                     }
 
                     dc.Entry(proj).State = System.Data.Entity.EntityState.Modified;
@@ -370,6 +370,25 @@ namespace GrizzTime.Controllers
             using (Entities dc = new Entities())
             {
                 project proj = dc.projects.Find(id);
+
+                if (proj == null)
+                {
+                    TempData["message"] = "Project not found.";
+                    //TODO: Redirect to somewhere more general.
+                    return RedirectToAction("MyProjects", "Home");
+                }
+
+                //convert task name string list to selectlist
+                List<SelectListItem> taskList = Project.GetPossibleTasks(id).ConvertAll(a =>
+                {
+                    return new SelectListItem()
+                    {
+                        Text = a,
+                        Value = a,
+                    };
+                });
+
+                ViewBag.tasks = taskList;
                 ViewBag.ProjectName = proj.ProjName;
                 ViewBag.ProjectID = proj.ProjID;
             }
@@ -389,12 +408,11 @@ namespace GrizzTime.Controllers
             }
 
             ViewBag.UserID = Request.Cookies["UserID"].Value;
-            string message = "";
+            string message;
             using (Entities dc = new Entities())
             {
                 project proj = dc.projects.Find(id);
-                ViewBag.ProjectName = proj.ProjName;
-                ViewBag.ProjectID = proj.ProjID;
+              
                 if (proj == null)
                 {
                     message = "Project not found.";
@@ -402,6 +420,9 @@ namespace GrizzTime.Controllers
                     //TODO: Redirect to somewhere more general.
                     return RedirectToAction("MyProjects", "Home");
                 }
+
+                ViewBag.ProjectName = proj.ProjName;
+                ViewBag.ProjectID = proj.ProjID;             
 
                 task newTask = new task()
                 {
@@ -438,7 +459,7 @@ namespace GrizzTime.Controllers
             }
             message = "Task added successfully.";
             TempData["message"] = message;
-            return View();
+            return RedirectToAction("AddTask", "Project", new {id = id });
         }
 
         public ActionResult EditTask(int? id)

@@ -163,6 +163,7 @@
       <DependentUpon>GrizzTimeAllTables.tt</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ExpenseCategoryVM.cs" />
     <Compile Include="ViewModels\ExpenseEntryVM.cs" />
     <Compile Include="ViewModels\ExpensesheetVM.cs" />
     <Compile Include="ViewModels\BusinessVM.cs" />

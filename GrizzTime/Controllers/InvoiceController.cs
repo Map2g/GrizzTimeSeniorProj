@@ -31,13 +31,17 @@ namespace GrizzTime.Controllers
 
                 //Timesheet information
                 List<timesheet> thisEmpTimesheets;
-
                 //Get all this employee's timesheets for the selected year , order by newest first in the list and oldest last in the list.
                 thisEmpTimesheets = dc.timesheets.Where(x => ((x.EmpID == eid) & (x.payrollcycle.PayrollCycleYear.ToString() == year))).OrderByDescending(x => x.payrollcycle.PayrollCycleStart).ToList();
 
-                if (thisEmpTimesheets.Any() == false)
+                //expensesheet information
+                List<expenseentry> thisEmpExpenseEntries;
+                //Get all this employee's expense items for the selected year
+                thisEmpExpenseEntries = dc.expenseentries.Where(x => ((x.EmpID == eid) & (x.expensesheet.payrollcycle.PayrollCycleYear.ToString() == year))).OrderByDescending(x => x.expensesheet.payrollcycle.PayrollCycleStart).ToList();
+
+                if (!thisEmpTimesheets.Any() && !thisEmpExpenseEntries.Any())
                 {
-                    //This should never occur.
+                    //This should be impossible because there won't be a link to this action if no timesheets.
                     TempData["message"] = "How could it have come to this??";
                     return View();
                 }
@@ -50,11 +54,18 @@ namespace GrizzTime.Controllers
 
                 decimal totalHours = 0;
                 decimal totalEarned = 0;
+                decimal totalExpense = 0;
 
                 foreach (var item in thisEmpTimesheets)
                 {
                     totalHours += item.TimeSheetTotalHr;
                     totalEarned += item.TimeSheetTotalAmt;
+                }
+
+                foreach (var item in thisEmpExpenseEntries)
+                {
+                    //expensesheet TotalAmt seems to be redundant because each expense sheet only has one entry the way it's implemented
+                    totalExpense += item.ExpDollarAmt;
                 }
 
                 //------------------------------------------------------------------------
@@ -76,6 +87,8 @@ namespace GrizzTime.Controllers
                     },
                     YearTotalEarned = totalEarned,
                     YearTotalHours = totalHours,
+                    YearTotalExpenseAmt = totalExpense,
+                    //EmployeeExpensesheets = ,
                     //Below contains all the individual totals and data for this employee's projects and tasks
                     EmployeeProjects = Employee.GetProjects(emp.UserID)
                 };

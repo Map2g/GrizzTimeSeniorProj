@@ -26,7 +26,9 @@ namespace GrizzTime.ViewModels
 
         public Nullable<System.DateTime> ExpSheetApproveTime { get; set; }
 
-        
+        public List<ExpenseEntry> thisExpenseEntries { get; set; }
+
+    
     }
 
 }

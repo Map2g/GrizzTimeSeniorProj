@@ -6,6 +6,7 @@
     //Layout = null;
     string buscode = ViewBag.UserID;
 
+
     List<Employee> employees = Employee.EmployeeList(buscode);
     //employees.RemoveAll(x => x.UserID == Model.UserID); //remove this employee from possible supervisor list
 

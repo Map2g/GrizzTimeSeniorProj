@@ -49,6 +49,16 @@
                     </div>
 
                     <div class="form-group">
+                        <div class="label"> Confirm Password </div>
+                        @*@Html.LabelFor(model => model.UserPW, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger", @style = "color:lightpink; padding-left:20px;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <div class="label"> Name </div>
                         @*@Html.LabelFor(model => model.BusName, htmlAttributes: new { @class = "control-label col-md-2" })*@
                         <div class="col-md-10">

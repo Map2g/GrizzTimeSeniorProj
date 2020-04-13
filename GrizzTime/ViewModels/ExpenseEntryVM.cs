@@ -9,8 +9,6 @@ namespace GrizzTime.ViewModels
 {
     public class ExpenseEntry
     {
-
-
         public int ExpenseEntryID { get; set; }
 
         public int EmpID { get; set; }
@@ -19,7 +17,7 @@ namespace GrizzTime.ViewModels
 
         public int ProjID { get; set; }
 
-        public int ProjName { get; set; }
+        public string ProjName { get; set; }
 
         //Day of the week
         public String ExpDate { get; set; }
@@ -34,13 +32,13 @@ namespace GrizzTime.ViewModels
 
         public static List<SelectListItem> ExpenseTypes = new List<SelectListItem>()
         {
-            new SelectListItem() {Text="Transportation", Value = "1" },
-            new SelectListItem() {Text="Food", Value= "2" },
-            new SelectListItem() {Text="Housing", Value= "3" },
-            new SelectListItem() {Text="Travel Supplies", Value="4" },
-            new SelectListItem() {Text="Airfare", Value = "5" },
-            new SelectListItem() {Text="Tech Support", Value = "6" },
-            new SelectListItem() {Text="Other", Value= "7" },
+            new SelectListItem() {Text="Transportation", Value = "Transportation" },
+            new SelectListItem() {Text="Food", Value= "Food" },
+            new SelectListItem() {Text="Housing", Value= "Housing" },
+            new SelectListItem() {Text="Travel Supplies", Value="Travel Supplies" },
+            new SelectListItem() {Text="Airfare", Value = "Airfare" },
+            new SelectListItem() {Text="Tech Support", Value = "Tech Support" },
+            new SelectListItem() {Text="Other", Value= "Other" },
 
         };
      

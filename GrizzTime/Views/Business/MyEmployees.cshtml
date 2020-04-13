@@ -31,10 +31,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("Email")
+                @Html.DisplayName("Name")
             </th>
             <th>
-                @Html.DisplayName("Name")
+                @Html.DisplayName("Email")
             </th>
             <th>
                 @Html.DisplayName("Phone Number")
@@ -48,26 +48,26 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserEmail)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmpFName) @Html.DisplayFor(modelItem => item.EmpLName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmpPhone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmpType)
-                </td>
-                <td>
-                    @*Link name, controller name, action method, route argument, html details*@
-                    @Html.ActionLink("Edit", "Edit", "Employee", new { id = item.UserID }, null) |
-                    @Html.ActionLink("Details", "Details", "Employee", new { id = item.UserID }, null) |
-                    @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.UserID }, null)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpFName) @Html.DisplayFor(modelItem => item.EmpLName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpType)
+            </td>
+            <td>
+                @*Link name, controller name, action method, route argument, html details*@
+                @Html.ActionLink("Edit", "Edit", "Employee", new { id = item.UserID }, null) |
+                @Html.ActionLink("Details", "Details", "Employee", new { id = item.UserID }, null) |
+                @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.UserID }, null)
+            </td>
+        </tr>
         }
     </tbody>
 </table>

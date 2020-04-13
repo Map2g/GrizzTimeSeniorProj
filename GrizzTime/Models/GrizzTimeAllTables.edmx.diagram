@@ -40,19 +40,15 @@
         <AssociationConnector Association="GrizzTime_dbModel.FK_ExpenseTask" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_ProjectTask" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_WorkTask" ManuallyRouted="true" >
-          <ConnectorPoint PointX="15.054685" PointY="6.5571907552083326" />
-          <ConnectorPoint PointX="15.054685" PointY="9.25" />
-          <ConnectorPoint PointX="12.833333333333334" PointY="9.25" />
-          <ConnectorPoint PointX="12.666666666666666" PointY="9.25" />
-          <ConnectorPoint PointX="9.125" PointY="9.25" />
-          <ConnectorPoint PointX="9.125" PointY="12.316793619791667" />
-          <ConnectorPoint PointX="6.333333333333333" PointY="12.316793619791667" />
-          <ConnectorPoint PointX="6.166666666666667" PointY="12.316793619791667" />
-          <ConnectorPoint PointX="5.677083333333333" PointY="12.316793619791667" />
-          <ConnectorPoint PointX="5.510416666666667" PointY="12.316793619791667" />
-          <ConnectorPoint PointX="2.375" PointY="12.316793619791667" />
-          <ConnectorPoint PointX="2.375" PointY="11.184873155346232" />
-          <ConnectorPoint PointX="2" PointY="11.184873155346232" />
+          <ConnectorPoint PointX="15.375" PointY="6.3648893229166656" />
+          <ConnectorPoint PointX="15.375" PointY="12.509095052083332" />
+          <ConnectorPoint PointX="8.2083333333333339" PointY="12.509095052083332" />
+          <ConnectorPoint PointX="8.0416666666666661" PointY="12.509095052083332" />
+          <ConnectorPoint PointX="3.5833333333333335" PointY="12.509095052083332" />
+          <ConnectorPoint PointX="3.4166666666666665" PointY="12.509095052083332" />
+          <ConnectorPoint PointX="2.375" PointY="12.509095052083332" />
+          <ConnectorPoint PointX="2.375" PointY="11.204617098732385" />
+          <ConnectorPoint PointX="2" PointY="11.204617098732385" />
         </AssociationConnector>
         <AssociationConnector Association="GrizzTime_dbModel.workentryproject" />
         <AssociationConnector Association="GrizzTime_dbModel.FK_expentry_project" />

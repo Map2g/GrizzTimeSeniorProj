@@ -59,7 +59,12 @@ namespace GrizzTime.ViewModels
 
         public decimal EmpTotalAmt { get; set; }
 
+        public decimal EmpTotalExp { get; set; }
+
         public List<Task> EmpProjTask { get; set; }
+
+        //This is the total expenses for one employee for one project in one category.
+        public List<ExpenseCategory> EmpProjCategory { get; set; }
 
         //------------------------------------------------------------------------------------------
 
@@ -236,6 +241,28 @@ namespace GrizzTime.ViewModels
 
                 return tryIt;
             }
+        }
+
+        public static List<String> GetPossibleTasks(int projid)
+        {
+            //build existing task list, if any
+            List<task> existingTasks = Project.GetTasks(projid);
+
+            List<String> allTaskNames = new List<String>();
+            foreach (string task in Timesheet.TaskTypes)
+            {
+                allTaskNames.Add(task);
+            }
+
+            if (existingTasks.Any())
+            {
+                foreach (var item in existingTasks)
+                {
+                    allTaskNames.RemoveAll(a => a.Equals(item.TaskName));
+                }
+            }
+
+            return allTaskNames;
         }
     }
 }

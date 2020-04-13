@@ -61,6 +61,7 @@ namespace GrizzTime.Controllers
 
                             Response.Cookies.Add(new HttpCookie("UserID", v.UserID.ToString()));
                             Response.Cookies.Add(new HttpCookie("Role", "Business"));
+                            Response.Cookies.Add(new HttpCookie("BusinessName", v.BusName));
                             //Response.Cookies.Add(new HttpCookie("BusinessName", v.BusName ));
                             //older end
                         }
@@ -279,14 +280,17 @@ namespace GrizzTime.Controllers
                         
                         bus.UserStatus = "Registered";
 
+                        Response.Cookies.Add(new HttpCookie("UserID", bus.UserID.ToString()));
+                        Response.Cookies.Add(new HttpCookie("Role", "Business"));
+
                         dc.businesses.Add(bus);
                         dc.SaveChanges();
                     }
 
                     SendVerificationEMail(thisBus.UserEmail);
-                    TempData["message"] = "Registration complete! An email has been sent to you to confirm your registration!";
+                    TempData["message"] = "Registration complete! An email has been sent to you to confirm your registration!";                   
 
-                    return RedirectToAction("Details");
+                    return RedirectToAction("Dashboard");
                 }
                 catch (Exception ex)
                 {
@@ -388,6 +392,7 @@ namespace GrizzTime.Controllers
                     UserEmail = bus.UserEmail,
                     UserPW = bus.UserPW,
                     UserStatus = bus.UserStatus,
+                    UserID = bus.UserID,
                 };
 
                 if (bus == null)

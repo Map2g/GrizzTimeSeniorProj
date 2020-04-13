@@ -69,7 +69,7 @@
 
                 <div class="col-md-10">
                     <div class="smalltext">
-                        <a href="/business/resetpassword/@Model.UserID" style="color:white; text-decoration:none">
+                        <a href="@Url.Action("ResetPassword", "Business", new {id = Model.UserID })" style="color:white; text-decoration:none">
                             Reset password
                         </a>
                     </div>

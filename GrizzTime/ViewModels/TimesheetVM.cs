@@ -29,20 +29,33 @@ namespace GrizzTime.ViewModels
 
         public List<WorkEntry> TimesheetWorkEntries { get; set; }
 
-        public static List<SelectListItem> TaskTypes = new List<SelectListItem>()
+
+        public static List<String> TaskTypes = new List<String>()
         {
-            new SelectListItem() {Text="Administration", Value="Administration" },
-            new SelectListItem() {Text="Development", Value="Development" },
-            new SelectListItem() {Text="Helpdesk & Support", Value="Helpdesk & Support" },
-            new SelectListItem() {Text="Management", Value="Management" },
-            new SelectListItem() {Text="Quality Assurance", Value="Quality Assurance" },
-            new SelectListItem() {Text="Design", Value="Design" },
-            new SelectListItem() {Text="Requirements Capture", Value="Requirements Capture" },
-            new SelectListItem() {Text="Accounting", Value="Accounting" },
-            new SelectListItem() {Text="Business Development", Value="Business Development" },
-            new SelectListItem() {Text="Research", Value="Research" },
-            new SelectListItem() {Text="Deployment", Value="Deployment" },
-            new SelectListItem() {Text="Maintenance", Value="Maintenance" },
+            //new SelectListItem() {Text="Administration", Value="Administration" },
+            //new SelectListItem() {Text="Development", Value="Development" },
+            //new SelectListItem() {Text="Helpdesk & Support", Value="Helpdesk & Support" },
+            //new SelectListItem() {Text="Management", Value="Management" },
+            //new SelectListItem() {Text="Quality Assurance", Value="Quality Assurance" },
+            //new SelectListItem() {Text="Design", Value="Design" },
+            //new SelectListItem() {Text="Requirements Capture", Value="Requirements Capture" },
+            //new SelectListItem() {Text="Accounting", Value="Accounting" },
+            //new SelectListItem() {Text="Business Development", Value="Business Development" },
+            //new SelectListItem() {Text="Research", Value="Research" },
+            //new SelectListItem() {Text="Deployment", Value="Deployment" },
+            //new SelectListItem() {Text="Maintenance", Value="Maintenance" },
+            "Administration",
+            "Development",
+            "Helpdesk & Support",
+            "Management",
+            "Quality Assurance",
+            "Design",
+            "Requirements Capture",
+            "Accounting",
+            "Business Development",
+            "Research",
+            "Deployment",
+            "Maintenance"
         };
     }
 

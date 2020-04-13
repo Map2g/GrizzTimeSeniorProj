@@ -194,7 +194,7 @@ namespace GrizzTime.Controllers
             if (Request.Cookies["UserID"].Value == null)
             {
                 //Redirect to login if it can't find business id
-                message = "Please log in.";
+                TempData["message"] = "Please log in.";
                 System.Diagnostics.Debug.WriteLine("User not logged in. Redirecting to login page.\n");
                 return RedirectToAction("LandingPage", "Home");
             }
@@ -243,9 +243,10 @@ namespace GrizzTime.Controllers
             }
 
             TempData["message"] = message;
+            ViewBag.UserID = Request.Cookies["UserID"].Value;
             ViewBag.Status = Status;
 
-            return View(thisEmp);
+            return RedirectToAction("Create", "Employee");
         }
 
         [HttpGet]

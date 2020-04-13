@@ -16,7 +16,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="../../assets/css/stylesheet1.css">
+    <link rel="stylesheet" href="../../assets/css/AdminLTE.min.css">
     @*<link rel="stylesheet" href="../../stylesheet.css">*@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -101,9 +101,9 @@
                                 <tr>
                                     <th>Contract</th>
                                     <th>Project</th>
-                                    <th>Total Hours</th>
-                                    <th>Total Earned</th>
-                                    <th>Itemized</th>
+                                    <th>Time Summary</th>
+                                    <th>Expense Summary</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -112,29 +112,72 @@
                                     <tr>
                                         <td> <a href="@Url.Action("Details", "Contract", new { id = item.ConID })">@item.ContractName</a> </td>
                                         <td> <a href="@Url.Action("Details", "Project", new { id = item.ProjID })">@item.ProjName</a> </td>
-                                        <td>@item.EmpTotalHr</td>
-                                        <td> @item.EmpTotalAmt.ToString("C", CultureInfo.CurrentCulture)</td>
-                                        <td>
 
+                                        <td>
                                             @if (item.EmpProjTask.Any())
                                             {
                                                 <table class="table table-condensed">
                                                     <thead>
                                                         <tr>
-                                                            <td><b>Task</b></td>
-                                                            <td><b>Total Hours</b></td>
-                                                            <td><b>Total Earned</b></td>
+                                                            <th>Task</th>
+                                                            <th>Hours</th>
+                                                            <th>Rate</th>
+                                                            <th>Earned</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach (var item2 in item.EmpProjTask)
                                                         {
                                                             <tr>
-                                                                <td><!--class="border-bottom border-left border-dark"-->@item2.TaskName</td>
+                                                                <td>@item2.TaskName</td>
                                                                 <td>@item2.EmpTaskHours</td>
+                                                                <td>@item2.BillableRate.ToString("C", CultureInfo.CurrentCulture)/hour</td>
                                                                 <td>@item2.EmpTaskAmt.ToString("C", CultureInfo.CurrentCulture)</td>
                                                             </tr>
                                                         }
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Total Hours</th>
+                                                            <td>@item.EmpTotalHr</td>
+                                                            <th>Total Earned</th>
+                                                            <td> @item.EmpTotalAmt.ToString("C", CultureInfo.CurrentCulture)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        </td>
+                                        <td>
+
+                                            @if (item.EmpProjCategory.Any())
+                                            {
+                                                <table class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Category</th>
+                                                            <th>Expense Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item2 in item.EmpProjCategory)
+                                                        {
+                                                            <tr>
+                                                                <td>@item2.CategoryName</td>
+                                                                <td>@item2.EmpCatTotalAmt.ToString("C", CultureInfo.CurrentCulture)</td>
+                                                            </tr>
+                                                        }
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Total</th>
+                                                            <td>@item.EmpTotalExp.ToString("C", CultureInfo.CurrentCulture)</td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             }
@@ -176,6 +219,10 @@
                                 <tr>
                                     <th>Year Total Earned</th>
                                     <td>@Html.DisplayFor(m => m.YearTotalEarned)</td>
+                                </tr>
+                                <tr>
+                                    <th>Year Total Expenses</th>
+                                    <td>@Html.DisplayFor(m => m.YearTotalExpenseAmt)</td>
                                 </tr>
                             </table>
                         </div>

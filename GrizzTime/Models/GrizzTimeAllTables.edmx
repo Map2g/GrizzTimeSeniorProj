@@ -656,7 +656,7 @@
           <!--<Property Name="TaskID" Type="Int32" Nullable="false" />-->
           <!--<NavigationProperty Name="task" Relationship="GrizzTime_dbModel.FK_ExpenseTask" FromRole="expenseentry" ToRole="task" />-->
           <NavigationProperty Name="project" Relationship="GrizzTime_dbModel.FK_expentry_project" FromRole="expenseentry" ToRole="project" />
-          <Property Name="ExpCategory" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ExpCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="expensesheet">
           <Key>

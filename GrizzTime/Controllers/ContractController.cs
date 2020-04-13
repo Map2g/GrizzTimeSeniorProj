@@ -78,7 +78,7 @@ namespace GrizzTime.Controllers
             TempData["message"] = message;
             ViewBag.Status = Status;
 
-            return View(thisCon);
+            return RedirectToAction("Create");
         }
 
         // GET: Contract/Details/5

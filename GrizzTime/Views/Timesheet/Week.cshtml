@@ -299,11 +299,11 @@
     <div class="Mon-form">
         @if (mon != null)
         {
-            @Html.TextBoxFor(model => mon.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBoxFor(model => mon.WorkHours, new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
         }
         else
         {
-            @Html.TextBox("monHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("monHours", "0.0", new { type = "number", @step="0.01",style = "width: 60%;", @readonly = "readonly" });
         }
     </div>
     <div class="class = a1">
@@ -323,11 +323,11 @@
     <div class="Tues-form">
         @if (tue != null)
         {
-            @Html.TextBoxFor(model => tue.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBoxFor(model => tue.WorkHours, new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
         }
         else
         {
-            @Html.TextBox("tueHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("tueHours", "0.0", new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
@@ -348,11 +348,11 @@
     <div class="Wed-form">
         @if (wed != null)
         {
-            @Html.TextBoxFor(model => wed.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBoxFor(model => wed.WorkHours, new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
         }
         else
         {
-            @Html.TextBox("wedHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("wedHours", "0.0", new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
@@ -373,11 +373,11 @@
     <div class="Thurs-form">
         @if (thu != null)
         {
-            @Html.TextBoxFor(model => thu.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBoxFor(model => thu.WorkHours, new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
         }
         else
         {
-            @Html.TextBox("thuHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("thuHours", "0.0", new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
@@ -398,11 +398,11 @@
     <div class="Fri-form">
         @if (fri != null)
         {
-            @Html.TextBoxFor(model => fri.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBoxFor(model => fri.WorkHours, new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
         }
         else
         {
-            @Html.TextBox("friHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("friHours", "0.0", new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
@@ -423,11 +423,11 @@
     <div class="Sat-form">
         @if (sat != null)
         {
-            @Html.TextBoxFor(model => sat.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBoxFor(model => sat.WorkHours, new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
         }
         else
         {
-            @Html.TextBox("satHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("satHours", "0.0", new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>
@@ -448,11 +448,11 @@
     <div class="Sun-form">
         @if (sun != null)
         {
-            @Html.TextBoxFor(model => sun.WorkHours, new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBoxFor(model => sun.WorkHours, new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
         }
         else
         {
-            @Html.TextBox("sunHours", "0.0", new { type = "number", style = "width: 60%;", @readonly = "readonly" });
+            @Html.TextBox("sunHours", "0.0", new { type = "number", @step="0.01", style = "width: 60%;", @readonly = "readonly" });
 
         }
     </div>

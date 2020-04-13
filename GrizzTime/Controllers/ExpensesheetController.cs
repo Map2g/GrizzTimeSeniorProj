@@ -32,7 +32,7 @@ namespace GrizzTime.Controllers
 
                 if (thisEmployeeExpenseSheet.Any() == false)
                 {
-                    TempData["message"] = "You don't have any timesheets yet!";
+                    //TempData["message"] = "You don't have any timesheets yet!";
                     return View();
                 }
                 else
@@ -100,11 +100,11 @@ namespace GrizzTime.Controllers
 
                 expenseentry ee = new expenseentry()
                 {
-                    ExpSheetID = (int)es.ExpSheetID,
+                    ExpSheetID = (int)es.ExpSheetID,                  
                     EmpID = es.EmpID,
                     ExpDate = thisExpense.ExpDate,
                     ExpDollarAmt = thisExpense.ExpDollarAmt,
-                    ExpCategory = thisExpense.SelectedCategoryText,
+                    ExpCategory = thisExpense.ExpCategory.ToString(),
                     ProjID = thisExpense.ProjID
                 };
 

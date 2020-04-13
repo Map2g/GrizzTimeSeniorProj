@@ -100,8 +100,8 @@ namespace GrizzTime.Controllers
 
                 if (thisEmployeeTimesheet.Any() == false)
                 {
-                    message = "You don't have any timesheets yet.";
-                    TempData["message"] = message;
+                    //message = "You don't have any timesheets yet.";
+                    //TempData["message"] = message;
                     return View();
                 }
                 else

@@ -150,7 +150,7 @@
                                     {
                                         <tr>
                                             <td><i class="far fa-circle"></i> @item.TaskName</td>
-                                            <td>@item.BillableRate/hour</td>
+                                            <td>$@item.BillableRate/hour</td>
                                             <td style="@(isVisible? "display:block" : "display:none")"><a href="@Url.Action("EditTask", "Project", new {id = item.TaskID})">Edit Task</a></td>
                                         </tr>
                                     }

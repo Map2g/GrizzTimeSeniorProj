@@ -98,42 +98,14 @@ namespace GrizzTime.ViewModels
         [Display(Name = "Hours")]
         public decimal YearTotalHours { get; set; }
 
+        [DataType(DataType.Currency)]
+        public decimal YearTotalExpenseAmt { get; set; }
+
         public List<Project> EmployeeProjects { get; set; }
 
         public List<Timesheet> EmployeeTimesheets { get; set; }
 
-        //public List<EmployeeInvProject> EmployeeInvProjects { get; set; }
-
-        //public class EmployeeInvProject
-        //{
-        //    public string ProjectName { get; set; }
-
-        //    public string ProjectManagerName { get; set; }
-
-        //    public decimal TotalEarned { get; set; }
-
-        //    public decimal TotalHours { get; set; }
-
-        //    public decimal TotalExpense { get; set; }
-        //}
-
-    ////Gets a list of employees in a specific business. ID should be UserID of a business
-    //public static List<SelectListItem> EmployeeList(string id)
-    //{
-    //    string query = "SELECT * FROM grizztime.employee WHERE BusCode = @id";
-
-    //    Entities dc = new Entities();
-    //    IEnumerable<employee> thisBusinessEmployees = dc.employees.SqlQuery(query, new SqlParameter("@id", id));
-
-    //    List<SelectListItem> AllEmployees = new List<SelectListItem>();
-
-    //    foreach (var item in thisBusinessEmployees)
-    //    {
-    //        AllEmployees.Add(new SelectListItem() { Text = item.EmpFName + " " + item.EmpLName, Value = item.UserID.ToString() });
-    //    };
-
-    //    return AllEmployees;
-    //}
+        public List<Expensesheet> EmployeeExpensesheets { get; set; }
 
     public static List<Employee> EmployeeList(string id)
         {
@@ -175,7 +147,7 @@ namespace GrizzTime.ViewModels
                                       join q in dc.projects
                                       on p.ProjID equals q.ProjID
                                       where e.UserID == id
-                                      select new { q.ProjName, q.ProjDesc, q.ProjID, q.contract, q.workentries1, q.employee, q.ProjStartDate, q.ProjEndDate, q.ProjStatus }
+                                      select new { q.ProjName, q.ProjDesc, q.ProjID, q.contract, q.workentries1, q.employee, q.ProjStartDate, q.ProjEndDate, q.ProjStatus, q.expenseentries}
                             ).ToList();
                 
                 List<Project> tryIt = new List<Project>();               
@@ -185,6 +157,7 @@ namespace GrizzTime.ViewModels
                 {
                     decimal projectHours = 0;
                     decimal projectAmt = 0;
+                    decimal projectExp = 0;
 
                     List<Task> taskView = new List<Task>();
                     //Will repeat for every workentry for this project
@@ -223,6 +196,34 @@ namespace GrizzTime.ViewModels
                         }
                     }
 
+                    List<ExpenseCategory> expCatView = new List<ExpenseCategory>();
+                    //Will repeat for every expenseentry for this project
+                    foreach (var expitem in item.expenseentries)
+                    {
+                        if (expitem.EmpID == id)
+                        {
+                            projectExp += expitem.ExpDollarAmt;
+
+                            //Build totals for cateogories:
+
+                            //If this workentry's category is already in the category list, create a new one. If not, edit total amount
+                            ExpenseCategory thisCategory = expCatView.Find(x => x.CategoryName == expitem.ExpCategory);
+                            if (thisCategory == null)
+                            {
+                                expCatView.Add(new ExpenseCategory()
+                                {
+                                    CategoryName = expitem.ExpCategory,
+                                    EmpCatTotalAmt = expitem.ExpDollarAmt,
+                                });
+                            }
+                            else
+                            {
+                                thisCategory.EmpCatTotalAmt += expitem.ExpDollarAmt;
+                            }
+
+                        }
+                    }
+
                     tryIt.Add(new Project()
                     {
                         ProjName = item.ProjName,
@@ -231,11 +232,13 @@ namespace GrizzTime.ViewModels
                         ProjManName = item.employee.EmpFName + " " + item.employee.EmpLName,
                         EmpTotalHr = projectHours,
                         EmpTotalAmt = projectAmt,
+                        EmpTotalExp = projectExp,
                         ProjStartDate = item.ProjStartDate,
                         ProjEndDate = item.ProjEndDate,
                         ProjStatus = item.ProjStatus,
                         EmpProjTask = taskView,
-                        ProjDesc = item.ProjDesc
+                        ProjDesc = item.ProjDesc,
+                        EmpProjCategory = expCatView,
                     });
                 }
                 return tryIt;

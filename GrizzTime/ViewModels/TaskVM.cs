@@ -22,6 +22,8 @@ namespace GrizzTime.ViewModels
 
         public Project BelongsToProject { get; set; }
 
+        public int ProjID { get; set; }
+
         //---------To be used in Employee Invoice-------------------
         public decimal EmpTaskHours { get; set; }
 
