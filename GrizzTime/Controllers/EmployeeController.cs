@@ -231,7 +231,16 @@ namespace GrizzTime.Controllers
                     dc.employees.Add(emp);
                     dc.SaveChanges();
 
-                    SendRegistrationEMail(thisEmp.UserEmail, emp.UserID);
+                    //Get id of employee just created.
+                    var justCreated = dc.employees.Where(a => a.UserEmail == thisEmp.UserEmail).FirstOrDefault();
+
+                    if (justCreated == null)
+                    {
+                        TempData["message"] = "Something went wrong with SQL query.";
+                        return View();
+                    }
+
+                    SendRegistrationEMail(thisEmp.UserEmail, justCreated.UserID);
                 }
 
                 message = "A link to finish registration was sent to the employee.";
@@ -262,6 +271,12 @@ namespace GrizzTime.Controllers
                 }
 
                 employee employee = dc.employees.Find(id);
+
+                if (employee == null)
+                {
+                    return HttpNotFound();
+                }
+
                 Employee viewEmp = new Employee()
                 {
                     UserEmail = employee.UserEmail,
@@ -271,10 +286,6 @@ namespace GrizzTime.Controllers
                     EmpType = employee.EmpType
                 };
 
-                if (employee == null)
-                {
-                    return HttpNotFound();
-                }
 
                 return View(viewEmp);
             }
@@ -290,7 +301,7 @@ namespace GrizzTime.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            string message = "";
+            string message;
 
             //Don't check include in validation check
             ModelState.Remove("UserEmail");
@@ -761,10 +772,10 @@ namespace GrizzTime.Controllers
             var completeRegister = Url.Action("ResetPassword", "Employee", new { id = employeeId }); /*"/employee/registration/" + employeeId.ToString(); */
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, completeRegister);
 
-            var fromEmail = new MailAddress("grizztimenotification@gmail.com");
+            var fromEmail = new MailAddress("grizztimenotification@gmail.com", "GrizzTime Do Not Reply");
             var toEmail = new MailAddress(email);
             var fromEmailPassword = "WinterSemester";
-            string subject = "Your account has been succesfully created!";
+            string subject = "Your GrizzTime account has been succesfully created!";
 
             string body = "You have been registered as an employee of " + Request.Cookies["BusinessName"].Value + ". To finish setting up your account, click here: <a href='" + link + "'>link</a>";
 
@@ -835,6 +846,18 @@ namespace GrizzTime.Controllers
             {
                 body = reader.ReadToEnd();
             }
+            body = body.Replace("{Link}", link);
+            return body;
+        }
+
+        private string PopulateBody2(string link, string message)
+        {
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/emailTemplates/forgotpassword.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+
             body = body.Replace("{Link}", link);
             return body;
         }

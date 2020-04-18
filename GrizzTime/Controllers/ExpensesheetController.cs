@@ -236,7 +236,7 @@ namespace GrizzTime.Controllers
             if (es.ExpSheetStatus != "Pending")
             {
                 TempData["message"] = "Action was already taken.";
-                return RedirectToAction("PendingApprovals");
+                return RedirectToAction("PendingApprovals", "Timesheet");
             }
 
             es.ExpSheetStatus = "Approved";
@@ -247,7 +247,7 @@ namespace GrizzTime.Controllers
             {
                 dc.SaveChanges();
                 TempData["message"] = "Approved successfully";
-                return Redirect("PendingApprovals");
+                return RedirectToAction("PendingApprovals", "Timesheet");
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
             {
