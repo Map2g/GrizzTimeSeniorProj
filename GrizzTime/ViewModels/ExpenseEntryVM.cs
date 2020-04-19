@@ -32,6 +32,10 @@ namespace GrizzTime.ViewModels
 
         public string SelectedCategoryText { get; set; }
 
+        public string ImagePath { get; set; }
+
+        public HttpPostedFileBase ImageFile { get; set; }
+
         public static List<SelectListItem> ExpenseTypes = new List<SelectListItem>()
         {
             new SelectListItem() {Text="Transportation", Value = "1" },

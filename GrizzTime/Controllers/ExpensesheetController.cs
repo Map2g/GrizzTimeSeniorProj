@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using GrizzTime.ViewModels;
 using System.Net;
 using System.Data.SqlClient;
+using System.IO;
+using System.Configuration;
 
 namespace GrizzTime.Controllers
 {
@@ -81,13 +83,42 @@ namespace GrizzTime.Controllers
         {
             //TODO: ADD edit/view expense entry logic in here
 
+
+          
+
+
             using (Entities dc = new Entities())
             {
-                DateTime d = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
+                //Use Namespace called :  System.IO
 
+                //////////////Checks for file content and assigns values if one does exist
+                if (thisExpense.ImageFile.ContentLength > 0)
+                {
+                    var testFileName = thisExpense.ImageFile;
+                    string FileName = Path.GetFileNameWithoutExtension(thisExpense.ImageFile.FileName);
+
+                    ///////////To Get File Extension  
+                    string FileExtension = Path.GetExtension(thisExpense.ImageFile.FileName);
+
+                    //Add Current Date To Attached File Name  
+                    FileName = DateTime.Now.ToString("yyyyMMdd") + "-" + FileName.Trim() + FileExtension;
+
+                    //////////Get Upload path from Web.Config file AppSettings.  
+                    //string UploadPath = ConfigurationManager.AppSettings["ExpenseReceipts"].ToString();
+
+                    /////////Its Create complete path to store in server.  
+                    //thisExpense.ImagePath = UploadPath + FileName;
+
+                    /////////To copy and save file into server.  
+                    //thisExpense.ImageFile.SaveAs(thisExpense.ImagePath);
+
+                    string path = Path.Combine(Server.MapPath("~/ExpenseReceipts"), Path.GetFileName(thisExpense.ImageFile.FileName));
+                    thisExpense.ImageFile.SaveAs(path);
+                }
+
+                DateTime d = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
                 ///payrollcycle pc = dc.payrollcycles.Where(a => a.PayrollCycleStart = d);
                 var v = dc.payrollcycles.Where(a => a.PayrollCycleStart == d).FirstOrDefault();
-
                 expensesheet es = new expensesheet
                 {
                     EmpID = Int32.Parse(Request.Cookies["UserID"].Value),
@@ -105,11 +136,11 @@ namespace GrizzTime.Controllers
                     ExpDate = thisExpense.ExpDate,
                     ExpDollarAmt = thisExpense.ExpDollarAmt,
                     ExpCategory = thisExpense.SelectedCategoryText,
-                    ProjID = thisExpense.ProjID
+                    ProjID = thisExpense.ProjID,
+                    ImagePath = thisExpense.ImagePath
                 };
 
                 dc.expenseentries.Add(ee);
-
                 try
                 {
 
