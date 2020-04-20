@@ -1,0 +1,125 @@
+﻿@using GrizzTime.ViewModels
+
+@model ExpenseEntry
+
+@{
+    ViewBag.Title = "View Expense Entry";
+
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Expense Report </h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Amount Spent:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                            </div>
+                            @Html.EditorFor(model => model.ExpDollarAmt, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "0.01", @id = "expenseamount", @readonly="readonly" } })
+                            @Html.ValidationMessageFor(model => model.ExpDollarAmt, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Expense Date:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            @Html.EditorFor(model => model.ExpDate, new { htmlAttributes = new { @class = "form-control", @type = "text", @id = "expenseentrydate", @readonly="readonly" } })
+                            @Html.ValidationMessageFor(model => model.ExpDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Project:</label>
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.ProjName, new { htmlAttribute = new { @class = "form-control", @id = "projectlist", @type = "text", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Category:</label>
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.ExpCategory, new { htmlAttribute = new { @id = "ExpCategory", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.ExpCategory, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@*<div class="form-horizontal">
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Amount Spent:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExpDollarAmt, new { htmlAttributes = new { @class = "input-lg", @type = "number", @id = "expenseamount" } })
+                @Html.ValidationMessageFor(model => model.ExpDollarAmt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Expense Date:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExpDate, new { htmlAttributes = new { @class = "input-lg", @type = "date", @id = "espenseentrydate" } })
+                @Html.ValidationMessageFor(model => model.ExpDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Project:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ProjID, projectList, "--Select--", new { @class = "select2", @id = "projectlist" })
+                @Html.ValidationMessageFor(model => model.ProjID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Expense Category:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ExpCategory, new SelectList(ExpenseEntry.ExpenseTypes, "Value", "Text"), "--Select--", new { @id = "ExpCategory", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ExpCategory, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <button type="submit" value="Submit" class="small-button">Save</button>
+            </div>
+        </div>
+
+
+
+        @Html.HiddenFor(model => model.SelectedCategoryText, new { @id = "SelectedCategoryText" })
+        @{Html.EndForm();}
+
+    </div>*@

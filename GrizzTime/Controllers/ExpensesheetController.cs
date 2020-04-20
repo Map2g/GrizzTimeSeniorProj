@@ -50,6 +50,39 @@ namespace GrizzTime.Controllers
 
         }
 
+        public ActionResult EditExpenseEntry(int eid)
+        {
+            Entities dc = new Entities();
+
+            expensesheet Sheet = dc.expensesheets.Find(eid);
+            if (Sheet != null)
+            {
+                expenseentry thisExp = Sheet.expenseentries.FirstOrDefault();
+                if (thisExp != null)
+                {
+                    ExpenseEntry viewExp = new ExpenseEntry()
+                    {
+                        EmpName = thisExp.expensesheet.employee.EmpFName + thisExp.expensesheet.employee.EmpLName,
+                        ExpCategory = thisExp.ExpCategory,
+                        ExpDate = thisExp.ExpDate,
+                        ExpDollarAmt = thisExp.ExpDollarAmt,
+                        ProjName = thisExp.project.ProjName,
+                        ExpenseEntryID = thisExp.ExpEntryID,
+                        SelectedCategoryText = thisExp.ExpCategory
+                    };
+                    return View(viewExp);
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+        }
+
         [HttpGet]
         public ActionResult ExpenseEntry()
         {
@@ -83,6 +116,7 @@ namespace GrizzTime.Controllers
 
             using (Entities dc = new Entities())
             {
+
                 DateTime d = System.DateTime.Now.StartOfWeek(DayOfWeek.Monday);
 
                 ///payrollcycle pc = dc.payrollcycles.Where(a => a.PayrollCycleStart = d);

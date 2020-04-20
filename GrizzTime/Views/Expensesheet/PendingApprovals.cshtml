@@ -40,7 +40,7 @@
                                         <td>$@item.ExpSheetTotalAmt</td>
                                         <td>
                                             <div>
-                                                @Html.ActionLink("View", "ExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID}, new { @type = "button", @class = "btn btn-md btn-primary pull-left button button3" })
+                                                @Html.ActionLink("View", "EditExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-primary pull-left button button3" })
                                             </div>
                                         </td>
                                         <td>
@@ -94,7 +94,7 @@
                                         <td>$@item.ExpSheetTotalAmt</td>
                                         <td>
                                             <div>
-                                                @Html.ActionLink("View", "ExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-primary pull-left button button3" })
+                                                @Html.ActionLink("View", "EditExpenseEntry", "Expensesheet", new { eid = item.ExpSheetID }, new { @type = "button", @class = "btn btn-md btn-primary pull-left button button3" })
                                             </div>
                                         </td>
                                         <td>@item.ExpSheetStatus</td>

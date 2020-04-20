@@ -736,6 +736,7 @@
     <Content Include="Views\Expensesheet\List.cshtml" />
     <Content Include="Views\Expensesheet\ExpenseEntry.cshtml" />
     <Content Include="Views\Expensesheet\PendingApprovals.cshtml" />
+    <Content Include="Views\Expensesheet\EditExpenseEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
